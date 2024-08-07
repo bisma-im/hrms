@@ -1,0 +1,346 @@
+.login-account {
+  padding: 40px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  background-color: #fff;
+}
+
+@media only screen and (max-width: 35.9375rem) {
+  .login-account {
+    padding: 20px;
+  }
+}
+
+.account-info-area {
+  background-color: #253875;
+  border-radius: 2.5rem;
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  height: calc(100vh - 80px);
+  min-height: 600px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-blend-mode: luminosity;
+}
+
+.account-info-area:after {
+  content: "";
+  height: 100%;
+  width: 100%;
+  background-color: #253875;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0.9;
+}
+
+@media only screen and (max-width: 1024px) {
+  .account-info-area {
+    min-height: 570px;
+  }
+}
+
+@media only screen and (max-width: 61.9375rem) {
+  .account-info-area {
+    min-height: 500px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .account-info-area {
+    min-height: 450px;
+    height: 450px;
+    margin-bottom: 50px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .account-info-area {
+    min-height: 400px;
+    height: 400px;
+  }
+}
+
+@media only screen and (max-width: 35.9375rem) {
+  .account-info-area {
+    min-height: 350px;
+    height: 350px;
+    border-radius: 10px;
+  }
+}
+
+.account-info-area .text {
+  max-width: 420px;
+  margin: 0 auto;
+  color: #fff;
+  opacity: 0.8;
+}
+
+.account-info-area .login-content {
+  text-align: center;
+  padding: 120px 10px;
+  z-index: 9;
+  position: relative;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.account-info-area .login-content .title {
+  font-size: 65px;
+  line-height: 1.2;
+  font-weight: 700;
+  margin-bottom: 1.4rem;
+  margin-top: 0;
+  color: #fff;
+}
+
+.account-info-area .login-content .title span {
+  text-decoration: underline;
+}
+
+.account-info-area .login-content .sub-title {
+  font-size: 28px;
+  margin-bottom: 15px;
+  font-weight: 500;
+  line-height: 1.35;
+  padding: 0 4px;
+  color: #fff;
+}
+
+@media only screen and (max-width: 1320px) {
+  .account-info-area .login-content {
+    padding: 120px 5px 120px 35px;
+  }
+}
+
+@media only screen and (max-width: 87.5rem) {
+  .account-info-area .login-content .title {
+    font-size: 50px;
+  }
+
+  .account-info-area .login-content .sub-title {
+    font-size: 20px;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .account-info-area .login-content {
+    padding: 120px 5px 120px 5px;
+  }
+}
+
+@media only screen and (max-width: 61.9375rem) {
+  .account-info-area .login-content {
+    padding: 120px 70px 120px 0px;
+  }
+
+  .account-info-area .login-content .title {
+    font-size: 45px;
+  }
+
+  .account-info-area .login-content .sub-title {
+    font-size: 25px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .account-info-area .login-content {
+    padding: 120px 25px 120px 25px;
+  }
+
+  .account-info-area .login-content .title {
+    font-size: 40px;
+  }
+
+  .account-info-area .login-content .sub-title {
+    font-size: 20px;
+  }
+}
+
+@media only screen and (max-width: 47.9375rem) {
+  .account-info-area .login-content {
+    padding: 100px 5px 120px 20px;
+  }
+
+  .account-info-area .login-content .title {
+    font-size: 35px;
+    margin-bottom: 1rem;
+  }
+
+  .account-info-area .login-content .sub-title {
+    font-size: 19px;
+  }
+}
+
+@media only screen and (max-width: 35.9375rem) {
+  .account-info-area .login-content {
+    padding: 45px 20px;
+  }
+
+  .account-info-area .login-content .title {
+    font-size: 30px;
+    margin-bottom: 1rem;
+  }
+
+  .account-info-area .login-content .sub-title {
+    font-size: 16px;
+  }
+}
+
+.login-account .social-btn {
+  padding: 10px 10px;
+}
+
+@media only screen and (max-width: 35.9375rem) {
+  .login-account .apple {
+    margin-top: 10px;
+  }
+}
+
+.login-account .login-form {
+  padding: 0 50px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+@media only screen and (max-width: 87.5rem) {
+  .login-account .login-form {
+    padding: 0 15px;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .login-account .login-form {
+    padding: 0;
+  }
+}
+
+.login-account .login-form .login-head {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.login-account .login-form .login-head .title {
+  font-size: 36px;
+  font-weight: 600;
+}
+
+@media only screen and (max-width: 1024px) {
+  .login-account .login-form .login-head .title {
+    font-size: 23px;
+  }
+}
+
+@media only screen and (max-width: 35.9375rem) {
+  .login-account .login-form .login-head .title {
+    font-size: 20px;
+  }
+}
+
+.login-account .login-form .login-title {
+  text-align: center;
+  position: relative;
+  margin-bottom: 48px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+}
+
+.login-account .login-form .login-title:before,
+.login-account .login-form .login-title:after {
+  content: "";
+  height: 1px;
+  flex: 1 1;
+  left: 0;
+  background-color: #e1e1f0;
+  top: 50%;
+  z-index: -1;
+  margin: 0;
+  padding: 0;
+}
+
+.login-account .login-form .login-title span {
+  padding: 0 18px;
+}
+
+@media only screen and (max-width: 1200px) {
+  .login-account .login-form .login-title {
+    margin-bottom: 25px;
+  }
+}
+
+.login-account .login-form .secure-input {
+  position: relative;
+}
+
+.login-account .login-form .secure-input .show-pass {
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  height: auto;
+  width: 40px;
+  top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.login-account .login-form .secure-input .show-pass:after {
+  content: "";
+  height: 2px;
+  width: 24px;
+  background-color: #777777;
+  position: absolute;
+  border-radius: 5px;
+  transform: rotate(15deg);
+  opacity: 0;
+}
+
+.login-account .login-form .secure-input .show-pass.active:after {
+  opacity: 1;
+}
+
+.btn-block {
+  margin-top: 20px;
+  display: block;
+  width: 100%; }
+
+.btn-primary {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #253875;
+  --bs-btn-border-color: #253875;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #1e2d63;
+  --bs-btn-hover-border-color: #1b295b;
+  --bs-btn-focus-shadow-rgb: 37, 56, 117;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #1b295b;
+  --bs-btn-active-border-color: #192654;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: #253875;
+  --bs-btn-disabled-border-color: #253875;
+}
+
+/* end of login css */
+
+/* sidebar css */
+
+.layout-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex-grow: 1;
+  transition: margin 0.3s ease;
+  padding: 20px;
+}
+
+.sidebar.expanded + .main-content {
+  margin-left: 180px;  
+}

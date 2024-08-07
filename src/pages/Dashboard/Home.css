@@ -1,0 +1,14 @@
+.layout-container {
+    display: flex;
+    min-height: 100vh; /* Full viewport height */
+  }
+
+.main-content {
+  flex-grow: 1;
+  transition: margin 0.3s ease;
+  margin-left: 60px; /* Same as the default width of the sidebar */
+}
+
+.sidebar.expanded + .main-content {
+    margin-left: 200px; /* Same as the expanded width of the sidebar */
+  }

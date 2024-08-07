@@ -1,0 +1,103 @@
+.top-navbar {
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    position: fixed; /* Keeps the navbar fixed at the top */
+    z-index: 1050; /* Ensures it is above other content */
+    box-shadow: 0 4px 8px rgba(46, 46, 46, 0.74);
+}
+.navbar {
+    background-color: var(--sidebarbg-color);
+}
+
+.search-bar {
+    background-color: var(--whiteorblack-color);
+}
+
+.search-icon {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    width: 40px;
+}
+
+.navbar-header {
+    display: flex;
+    align-items: center;
+}
+.navbar-title{
+    font-weight: bolder;
+    color: var(--primary-color);
+    font-size: 1.2em;
+    margin-left: 10px;
+}
+.navbar-title-mobile{
+    font-weight: bolder;
+    color: var(--primary-color);
+    font-size: 10px
+   
+}
+.navbar-logo {
+    height: 50px;
+    width: 50px;
+}
+.navbar-mobile{
+    height: 60px;
+    width: 60px;
+}
+.icon-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+    border-radius: 20%;
+    padding: 3px;
+    background-color: var(--whiteorblack-color);
+}
+
+
+.navbar .container-fluid .custom-nav {
+    flex-direction: row; /* Ensures horizontal layout */
+    display: flex;
+}
+
+.custom-nav .dropdown-menu {
+    position: absolute !important;
+    left: -8em;
+    top: 3em;
+}
+
+.clock {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.icon-fill {
+    fill: var(--primary-color);;
+}
+
+/* Adjustments for smaller screens */
+@media (max-width: 768px) {
+    .navbar .container-fluid .custom-nav{
+        max-width: 70%;
+    }
+
+    .icon-button {
+        margin-right: 2px;
+    }
+    .navbar-header{
+        max-width: 10%;
+    }
+    .nav.custom-nav .nav-dropdown {
+        position: relative; /* Make sure the dropdown is positioned relative to its parent */
+    }
+    
+    .nav.custom-nav .dropdown-menu {
+        position: absolute;
+        left: 0; /* Align to the left edge of the parent */
+        right: 0; /* Stretch to the right edge of the parent */
+        width: auto; /* Let it expand as needed */
+        max-width: 100%; /* Limit width to prevent overflow */
+    }
+}
