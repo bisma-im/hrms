@@ -1,0 +1,51 @@
+/* Table.css */
+.table-custom {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table-custom th,
+  .table-custom td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd; /* Light grey border */
+  }
+  
+  .table-custom th {
+    background-color: #f8f9fa; /* Light grey background */
+  }
+  
+  .status-label {
+    border-radius: 10px;
+    color: white;
+    padding: 5px 10px;
+    font-size: 0.875rem; /* Smaller font size */
+    text-align: center;
+    width: 80px; /* Fixed width */
+  }
+  
+  .status-pending {
+    background-color: #ffc107; /* Amber for pending */
+  }
+  
+  .status-approved {
+    background-color: #28a745; /* Green for approved */
+  }
+  
+  .button-apply {
+    background-color: #007bff; /* Bootstrap primary blue */
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    float: right; /* Align to the right */
+  }
+  
+  /* Clear floats after the button */
+  .button-container:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  

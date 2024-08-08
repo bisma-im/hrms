@@ -54,10 +54,6 @@ const Sidebar = () => {
             </LinkContainer>
           ))}
         </Nav>
-        {/* <Button onClick={handleToggleTheme} className="sidebar-item">
-          <FaMoon className='icon'/>
-           {!collapsed && <span className='text'>Dark Mode</span>}
-        </Button> */}
         </Scrollbars>
 
       </div>

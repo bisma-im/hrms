@@ -338,8 +338,10 @@
 .main-content {
   flex-grow: 1;
   transition: margin 0.3s ease;
-  padding: 20px;
   background-color: #eceaea;
+  padding: 30px; /* Adjust based on your navbar's height */
+  overflow-y: auto;
+  height: calc(100vh - 60px);
 }
 
 .sidebar.expanded + .main-content {
@@ -359,14 +361,8 @@
   align-items: center;
 }
 
-/* .container {
-  max-width: 800px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-column-gap: 30px;
-  grid-row-gap: 30px;
-} */
+
+
 
 
 

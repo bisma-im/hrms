@@ -5,7 +5,9 @@
     align-items: center;
     width: 100%;
     position: fixed; /* Keeps the navbar fixed at the top */
-    z-index: 1050; /* Ensures it is above other content */
+    top: 0;
+    left: 0;
+    z-index: 1050;
     box-shadow: 0 4px 8px rgba(46, 46, 46, 0.74);
 }
 .navbar {
