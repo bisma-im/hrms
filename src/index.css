@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  font-size: var(--font-size-small);
   font-family: 'Montserrat', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -12,6 +13,9 @@ html, body{
 }
  /* styles.css */
 :root {
+
+  /* ---------color scheme---------- */
+
   --primary-color: #003366; /* Blue */
   --secondary-color: #FFD700; /* Orange */
   --background-color: #f0f2f5; /* Light grey */
@@ -22,6 +26,25 @@ html, body{
   --whiteorblack-color: #fff;
   --sidebaractive-color: #004C99;
   --sidebarbg-color: #F8F9FA;
+
+  /* --------------font sizes----------- */
+  --font-size-small: 0.8rem;
+  --font-size-base: 1rem; /* base size for mobile */
+  --font-size-large: 1.2rem;
+  --font-size-xlarge: 1.5rem;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  :root {
+    --font-size-base: 1.2rem; /* slightly larger for tablets */
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --font-size-base: 1.4rem; /* larger for desktop */
+  }
 }
 
 

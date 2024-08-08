@@ -33,7 +33,7 @@ const Sidebar = () => {
           autoHide
           autoHideTimeout={1000}
           autoHideDuration={200}
-          style={{ height: 'calc(100vh - 100px)' }}
+          style={{ height: 'calc(100vh - 10px)' }}
           renderThumbVertical={({ style, ...props }) =>
             <div {...props} style={{ ...style, backgroundColor: '#ccd9f1', borderRadius: '6px' }} />
           }

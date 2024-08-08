@@ -339,8 +339,34 @@
   flex-grow: 1;
   transition: margin 0.3s ease;
   padding: 20px;
+  background-color: #eceaea;
 }
 
 .sidebar.expanded + .main-content {
   margin-left: 180px;  
 }
+
+
+/* dashboard cards */
+
+
+.chart-container {
+  margin-bottom: 10px;
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* .container {
+  max-width: 800px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 30px;
+  grid-row-gap: 30px;
+} */
+
+
+
