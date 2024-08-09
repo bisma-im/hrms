@@ -13,15 +13,19 @@
   width: 180px;  
 }
 
-.sidebar-item {
+.sidebar-item.nav-link {
   margin-top: 10px;
   color: var(--primary-color);  
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  width: 100%;
   padding: 10px;  
 }
 
-.sidebar-item .text {
+.sidebar-item.nav-link .text {
+  /* padding: 10px; */
+  margin-left: 35px;
   color: var(--primary-color);
   visibility: hidden;  
   opacity: 0;
@@ -30,7 +34,7 @@
   position: absolute;
 }
 
-.sidebar.expanded .sidebar-item .text {
+.sidebar.expanded .sidebar-item.nav-link .text {
   opacity: 1;  
   visibility: visible;
 }
@@ -41,9 +45,11 @@
   height: 20px;
   width: 20px;
   margin-right: 10px;
+  margin-left: 5px;
 }
 
-.sidebar-item:hover .icon, .sidebar-item:hover .text, .sidebar-toggle:hover {
+.sidebar-item:hover .icon, .sidebar-item:hover .text, .sidebar-toggle:hover,
+.sub-item:hover .icon, .sub-item:hover .text {
   color: var(--secondary-color);
   fill: var(--secondary-color);
 }
@@ -71,9 +77,26 @@
   fill: var(--primary-color);
 }
 
+.sub-item.nav-link {
+  background-color: rgb(116, 155, 187);
+  padding-right: 10px;
+  color: var(--primary-color);  
+  display: flex;
+  align-items: center;
+  /* padding: 5px; */
+}
+
+.sidebar-item.nav-link .fa-caret { /* Adjust this class name based on how it's rendered in the DOM */
+  fill: var(--primary-color);
+  margin-left: 25px; /* This ensures it pushes to the far right */
+  font-size: 0.7em;
+}
+
 
 .sidebar-item.active .icon,
-.sidebar-item.active .text {
+.sidebar-item.active .text,
+.sub-item.active .icon,
+.sub-item.active .text {
   color: var(--secondary-color); /* Same color as hover */
   fill: var(--secondary-color);
 }

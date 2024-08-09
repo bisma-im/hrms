@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Nav, Navbar } from 'react-bootstrap';
-import { FaAngleDoubleLeft, FaAngleDoubleRight, FaMoon } from 'react-icons/fa';
+import { Button, Nav, Navbar, Accordion } from 'react-bootstrap';
+import { FaAngleDoubleLeft, FaAngleDoubleRight, FaMoon, FaCaretRight, FaCaretDown } from 'react-icons/fa';
 import { Scrollbars } from 'react-custom-scrollbars-2';
 import { IconContext } from 'react-icons';
 import { toggleSidebar } from 'features/nav/sidebarSlice';
@@ -13,6 +13,7 @@ import { toggleTheme } from 'features/theme/themeSlice';
 const Sidebar = () => {
   const collapsed = useSelector(state => !state.sidebar.sidebarOpen);
   const theme = useSelector(state => state.theme.theme);
+  const [openSubmenu, setOpenSubmenu] = useState(null);
   const dispatch = useDispatch();
 
   const handleToggleSidebar = () => {
@@ -21,7 +22,11 @@ const Sidebar = () => {
 
   const handleToggleTheme = () => {
     dispatch(toggleTheme());
-  }
+  };
+
+  const toggleSubmenu = (id) => {
+    setOpenSubmenu(openSubmenu === id ? null : id);
+  };
 
   return (
     <IconContext.Provider value={{ color: "white", size: "1.5em" }}>
@@ -39,19 +44,46 @@ const Sidebar = () => {
           }
         >
         <Nav defaultActiveKey="/home" className="flex-column">
-          
           {menuItems.map(item => (
             item.type === 'button' ?
-            <Nav.Link onClick={handleToggleTheme} key={item.id} className="sidebar-item">
-                <item.icon className='icon' />
-                {!collapsed && <span className='text'>{theme.mode === 'light' ? 'Dark Mode' : 'Light Mode'}</span>}
-            </Nav.Link> :
-            <LinkContainer to={item.link} key={item.id} className="sidebar-item">
-              <Nav.Link>
-                <item.icon className='icon' />
-                {!collapsed && <span className='text'>{item.label}</span>}
+              <Nav.Link onClick={handleToggleTheme} className="sidebar-item" key={item.id}>
+                  <item.icon className='icon' />
+                  {!collapsed && <span className='text'>{theme.mode === 'light' ? 'Dark Mode' : 'Light Mode'}</span>}
               </Nav.Link>
-            </LinkContainer>
+            : (
+              <React.Fragment key={item.id}>
+              {item.submenus ? (
+                <>
+                  <div className="sidebar-item nav-link" onClick={() => toggleSubmenu(item.id)}>
+                    <item.icon className='icon' />
+                    {!collapsed && 
+                      <span className='text'>{item.label}
+                        {openSubmenu ? <FaCaretRight className='fa-caret'/> : <FaCaretDown className='fa-caret'/>}
+                      </span>}
+                  </div>
+                  {openSubmenu === item.id && (
+                    <div className="">
+                      {item.submenus.map(sub => (
+                        <LinkContainer to={sub.link} key={sub.id}>
+                          <Nav.Link className="sub-item">
+                            <sub.icon className='icon' />
+                            {!collapsed && <span className='text'>{sub.label}</span>}
+                          </Nav.Link>
+                        </LinkContainer>
+                      ))}
+                    </div>
+                  )}
+                </>
+              ) : (
+                <LinkContainer to={item.link} key={item.id}>
+                  <Nav.Link className="sidebar-item">
+                    <item.icon className='icon' />
+                    {!collapsed && <span className='text'>{item.label}</span>}
+                  </Nav.Link>
+                </LinkContainer>
+              )}
+            </React.Fragment>
+            )
           ))}
         </Nav>
         </Scrollbars>
@@ -62,5 +94,3 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
-
-
