@@ -61,7 +61,7 @@ const Dashboard = () => {
                 {chartData.map(chart => (
                     <Col xs={12} md={6} lg={3} key={chart.id} >
                         <ChartCard title={chart.title} className='chart-container'>
-                            <PieChart chartId={chart.chartId} />
+                            <PieChart chartId={chart.chartId}/>
                         </ChartCard>
                     </Col>
                 ))}

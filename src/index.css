@@ -14,25 +14,44 @@ html, body{
 }
  /* styles.css */
 :root {
-
+  transition: all 0.3s ease;
   /* ---------color scheme---------- */
 
-  --primary-color: #003366; /* Blue */
-  --secondary-color: #FFD700; /* Orange */
-  --background-color: #f0f2f5; /* Light grey */
+  --primary-color: #004B87; /* Blue */
+  --secondary-color: #FDD017; /* Orange */
+  --background-color: #F0F4F8; /* Light grey */
   --text-color: #333333; /* Dark grey */
   --success-color: #4CAF50;
   --error-color: #F44336;
-  --warning-color: #FFEB3B;
+  --warning-color: #FFC107;
+  --info-color: #17a2b8;
+  --sidebartext-color: #2C3E50;
+  --sidebaricon-color: #7f8c8d;
   --whiteorblack-color: #fff;
-  --sidebaractive-color: #004C99;
-  --sidebarbg-color: #F8F9FA;
+  --sidebaractive-color: #003366;
+  --cardbg-color: #FFFFFF;
+  --sidebarbg-color: #FFFFFF;
+  --hoverbg-color: #E1E9F2;
+  --hovertext-color: #FFFFFF;
+  --submenubg-color: #F7F7F7;
+  --submenuhover-color: #E1E9F2;
+  --mainbg-color: #F3F0EC;
+  --cardheader-color: #CCCCCC;
 
   /* --------------font sizes----------- */
   --font-size-small: 0.8rem;
-  --font-size-base: 1rem; /* base size for mobile */
+  --font-size-base: 1rem;
   --font-size-large: 1.2rem;
   --font-size-xlarge: 1.5rem;
+
+  /* --------------Spacing---------------- */
+  --spacing-small: 8px;
+  --spacing-medium: 16px;
+  --spacing-large: 24px;
+
+  /* --------------Fonts------------------ */
+  --font-primary: 'Open Sans', sans-serif;
+  --font-secondary: 'Roboto', sans-serif;
 }
 
 /* Responsive adjustments */

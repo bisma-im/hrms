@@ -4,7 +4,7 @@ import { FaSearch } from 'react-icons/fa';
 
 const Searchbar = () => {
     return (
-    <InputGroup className="search-input-group">
+    <InputGroup >
         <FormControl
             type="search"
             placeholder="Search"

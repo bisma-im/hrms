@@ -16,7 +16,7 @@ const PieChart = ({ chartId }) => {
       style: {
         fontSize: '14px',
         fontFamily: 'Helvetica, Arial, sans-serif',
-        colors: ['var(--primary-color)', 'var(--primary-color)', 'var(--primary-color)', 'var(--primary-color)'] // Example colors for each label
+        colors: ['var(--text-color)', 'var(--text-color)', 'var(--text-color)', 'var(--text-color)'] // Example colors for each label
       }
     },
     plotOptions: {
@@ -53,6 +53,9 @@ const PieChart = ({ chartId }) => {
     },
     legend: {
       position: "bottom",
+      style: {
+        colors: ['var(--text-color)', 'var(--text-color)', 'var(--text-color)', 'var(--text-color)'] 
+      },
     },
   };
 

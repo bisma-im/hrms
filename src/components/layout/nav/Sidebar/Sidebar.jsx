@@ -1,28 +1,35 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Nav, Navbar, Accordion } from 'react-bootstrap';
-import { FaAngleDoubleLeft, FaAngleDoubleRight, FaMoon, FaCaretRight, FaCaretDown } from 'react-icons/fa';
+import { FaAngleDoubleLeft, FaAngleDoubleRight, FaSignOutAlt, FaCaretRight, FaCaretDown } from 'react-icons/fa';
 import { Scrollbars } from 'react-custom-scrollbars-2';
 import { IconContext } from 'react-icons';
 import { toggleSidebar } from 'features/nav/sidebarSlice';
 import menuItems from 'components/layout/nav/Sidebar/MenuList';
 import { LinkContainer } from 'react-router-bootstrap';
 import './Sidebar.css';
-import { toggleTheme } from 'features/theme/themeSlice';
+import { useAppContext } from 'context/AppContext';
+import { useTheme } from 'context/ThemeContext';
+import { logout } from 'features/auth/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 const Sidebar = () => {
   const collapsed = useSelector(state => !state.sidebar.sidebarOpen);
-  const theme = useSelector(state => state.theme.theme);
+  // const { logout } = useAppContext();
+  const { theme, toggleTheme } =useTheme();
   const [openSubmenu, setOpenSubmenu] = useState(null);
   const dispatch = useDispatch();
 
+  function onLogout(){
+        dispatch(logout());
+    }
   const handleToggleSidebar = () => {
     dispatch(toggleSidebar());
   };
 
-  const handleToggleTheme = () => {
-    dispatch(toggleTheme());
-  };
+  // const handleToggleTheme = () => {
+  //   dispatch(toggleTheme());
+  // };
 
   const toggleSubmenu = (id) => {
     setOpenSubmenu(openSubmenu === id ? null : id);
@@ -45,8 +52,8 @@ const Sidebar = () => {
         >
         <Nav defaultActiveKey="/home" className="flex-column">
           {menuItems.map(item => (
-            item.type === 'button' ?
-              <Nav.Link onClick={handleToggleTheme} className="sidebar-item" key={item.id}>
+            item.action === 'toggleTheme' ?
+              <Nav.Link onClick={toggleTheme} className="sidebar-item" key={item.id}>
                   <item.icon className='icon' />
                   {!collapsed && <span className='text'>{theme.mode === 'light' ? 'Dark Mode' : 'Light Mode'}</span>}
               </Nav.Link>
@@ -82,10 +89,15 @@ const Sidebar = () => {
                   </Nav.Link>
                 </LinkContainer>
               )}
+              
             </React.Fragment>
             )
           ))}
-        </Nav>
+            <Nav.Link className="sidebar-item" onClick={onLogout}>
+              <FaSignOutAlt className='icon' />
+              {!collapsed && <span className='text'>Logout</span>}
+            </Nav.Link>
+          </Nav>
         </Scrollbars>
 
       </div>

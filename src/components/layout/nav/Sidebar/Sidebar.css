@@ -26,7 +26,7 @@
 .sidebar-item.nav-link .text {
   /* padding: 10px; */
   margin-left: 35px;
-  color: var(--primary-color);
+  color: var(--sidebartext-color);
   visibility: hidden;  
   opacity: 0;
   white-space: nowrap; 
@@ -41,7 +41,7 @@
 
 
 .icon {
-  fill: var(--primary-color);
+  fill: var(--sidebaricon-color);
   height: 20px;
   width: 20px;
   margin-right: 10px;
@@ -78,7 +78,7 @@
 }
 
 .sub-item.nav-link {
-  background-color: rgb(116, 155, 187);
+  background-color: var(--submenubg-color);
   padding-right: 10px;
   color: var(--primary-color);  
   display: flex;
@@ -87,7 +87,7 @@
 }
 
 .sidebar-item.nav-link .fa-caret { /* Adjust this class name based on how it's rendered in the DOM */
-  fill: var(--primary-color);
+  fill: var(--sidebaricon-color);
   margin-left: 25px; /* This ensures it pushes to the far right */
   font-size: 0.7em;
 }
@@ -97,10 +97,11 @@
 .sidebar-item.active .text,
 .sub-item.active .icon,
 .sub-item.active .text {
-  color: var(--secondary-color); /* Same color as hover */
+  color: var(--secondary-color); 
   fill: var(--secondary-color);
 }
 
+.sub-item.active,
 .sidebar-item.active{
   background-color: var(--sidebaractive-color);
 }

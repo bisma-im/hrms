@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { logout } from 'features/auth/authSlice';
+import { useNavigate, Outlet } from 'react-router-dom';
 import Sidebar from 'components/layout/nav/Sidebar/Sidebar';
 import TopNavbar from 'components/layout/nav/TopNavbar/TopNavbar';
 import Dashboard from './Dashboard/Dashboard';
@@ -12,9 +11,7 @@ const Home = () => {
     const navigate = useNavigate();
     const { user } = useSelector(state => state.auth);
 
-    function onLogout(){
-        dispatch(logout());
-    }
+    
 
     useEffect(() => {
         if (!user) {
@@ -28,7 +25,7 @@ const Home = () => {
             <div className="layout-container">
                 <Sidebar />
                 <div className="main-content" style={{ marginLeft: `${sidebarWidth}px` }}>
-                    <Dashboard/>
+                    <Outlet/>
                 </div>
             </div>
         </>

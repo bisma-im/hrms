@@ -15,7 +15,7 @@
 }
 
 .search-bar {
-    background-color: var(--whiteorblack-color);
+    background-color: var(--sidebarbg-color);
 }
 
 .search-icon {
@@ -55,7 +55,7 @@
     margin: 10px;
     border-radius: 20%;
     padding: 3px;
-    background-color: var(--whiteorblack-color);
+    background-color: var(--sidebarbg-color);
 }
 
 
@@ -72,11 +72,11 @@
 
 .clock {
     font-weight: bold;
-    color: var(--primary-color);
+    color: var(--sidebartext-color);
 }
 
 .icon-fill {
-    fill: var(--primary-color);;
+    fill: var(--sidebartext-color);;
 }
 
 /* Adjustments for smaller screens */
