@@ -4,7 +4,6 @@ import { FaArrowUp, FaArrowDown, FaSort, FaAngleLeft, FaAngleRight } from 'react
 import './filtering.css';
 
 const MyTable = ({ columnHeaders, jsonData, onRowClick }) => {
-    // const Table = () => {
     const columns = useMemo(() => columnHeaders, [])
     const data = useMemo(() => jsonData, [])
     const {

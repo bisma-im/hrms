@@ -328,7 +328,7 @@
 
 /* end of login css */
 
-/* sidebar css */
+/* ------------------sidebar css--------------------- */
 
 .layout-container {
   display: flex;
@@ -358,9 +358,7 @@
 }
 
 
-/* dashboard cards */
-
-
+/*---------------------- dashboard cards----------------- */
 .chart-container {
   margin-bottom: 10px;
   width: 100%;
@@ -378,7 +376,7 @@
   margin-bottom: 1.5em;
 }
 
-/* form */
+/*----------------------- form----------------------------- */
 .my-form .form-control,
 .my-form .bootstrap-select .dropdown-toggle {
   /* background-color: var(--mainbg-color); */
