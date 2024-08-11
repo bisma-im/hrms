@@ -14,16 +14,6 @@
     background-color: var(--sidebarbg-color);
 }
 
-.search-bar {
-    background-color: var(--sidebarbg-color);
-}
-
-.search-icon {
-    background-color: var(--primary-color);
-    color: var(--secondary-color);
-    width: 40px;
-}
-
 .navbar-header {
     display: flex;
     align-items: center;
@@ -47,6 +37,17 @@
 .navbar-mobile{
     height: 60px;
     width: 60px;
+}
+
+
+.search-bar {
+    background-color: var(--sidebarbg-color);
+}
+
+.search-icon {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    width: 40px;
 }
 .icon-button {
     display: flex;

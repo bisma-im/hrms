@@ -59,24 +59,22 @@ const Dashboard = () => {
         <Container fluid>
             <Row>
                 {chartData.map(chart => (
-                    <Col xs={12} md={6} lg={3} key={chart.id} >
+                    <Col xs={12} md={6} lg={3} key={chart.id}  className='chart-col'>
                         <ChartCard title={chart.title} className='chart-container'>
                             <PieChart chartId={chart.chartId}/>
                         </ChartCard>
                     </Col>
                 ))}
             </Row>
-            <div className='m-3'></div>
             <Row>
                 {stats.map(stat => (
-                    <Col xs={12} md={6} lg={3} key={stat.id} >
+                    <Col xs={12} md={6} lg={3} key={stat.id}  className='chart-col'>
                         <StatsCard title={stat.title} total={stat.total} percentage={stat.percentage} />
                     </Col>
                 ))}
             </Row>
-            <div className='m-3'></div>
-            <div className="row card-deck">
-                <Col xs={12} md={6} className='equal-height-col'>
+            <Row>
+                <Col xs={12} md={6} lg={6} className='table-col'>
                     <Card style={{ textAlign: 'left', border: 'none', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }} className="card d-flex flex-column">
                         <Card.Header>Employee Search Form</Card.Header>
                         <Card.Body className='p-3'>
@@ -139,10 +137,11 @@ const Dashboard = () => {
                         </Card.Body>
                     </Card>
                 </Col>
-                <Col xs={12} md={6} className='equal-height-col'>
-                <LeavesTable/>
+                <Col xs={12} md={6} lg={6} className='table-col'>
+                    <LeavesTable/>
                 </Col>
-            </div>
+            </Row>
+            {/* </div> */}
         </Container>
     );
 };

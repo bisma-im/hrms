@@ -1,20 +1,28 @@
 body {
   margin: 0;
-  font-size: var(--font-size-small);
+  /* font-size: var(--font-size-small); */
   font-family: 'Montserrat', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 html, body{
+  font-size: 13px;
   margin: 0;
   padding: 0;
   height: 100vh;;
   overflow: hidden;
 }
+
+/* Adjust font size for smaller displays */
+@media (max-width: 480px) {
+  html {
+      font-size: 12px;
+  }
+}
  /* styles.css */
 :root {
-  transition: all 0.3s ease;
+  transition: all 1s ease;
   /* ---------color scheme---------- */
 
   --primary-color: #004B87; /* Blue */

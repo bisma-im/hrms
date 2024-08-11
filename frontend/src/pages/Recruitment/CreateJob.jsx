@@ -30,7 +30,7 @@ const CreateJob = () => {
   return (
     <Container fluid>
         <Col lg={12}>
-            <Form onSubmit={handleSubmit} className='my-form m-3'>
+            <Form onSubmit={handleSubmit} className='my-form m-0 m-lg-3'>
                 <Card className="my-card card-bx mb-3">    
                     <Card.Header>
                         <h6 className="title">Create Job</h6>

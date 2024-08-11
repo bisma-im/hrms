@@ -83,8 +83,8 @@
   color: var(--primary-color);  
   display: flex;
   align-items: center;
-  /* padding: 5px; */
 }
+
 
 .sidebar-item.nav-link .fa-caret { /* Adjust this class name based on how it's rendered in the DOM */
   fill: var(--sidebaricon-color);
@@ -104,4 +104,15 @@
 .sub-item.active,
 .sidebar-item.active{
   background-color: var(--sidebaractive-color);
+}
+
+/* Sidebar.css */
+.submenu-container {
+  overflow: hidden;
+  transition: opacity 1s ease;
+  opacity: 0;
+}
+
+.submenu-container.open {
+  opacity: 1;
 }

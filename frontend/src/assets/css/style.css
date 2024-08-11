@@ -344,6 +344,15 @@
   height: calc(100vh - 60px);
 }
 
+@media (max-width: 768px) {
+  .main-content {
+    padding: 5px; 
+  }
+  /* .chart-col {
+    margin-bottom: 10px;
+  } */
+}
+
 .sidebar.expanded + .main-content {
   margin-left: 180px;  
 }
@@ -359,6 +368,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.chart-col {
+  margin-bottom: 1.5em;
+}
+
+.table-col{
+  margin-bottom: 1.5em;
 }
 
 /* form */
