@@ -3,7 +3,7 @@ import { Nav, Navbar, NavDropdown, Container } from 'react-bootstrap';
 import { useState, useEffect } from "react";
 import { FaBell, FaUser } from 'react-icons/fa';
 import { logo } from 'assets/images';
-import { Searchbar } from 'components/common/index';
+import Searchbar from 'components/common/ui/Searchbar';
 import './TopNavbar.css';
 
 const TopNavbar = () => {

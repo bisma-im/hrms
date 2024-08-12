@@ -59,7 +59,7 @@ const MyTable = ({ columnHeaders, jsonData, onRowClick }) => {
                     {page.map(row => {
                         prepareRow(row);
                         return (
-                            <tr {...row.getRowProps()}>
+                            <tr {...row.getRowProps()} onClick={() => onRowClick(row.original)}>
                                 {row.cells.map(cell => {
                                     const { key, ...restCellProps } = cell.getCellProps();
                                     return (

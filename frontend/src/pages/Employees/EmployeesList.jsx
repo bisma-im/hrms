@@ -3,14 +3,17 @@ import { Card, Row, Col, Container } from 'react-bootstrap';
 import MOCK_DATA from './MOCK_DATA.json';
 import { COLUMNS } from './Columns';
 import MyTable from 'components/common/table/MyTable';
+import { useNavigate } from 'react-router-dom';
 
 const EmployeesList = () => {
+    const navigate = useNavigate();
     const columnHeaders = COLUMNS;
 
     const jsonData = MOCK_DATA;
 
     const handleRowClick = (employee) => {
         console.log('Selected Employee:', employee);
+        navigate('/employee-details');
     };
 
     return (
