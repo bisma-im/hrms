@@ -4,15 +4,18 @@ import MOCK_DATA from './MOCK_DATA.json';
 import { COLUMNS } from './Columns';
 import MyTable from 'components/common/table/MyTable';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { selectEmployee } from 'features/employees/employeeSlice';
 
 const EmployeesList = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const columnHeaders = COLUMNS;
 
     const jsonData = MOCK_DATA;
 
     const handleRowClick = (employee) => {
-        console.log('Selected Employee:', employee);
+        dispatch(selectEmployee(employee));
         navigate('/employee-details');
     };
 

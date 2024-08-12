@@ -29,13 +29,13 @@ export const COLUMNS = [
     {
         Header: 'Mobile',
         Footer: 'Mobile',
-        accessor: 'mobile',
+        accessor: 'phone',
         Filter: ColumnFilter,
     },
     {
         Header: 'Joining Date',
         Footer: 'Joining Date',
-        accessor: 'joining_date',
+        accessor: 'doj',
         Cell: ({ value }) => value ? new Date(value).toLocaleDateString() : 'No Date',
         Filter: ColumnFilter,
     },

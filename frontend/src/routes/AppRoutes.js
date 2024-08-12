@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import PrivateRoute from './PrivateRoute';
 import Login from 'pages/Login/Login';
 import Home from 'pages/Home';
 import CreateJob from 'pages/Recruitment/CreateJob';
@@ -11,7 +12,7 @@ const AppRoutes = () => {
     return (
         <Routes>
             <Route path="/login" element={<Login />} />
-            <Route path="/" element={<Home />}>
+            <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>}>
                 <Route index element={<Dashboard />} />
                 <Route path="create-job" element={<CreateJob />} />
                 {/* <Route path="employees-list" element={<EmployeesList />} /> */}

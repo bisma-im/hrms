@@ -26,7 +26,9 @@ const Login = () => {
 
   useEffect(() => {
     if (user) {
-      navigate('/dashboard');
+      navigate('/');
+    }  else if (user === null) {
+      navigate('/login');  // Ensure redirection to the login page when the user is not authenticated
     }
   }, [user, navigate]);
 
@@ -86,16 +88,15 @@ const Login = () => {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  isInvalid={!!errors?.password}
+                  isInvalid={!!errors?.message}
                 />
-                {errors?.password && <Form.Control.Feedback type="invalid">{errors?.password}</Form.Control.Feedback>}
+                {errors?.message && <Form.Control.Feedback type="invalid">{errors?.message}</Form.Control.Feedback>}
               </Form.Group>
               <Form.Group className="d-flex justify-content-between mt-4 mb-2">
                 <Form.Check
                   type="checkbox"
                   label="Remember my preference"
                   id="customCheckBox1"
-                  required
                 />
               </Form.Group>
               <div className="text-center mb-4">

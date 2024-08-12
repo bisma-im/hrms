@@ -2,8 +2,9 @@ import React from 'react';
 import { Card, Row, Col, Container, Tab, Nav } from 'react-bootstrap';
 import EmployeeSummary from './EmployeeSummary';
 import EmployeeDocuments from './EmployeeDocuments';
-const EmployeeDetails = () => {
 
+const EmployeeDetails = () => {
+    
     return (
         <Container fluid>
             <Card className='m-1 m-lg-3'>

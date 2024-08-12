@@ -14,7 +14,7 @@ import { createSlice } from '@reduxjs/toolkit';
 // };
 
 const initialState = {
-  user: {},
+  user: null,
   errors: {},
   isLoading: false,
 };
@@ -31,7 +31,8 @@ export const authSlice = createSlice({
           state.errors = null;
         } else {
           // Simulate login failure
-          state.errors = 'Invalid email or password';
+          state.user = null;
+          state.errors = { message: 'Invalid email or password' };
         }
         state.isLoading = false; // Update if it was set to true elsewhere
     },

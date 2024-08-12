@@ -7,7 +7,6 @@ import { equalizeCardHeights } from 'utils/domUtils';
 import LeavesTable from './LeavesTable';
 
 const Dashboard = () => {
-
     // For stats cards
     useEffect(() => {
         equalizeCardHeights('stats-card');

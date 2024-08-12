@@ -3,6 +3,7 @@ import authReducer from 'features/auth/authSlice';
 import sidebarReducer from 'features/nav/sidebarSlice';
 import themeReducer from 'features/theme/themeSlice';
 import chartsReducer from 'features/charts/chartsSlice';
+import employeeReducer from 'features/employees/employeeSlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     sidebar: sidebarReducer,
     theme: themeReducer,
     charts: chartsReducer,
+    employee: employeeReducer,
   },
 });
 

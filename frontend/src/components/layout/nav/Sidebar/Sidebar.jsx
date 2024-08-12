@@ -9,6 +9,7 @@ import { IconContext } from 'react-icons';
 import SidebarItem from './SidebarItem';
 import menuItems from 'components/layout/nav/Sidebar/MenuList';
 import { useTheme } from 'context/ThemeContext';
+import { useNavigate } from 'react-router-dom';
 import './Sidebar.css';
 
 const Sidebar = () => {
@@ -17,10 +18,12 @@ const Sidebar = () => {
   const { theme, toggleTheme } = useTheme();
   const [openSubmenu, setOpenSubmenu] = useState(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const onLogout = useCallback(() => {
+  function handleLogout (){
     dispatch(logout());
-  }, [dispatch]);
+    navigate('/login', { replace: true });
+  };
 
   const handleToggleSidebar = useCallback(() => {
     dispatch(toggleSidebar());
@@ -57,7 +60,7 @@ const Sidebar = () => {
                 openSubmenu={openSubmenu === item.id}
               />
             ))}
-            <Nav.Link className="sidebar-item" onClick={onLogout}>
+            <Nav.Link className="sidebar-item" onClick={handleLogout}>
               <FaSignOutAlt className='icon' />
               {!collapsed && <span className='text'>Logout</span>}
             </Nav.Link>
