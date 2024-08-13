@@ -1,0 +1,66 @@
+.job-container .job-card {
+    font-family: var(--font-primary);
+    border-radius: 5px;
+    background-color: var(--cardbg-color);
+    color: var(--text-color);
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: var(--spacing-medium);
+}
+
+.job-container .card-header {
+    background-color: var(--cardbg-color);
+    color: var(--primary-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.25rem;
+    font-size: var(--font-size-large);
+    font-weight: bold;
+}
+
+.status-badge {
+    padding: 0.5rem;
+    font-size: var(--font-size-small);
+    border-radius: 10px;
+    background-color: var(--primary-color);
+}
+
+.published {
+    background-color: var(--primary-color);
+}
+
+.not-published {
+    background-color: var(--error-color);
+}
+
+.job-container .card-body {
+    display: flex;
+    justify-content: space-around;
+    padding: 1rem;
+    background-color: var(--cardbg-color);
+}
+
+.application-info {
+    font-size: var(--font-size-medium);
+    margin: 1rem;
+    text-align: center;
+    color: var(--primary-color);
+}
+
+.applications {
+    font-size: var(--font-size-medium);
+    margin: 1rem;
+    border-radius: 10px;
+    background-color: var(--primary-color);
+}
+
+.application-value {
+    font-size: var(--font-size-large);
+    font-weight: bold;
+}
+
+.job-container .card-footer {
+    padding: 1rem;
+    background-color: var(--background-color);
+}

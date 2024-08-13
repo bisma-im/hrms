@@ -7,9 +7,8 @@ const menuItems = [
   { id: 3, icon: FaRegCalendarCheck, label: 'Attendance', link: '/attendance' },
   { id: 4, icon: FaRegCalendarMinus, label: 'Leaves', link: '/leaves' },
   { id: 5, icon: FaUserPlus, label: 'Recruitment', link: '/recruitment', submenus: [
-    { id: 10, icon: FaPencilAlt, label: 'Add Job', link: '/create-job' },
-    { id: 11, icon: FaFileAlt, label: 'Jobs', link: '/job-list' },
-    { id: 12, icon: FaBriefcase, label: 'Applications', link: '/applications-list' },
+    { id: 10, icon: FaFileAlt, label: 'Jobs', link: '/job-positions' },
+    { id: 11, icon: FaBriefcase, label: 'Applications', link: '/applications-list' },
   ]},
   { id: 6, icon: FaRegHandshake, label: 'Onboarding', link: '/onboarding' },
   { id: 7, icon: FaCog, label: 'Settings', link: '/settings' },

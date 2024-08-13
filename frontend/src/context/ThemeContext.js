@@ -8,9 +8,7 @@ const ThemeContext = createContext();
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(lightTheme);
 
-  const toggleTheme = () => {
-    setTheme(theme.mode === 'light' ? darkTheme : lightTheme);
-  };
+  const toggleTheme = () => setTheme(theme.mode === 'light' ? darkTheme : lightTheme);
 
   // Memorize the context value to prevent unnecessary re-renders
   const contextValue = useMemo(() => {

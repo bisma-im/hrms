@@ -1,0 +1,29 @@
+import React from 'react';
+import { Button, Col, Container, Row } from 'react-bootstrap';
+import JobContainer from 'components/common/jobs/JobContainer';
+import JOB_DATA from './JOB_DATA.json';
+import { Link } from 'react-router-dom';
+const JobPositions = () => {
+    const jobs = JOB_DATA;
+    return (
+        <Container fluid>
+            <Row className="d-flex align-items-center justify-content-md-end">
+                <Col>
+                    <h3 className='m-4'>Job Positions</h3>
+                </Col>
+                <Col xs="auto" className='m-4'>
+                    <Link className='link-button' to={'/create-job'}>Create</Link>
+                </Col>
+            </Row>
+            <Row>
+            {jobs.map(job => (
+                <Col lg={4}>
+                    <JobContainer job={job}/>
+                </Col>
+            ))}
+            </Row>
+        </Container>
+    );
+};
+
+export default JobPositions;

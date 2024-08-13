@@ -7,6 +7,7 @@ import CreateJob from 'pages/Recruitment/CreateJob';
 import Dashboard from 'pages/Dashboard/Dashboard';
 import EmployeesList from 'pages/Employees/EmployeesList';
 import EmployeeDetails from 'pages/Employees/EmployeeDetails';
+import JobPositions from 'pages/Recruitment/JobPositions';
 
 const AppRoutes = () => {
     return (
@@ -18,7 +19,7 @@ const AppRoutes = () => {
                 {/* <Route path="employees-list" element={<EmployeesList />} /> */}
                 <Route path="employees-list" element={<EmployeesList />} />
                 <Route path="employee-details" element={<EmployeeDetails />} />
-
+                <Route path="job-positions" element={<JobPositions />} />
                 {/* Add other routes that should be accessible from the main layout */}
             </Route>
             {/* More routes go here as your app expands */}

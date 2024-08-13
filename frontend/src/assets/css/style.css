@@ -460,3 +460,19 @@
         .my-card .card-footer .btn-right { /* Additional class for the button */
           margin-left: auto; /* Pushes the button to the right */
         }
+
+/* -----------Link Button--------- */
+.link-button {
+    background-color: blue;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.link-button:hover {
+    background-color: darkblue;
+}
