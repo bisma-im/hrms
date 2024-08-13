@@ -476,3 +476,7 @@
 .link-button:hover {
     background-color: darkblue;
 }
+
+.heading {
+  color: var(--text-color);
+}

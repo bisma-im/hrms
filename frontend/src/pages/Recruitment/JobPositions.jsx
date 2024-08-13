@@ -9,7 +9,7 @@ const JobPositions = () => {
         <Container fluid>
             <Row className="d-flex align-items-center justify-content-md-end">
                 <Col>
-                    <h3 className='m-4'>Job Positions</h3>
+                    <h3 className='m-4 heading'>Job Positions</h3>
                 </Col>
                 <Col xs="auto" className='m-4'>
                     <Link className='link-button' to={'/create-job'}>Create</Link>
