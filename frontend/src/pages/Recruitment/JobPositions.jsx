@@ -17,7 +17,7 @@ const JobPositions = () => {
             </Row>
             <Row>
             {jobs.map(job => (
-                <Col lg={4}>
+                <Col lg={4} key={job.id}>
                     <JobContainer job={job}/>
                 </Col>
             ))}

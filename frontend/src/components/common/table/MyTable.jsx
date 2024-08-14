@@ -1,9 +1,9 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useTable, useFilters, usePagination, useSortBy } from 'react-table';
 import { FaArrowUp, FaArrowDown, FaSort, FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 import './filtering.css';
 
-const MyTable = ({ columnHeaders, jsonData, onRowClick }) => {
+const MyTable = ({ columnHeaders, jsonData, onRowClick, initialFilters }) => {
     const columns = useMemo(() => columnHeaders, [])
     const data = useMemo(() => jsonData, [])
     const {
@@ -20,12 +20,22 @@ const MyTable = ({ columnHeaders, jsonData, onRowClick }) => {
         previousPage,
         canNextPage,
         canPreviousPage,
+        setFilter,
     } = useTable({
         columns,
         data,
         initialState: { pageIndex: 0 }
     }, useFilters, useSortBy, usePagination);
 
+    // Apply initial filters
+    useEffect(() => {
+        if (initialFilters) {
+            // If initialFilters is an array, we assume each filter item is an object with { id, value }
+            initialFilters.forEach(filter => {
+                setFilter(filter.id, filter.value);
+            });
+        }
+    }, [initialFilters, setFilter]);
 
     const { pageIndex } = state;
 

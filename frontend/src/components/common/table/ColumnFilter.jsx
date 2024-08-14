@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { useAsyncDebounce } from 'react-table';
+
 export const ColumnFilter = ({ column: { filterValue, setFilter }}) => {
 
     const [value, setValue] = useState(filterValue || '');

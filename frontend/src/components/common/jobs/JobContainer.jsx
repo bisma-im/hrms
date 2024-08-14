@@ -1,9 +1,17 @@
 import React, { useState } from 'react';
 import { Card, Badge, Form, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import './JobContainer.css'; // Make sure the CSS file is in the same directory
 
 const JobContainer = ({ job }) => {
     const [isPublished, setIsPublished] = useState(true); // Default state is published
+    const navigate = useNavigate();
+
+
+    const viewApplications = () => {
+        // Navigate to '/applications' and pass job position state
+        navigate('/applications-list', {state: {position: job.title}});
+    };
 
     const togglePublished = () => {
         setIsPublished(!isPublished);
@@ -20,7 +28,7 @@ const JobContainer = ({ job }) => {
                 </div>
                 <Card.Body className="card-body">
                     <div className="application-info">
-                        <Button className="applications">View Applications</Button>
+                        <Button onClick={viewApplications} className="applications">View Applications</Button>
                     </div>
                     <div className="application-info">
                         <div className="application-title">{job.applications} Applications</div>
