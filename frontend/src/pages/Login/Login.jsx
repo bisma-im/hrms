@@ -26,9 +26,7 @@ const Login = () => {
 
   useEffect(() => {
     if (user) {
-      navigate('/');
-    }  else if (user === null) {
-      navigate('/login');  // Ensure redirection to the login page when the user is not authenticated
+      navigate('/', { replace: true });
     }
   }, [user, navigate]);
 

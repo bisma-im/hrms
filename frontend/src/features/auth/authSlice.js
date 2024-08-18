@@ -1,18 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// const initialState = {
-//     auth: {
-//         email: '',
-//         idToken: '',
-//         localId: '',
-//         expiresIn: '',
-//         refreshToken: '',
-//     },
-//     errorMessage: '',
-//     successMessage: '',
-//     showLoading: false,
-// };
-
 const initialState = {
   user: null,
   errors: {},
@@ -44,18 +31,14 @@ export const authSlice = createSlice({
     loginStart: (state) => {
       state.isLoading = true;
     },
-    // loginSuccess: (state, action) => {
-    //   state.user = action.payload;
-    //   state.errors = {};
-    //   state.isLoading = false;
-    //   console.log('login success');
-    // },
     loginFailure: (state, action) => {
       state.errors = action.payload;
       state.isLoading = false;
     },
     logout: (state) => {
-      localStorage.removeItem('user');
+      window.localStorage.removeItem('role');
+      window.localStorage.removeItem('email');
+      window.localStorage.setItem('loggedIn', false);
       state.user = null;
       state.errors = {};
     },

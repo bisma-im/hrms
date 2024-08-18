@@ -9,23 +9,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'assets/css/style.css';
 
 function App() {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-        console.log('Found user in localStorage:', storedUser);
-        try {
-            const parsedUser = JSON.parse(storedUser);
-            console.log('Dispatching loginUser with:', parsedUser);
-            dispatch(loginUser(parsedUser));
-        } catch (error) {
-            console.error('Error parsing user from localStorage:', error);
-        }
-    } else {
-        console.log('No user found in localStorage.');
-    }
-}, [dispatch]);
   return (
     <ThemeProvider>
         <Router>

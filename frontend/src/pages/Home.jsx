@@ -6,15 +6,7 @@ import TopNavbar from 'components/layout/nav/TopNavbar/TopNavbar';
 
 const Home = () => {
     const sidebarWidth = useSelector(state => state.sidebar.sidebarOpen ? 180 : 60);
-    const navigate = useNavigate();
-    const { user } = useSelector(state => state.auth);
-
-    useEffect(() => {
-        if (!user) {
-            navigate('/');
-        }
-    }, [user, navigate]);
-
+    
     return (
         <>
             <TopNavbar />
