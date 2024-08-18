@@ -11,19 +11,31 @@ import JobPositions from 'pages/Recruitment/JobPositions';
 import ApplicationList from 'pages/Recruitment/ApplicationList';
 
 const AppRoutes = () => {
+    const isLoggedIn = window.localStorage.getItem('loggedIn');
     return (
         <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>}>
+            {/* Unauthorized routes */}
+            {!isLoggedIn && (
+                <>
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/" element={<Login />} />
+                </>
+            )}
+
+            {/* Protected routes */}
+            <Route element={<PrivateRoute />}>
                 <Route index element={<Dashboard />} />
+                <Route path="/" element={<Dashboard />} />
                 <Route path="create-job" element={<CreateJob />} />
-                {/* <Route path="employees-list" element={<EmployeesList />} /> */}
                 <Route path="employees-list" element={<EmployeesList />} />
                 <Route path="employee-details" element={<EmployeeDetails />} />
                 <Route path="job-positions" element={<JobPositions />} />
                 <Route path="applications-list" element={<ApplicationList />} />
-                {/* Add other routes that should be accessible from the main layout */}
             </Route>
+
+            {/* <Route exact path="/" element={isLoggedIn ? <Home/> : <Login/>}>
+                
+            </Route> */}
             {/* More routes go here as your app expands */}
         </Routes>
     );
