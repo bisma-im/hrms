@@ -361,11 +361,11 @@
 /*---------------------- dashboard cards----------------- */
 .chart-container {
   margin-bottom: 10px;
-  width: 100%;
-  padding: 10px;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between; /* This will place content at both ends */
+  align-items: center; /* Vertical alignment */
+  padding: 10px;
+  width: 100%;
 }
 
 .chart-col {
@@ -375,6 +375,13 @@
 .table-col{
   margin-bottom: 1.5em;
 }
+
+.problematic-card-body {
+  width: 100%; 
+  overflow: hidden; 
+  max-height: 230px;
+}
+
 
 /*----------------------- form----------------------------- */
 .my-form .form-control,

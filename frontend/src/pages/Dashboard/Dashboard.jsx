@@ -1,34 +1,61 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Form, Button } from 'react-bootstrap';
 import ChartCard from 'components/common/card/ChartCard';
-import PieChart from 'components/common/charts/PieChart';
+import DonutChart from 'components/common/charts/DonutChart';
 import StatsCard from 'components/common/card/StatsCard';
 import { equalizeCardHeights } from 'utils/domUtils';
+import { useDispatch, useSelector } from 'react-redux';
 import LeavesTable from './LeavesTable';
+import MOCK_DATA from '../Employees/MOCK_DATA.json';
+import { processGenderData, calculateLongTermCounts, calculateJobPositions, calculateEmployeesByDepartment } from 'utils/dashboardUtils';
+import { setChartData } from 'features/charts/chartsSlice';
+import PieChart from 'components/common/charts/PieChart';
+import BarChart from 'components/common/charts/BarChart';
 
 const Dashboard = () => {
+    const dispatch = useDispatch();
+    const chartData = useSelector(state => state.charts);
+    useEffect(() => {
+        //Gender count for gender chart
+        const genderChartData = processGenderData(MOCK_DATA);
+        dispatch(setChartData({ chartId: 'genderDistribution', data: genderChartData }));
+
+        // Long term employee count
+        const longTermEmployeeData = calculateLongTermCounts(MOCK_DATA);
+        dispatch(setChartData({ chartId: 'longTermEmployee', data: longTermEmployeeData }));
+
+        // employee count in each dept
+        const employeeDeptData = calculateEmployeesByDepartment(MOCK_DATA);
+        dispatch(setChartData({ chartId: 'employeesByDepartment', data: employeeDeptData }));
+
+        // employee count of each job position
+        const jobPositionData = calculateJobPositions(MOCK_DATA);
+        dispatch(setChartData({ chartId: 'jobPositions', data: jobPositionData }));
+
+    }, [dispatch]);
+
     // For stats cards
     useEffect(() => {
         equalizeCardHeights('stats-card');
         const handleResize = () => equalizeCardHeights('stats-card');
         window.addEventListener('resize', handleResize);
-        
+
         return () => {
-        window.removeEventListener('resize', handleResize);
+            window.removeEventListener('resize', handleResize);
         };
     }, []);
 
     // For chart cards
     useEffect(() => {
         // Adjust card heights on initial mount and on resize
-        equalizeCardHeights('chart-card-body');
-        window.addEventListener('resize', () => equalizeCardHeights('chart-card-body'));
-    
+        equalizeCardHeights('chart-height-equalize');
+        window.addEventListener('resize', () => equalizeCardHeights('chart-height-equalize'));
+
         // Cleanup the event listener on component unmount
         return () => {
-          window.removeEventListener('resize', () => equalizeCardHeights('chart-card-body'));
+            window.removeEventListener('resize', () => equalizeCardHeights('chart-height-equalize'));
         };
-      }, []);
+    }, []);
 
     // dummy stats for stats cards
     const [stats, setStats] = useState([
@@ -41,33 +68,50 @@ const Dashboard = () => {
     // Example function to simulate stats update
     const updateStats = () => {
         setStats(stats.map(stat => ({
-        ...stat,
-        total: Math.floor(stat.total * (1 + stat.percentage / 100)),
-        percentage: (Math.random() - 0.5) * 20 // Randomly changing percentage
+            ...stat,
+            total: Math.floor(stat.total * (1 + stat.percentage / 100)),
+            percentage: (Math.random() - 0.5) * 20 // Randomly changing percentage
         })));
     };
 
-    const[chartData, setChartData] = useState([
-        { id: 1, title: "Gender Distribution", chartId: 'genderDistribution'},
-        { id: 2, title: "Gender Distribution", chartId: 'genderDistribution'},
-        { id: 3, title: "Office Distribution", chartId: 'departmentBudget'},
-        { id: 4, title: "Office Distribution", chartId: 'departmentBudget'},
+    const [charts, setCharts] = useState([
+        { id: 1, title: "Gender Distribution", chartId: 'genderDistribution' },
+        { id: 2, title: "Employees' Years of Service", chartId: 'longTermEmployee' },
+        // { id: 3, title: "Employees By Department", chartId: 'employeesByDepartment' },
     ]);
 
     return (
         <Container fluid>
             <Row>
-                {chartData.map(chart => (
-                    <Col xs={12} md={6} lg={3} key={chart.id}  className='chart-col'>
+                {charts.map(chart => (
+                    <Col xs={12} md={6} lg={3} key={chart.id} className='chart-col'>
                         <ChartCard title={chart.title} className='chart-container'>
-                            <PieChart chartId={chart.chartId}/>
+                            <DonutChart chartId={chart.chartId} />
                         </ChartCard>
                     </Col>
                 ))}
+                <Col xs={12} md={12} lg={6} className='chart-col'>
+                    <Card style={{ border: 'none', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
+                        <Card.Header>{'Employees By Department'}</Card.Header>
+                        <Card.Body className='chart-height-equalize problematic-card-body'>                        
+                            <PieChart chartId='employeesByDepartment' style={{margin: '10px'}}/>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+            <Row>
+                <Col xs={12} md={12} lg={12} className='chart-col'>
+                    <Card style={{ border: 'none', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
+                        <Card.Header>{'Job Positions'}</Card.Header>
+                        <Card.Body>                        
+                            <BarChart chartId='jobPositions'/>
+                        </Card.Body>
+                    </Card>
+                </Col>
             </Row>
             <Row>
                 {stats.map(stat => (
-                    <Col xs={12} md={6} lg={3} key={stat.id}  className='chart-col'>
+                    <Col xs={12} md={6} lg={3} key={stat.id} className='chart-col'>
                         <StatsCard title={stat.title} total={stat.total} percentage={stat.percentage} />
                     </Col>
                 ))}
@@ -80,56 +124,56 @@ const Dashboard = () => {
                             <Form>
                                 <Form.Group as={Row} >
                                     <Form.Label column sm={3} className='mb-3'>
-                                    Staff Email
+                                        Staff Email
                                     </Form.Label>
                                     <Col sm={9}>
-                                    <Form.Control type="email" placeholder="Enter email" />
+                                        <Form.Control type="email" placeholder="Enter email" />
                                     </Col>
                                 </Form.Group>
                                 <Form.Group as={Row} >
                                     <Form.Label column sm={3} className='mb-3'>
-                                    Staff Name
+                                        Staff Name
                                     </Form.Label>
                                     <Col sm={9}>
-                                    <Form.Control type="text" placeholder="Enter name" />
+                                        <Form.Control type="text" placeholder="Enter name" />
                                     </Col>
                                 </Form.Group>
                                 <Form.Group as={Row} >
                                     <Form.Label column sm={3} className='mb-3'>
-                                    Designation
+                                        Designation
                                     </Form.Label>
                                     <Col sm={9}>
-                                    <Form.Control type="text" placeholder="Enter designation" />
+                                        <Form.Control type="text" placeholder="Enter designation" />
                                     </Col>
                                 </Form.Group>
                                 <Form.Group as={Row} className='mb-3'>
                                     <Form.Label column sm={3}>
-                                    Staff ID
+                                        Staff ID
                                     </Form.Label>
                                     <Col sm={9}>
-                                    <Form.Control type="text" placeholder="Enter ID" />
+                                        <Form.Control type="text" placeholder="Enter ID" />
                                     </Col>
                                 </Form.Group>
                                 <Form.Group as={Row}>
                                     <Form.Label column sm={3} className='mb-3'>
-                                    Staff Gender
+                                        Staff Gender
                                     </Form.Label>
                                     <Col sm={9}>
-                                    <Form.Control type="text" placeholder="Enter gender" />
+                                        <Form.Control type="text" placeholder="Enter gender" />
                                     </Col>
                                 </Form.Group>
                                 <Form.Group as={Row} >
                                     <Form.Label column sm={3} className='mb-3'>
-                                    Staff Contact
+                                        Staff Contact
                                     </Form.Label>
                                     <Col sm={9}>
-                                    <Form.Control type="text" placeholder="Enter contact" />
+                                        <Form.Control type="text" placeholder="Enter contact" />
                                     </Col>
                                 </Form.Group>
                                 <div className="text-center mb-4">
                                     <Button type="submit" className="btn-primary btn-block">
-                                    {/* {isLoading ? 'Submitting...' : 'Submit'} */}
-                                    Submit
+                                        {/* {isLoading ? 'Submitting...' : 'Submit'} */}
+                                        Submit
                                     </Button>
                                 </div>
                             </Form>
@@ -137,7 +181,7 @@ const Dashboard = () => {
                     </Card>
                 </Col>
                 <Col xs={12} md={6} lg={6} className='table-col'>
-                    <LeavesTable/>
+                    <LeavesTable />
                 </Col>
             </Row>
             {/* </div> */}

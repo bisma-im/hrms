@@ -25,9 +25,14 @@ export const authSlice = createSlice({
   reducers: {
     loginUser: (state, action) => {
         const { email, password, role } = action.payload;
+        console.log('Setting user in Redux state:', action.payload);
         if (email === 'admin@gmail.com' && password === 'admin' && role === 'admin') {
           // Simulate successful login
-          state.user = { email: email, role: role };
+          const userData = { email: email, role: role };
+          window.localStorage.setItem('role', role);
+          window.localStorage.setItem('loggedIn', true);
+          window.localStorage.setItem('email', email);
+          state.user = userData;
           state.errors = null;
         } else {
           // Simulate login failure
@@ -50,6 +55,7 @@ export const authSlice = createSlice({
       state.isLoading = false;
     },
     logout: (state) => {
+      localStorage.removeItem('user');
       state.user = null;
       state.errors = {};
     },
