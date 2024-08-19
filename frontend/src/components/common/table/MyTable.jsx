@@ -43,7 +43,7 @@ const MyTable = ({ columnHeaders, jsonData, onRowClick, initialFilters }) => {
 
     return (
         <div className="table-responsive">
-            <table {...getTableProps()} className="table dataTable display">
+            <table {...getTableProps()} className="table dataTable display" id='myTable' style={{ 'background': 'black'}}>
                 <thead>
                     {headerGroups.map((headerGroup, index) => (
                         <tr key={index} {...headerGroup.getHeaderGroupProps()}>

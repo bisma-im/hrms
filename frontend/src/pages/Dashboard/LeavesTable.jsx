@@ -19,7 +19,7 @@ const leaves = [
 
 const LeavesTable = () => {
     return (
-        <Card style={{ textAlign: 'left', border: 'none', boxShadow: '0 4px 8px rgba(0,0,0,0.1)', overflow: 'auto', maxHeight: '395px'}}>
+        <Card style={{ textAlign: 'left', border: 'none', boxShadow: '0 4px 8px rgba(0,0,0,0.1)', overflow: 'auto', maxHeight: '520px'}}>
             <Card.Header>
                 Leaves Today
             </Card.Header>

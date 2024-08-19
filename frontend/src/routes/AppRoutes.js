@@ -8,6 +8,7 @@ import EmployeesList from 'pages/Employees/EmployeesList';
 import EmployeeDetails from 'pages/Employees/EmployeeDetails';
 import JobPositions from 'pages/Recruitment/JobPositions';
 import ApplicationList from 'pages/Recruitment/ApplicationList';
+import LeavesList from 'pages/Leaves/LeavesList';
 
 const AppRoutes = () => {
     const isLoggedIn = window.localStorage.getItem('loggedIn') === 'true';
@@ -30,6 +31,7 @@ const AppRoutes = () => {
                 <Route path="employees-list" element={<EmployeesList />} />
                 <Route path="employee-details" element={<EmployeeDetails />} />
                 <Route path="job-positions" element={<JobPositions />} />
+                <Route path='leaves' element={<LeavesList />} />
                 <Route path="applications-list" element={<ApplicationList />} />
             </Route>
         </Routes>

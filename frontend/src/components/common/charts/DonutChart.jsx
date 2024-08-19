@@ -9,6 +9,7 @@ const DonutChart = ({ chartId }) => {
   const options= {
     chart: {
       type: "donut",
+      foreColor: 'var(--text-color)',
       // height: 200
     },
     dataLabels: {

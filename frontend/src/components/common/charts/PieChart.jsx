@@ -11,6 +11,7 @@ const PieChart = ({ chartId }) => {
             width: '100%', // Reduce width to allow space for the legend
             // height: 200,
             offsetY: -60,
+            foreColor: 'var(--text-color)',
             toolbar: {
                 show: false
             }, // You might need to experiment with this value

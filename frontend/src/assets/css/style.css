@@ -386,11 +386,12 @@
 /*----------------------- form----------------------------- */
 .my-form .form-control,
 .my-form .bootstrap-select .dropdown-toggle {
-  /* background-color: var(--mainbg-color); */
+  color: var(--text-color);
+  background-color: var(--background-color);
   height: 50px;
   font-size: 1rem;
   border-radius: 0.375rem;
-  border-color: #E6E6E6; }
+  border-color: var(--border-color); }
   .my-form .form-control:active, .my-form .form-control:focus, .my-form .form-control:hover,
   .my-form .bootstrap-select .dropdown-toggle:active,
   .my-form .bootstrap-select .dropdown-toggle:focus,
@@ -412,7 +413,7 @@
     font-size: 0.7rem; }
 
 .my-form .form-label {
-  color: #6e6e6e;
+  color: var(--text-color);
   font-size: 15px;
   margin-bottom: 12px;
   font-weight: 400; }
@@ -424,12 +425,12 @@
   background-color: var(--cardbg-color);
   border-radius: 0.625rem; }
   .my-card .card-header {
-    border-color: #CCCCCC;
+    border-color: var(--border-color);
     padding: 30px; }
     .my-card .card-header .title {
-      position: relative;
-      margin-bottom: 0;
-      color: #6e6e6e; }
+    color: var(--text-color);
+    position: relative;
+      margin-bottom: 0; }
       .my-card .card-header .title:after {
         content: "";
         height: 3px;
@@ -447,7 +448,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-color: #CCCCCC; }
+    border-color: var(--border-color);  }
     .my-card .card-footer .btn-lg, .my-card .card-footer .btn-group-lg > .btn {
       padding: 18px 50px;
       font-size: 15px; }
@@ -470,7 +471,7 @@
 
 /* -----------Link Button--------- */
 .link-button {
-    background-color: blue;
+    background-color: var(--primary-color);
     color: white;
     padding: 10px 20px;
     border-radius: 5px;
@@ -485,5 +486,20 @@
 }
 
 .heading {
+  color: var(--text-color);
+}
+
+.card {
+  background-color: var(--cardbg-color);
+  color: var(--text-color);
+}
+
+.card-header{
+  background-color: var(--background-color);
+    color: var(--primary-color);
+}
+
+.card-body{
+  background-color: var(--cardbg-color);
   color: var(--text-color);
 }

@@ -1,3 +1,8 @@
+#myTable{
+    background-color: var(--cardbg-color);
+  color: var(--text-color);
+}
+
 .form-control.input-search{
 	height:38px;
 	border-radius:8px;

@@ -11,7 +11,8 @@ const BarChart = ({ chartId }) => {
     const options = {
         chart: {
             type: 'bar',
-            height: 'auto'
+            height: 'auto',
+            foreColor: 'var(--text-color)'
         },
         plotOptions: {
             bar: {

@@ -17,7 +17,8 @@ export const lightTheme = {
     submenubg: "#F7F7F7",  // Light grey for submenu background
     submenuHover: "#E1E9F2",  // Light blue for hover/active states
     mainbg: '#F3F0EC',
-    cardheader: '#CCCCCC'
+    cardheader: '#CCCCCC',
+    border: '#E6E6E6'
   };
   
   export const darkTheme = {
@@ -38,5 +39,6 @@ export const lightTheme = {
     submenubg: "#2A2F36",  // Deep grey for submenu background
     submenuHover: "#1B1F23",  // Very dark grey for hover/active states
     mainbg: '#151C2C',
+    border: '#555353'
   };
   

@@ -45,6 +45,7 @@ html, body{
   --submenuhover-color: #E1E9F2;
   --mainbg-color: #F3F0EC;
   --cardheader-color: #CCCCCC;
+  --border-color: #E6E6E6;
 
   /* --------------font sizes----------- */
   --font-size-small: 0.8rem;

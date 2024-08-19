@@ -121,61 +121,63 @@ const Dashboard = () => {
                     <Card style={{ textAlign: 'left', border: 'none', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }} className="card d-flex flex-column">
                         <Card.Header>Employee Search Form</Card.Header>
                         <Card.Body className='p-3'>
-                            <Form>
+                            <Form className='my-form'>
                                 <Form.Group as={Row} >
-                                    <Form.Label column sm={3} className='mb-3'>
+                                    <Form.Label column sm={3} className='form-label mt-2'>
                                         Staff Email
                                     </Form.Label>
                                     <Col sm={9}>
-                                        <Form.Control type="email" placeholder="Enter email" />
+                                        <Form.Control type="email" placeholder="Enter email" className='mb-3 form-control'/>
                                     </Col>
                                 </Form.Group>
                                 <Form.Group as={Row} >
-                                    <Form.Label column sm={3} className='mb-3'>
+                                    <Form.Label column sm={3} className='form-label mb-3'>
                                         Staff Name
                                     </Form.Label>
                                     <Col sm={9}>
-                                        <Form.Control type="text" placeholder="Enter name" />
+                                        <Form.Control type="text" placeholder="Enter name" className='mb-3 form-control' />
                                     </Col>
                                 </Form.Group>
                                 <Form.Group as={Row} >
-                                    <Form.Label column sm={3} className='mb-3'>
+                                    <Form.Label column sm={3} className='form-label mb-3'>
                                         Designation
                                     </Form.Label>
                                     <Col sm={9}>
-                                        <Form.Control type="text" placeholder="Enter designation" />
-                                    </Col>
-                                </Form.Group>
-                                <Form.Group as={Row} className='mb-3'>
-                                    <Form.Label column sm={3}>
-                                        Staff ID
-                                    </Form.Label>
-                                    <Col sm={9}>
-                                        <Form.Control type="text" placeholder="Enter ID" />
+                                        <Form.Control type="text" placeholder="Enter designation" className='mb-3 form-control' />
                                     </Col>
                                 </Form.Group>
                                 <Form.Group as={Row}>
-                                    <Form.Label column sm={3} className='mb-3'>
+                                    <Form.Label column sm={3} className='form-label mb-3'>
+                                        Staff ID
+                                    </Form.Label>
+                                    <Col sm={9}>
+                                        <Form.Control type="text" placeholder="Enter ID" className='mb-3 form-control' />
+                                    </Col>
+                                </Form.Group>
+                                <Form.Group as={Row}>
+                                    <Form.Label column sm={3} className='form-label mb-3'>
                                         Staff Gender
                                     </Form.Label>
                                     <Col sm={9}>
-                                        <Form.Control type="text" placeholder="Enter gender" />
+                                        <Form.Control type="text" placeholder="Enter gender" className='mb-3 form-control' />
                                     </Col>
                                 </Form.Group>
                                 <Form.Group as={Row} >
-                                    <Form.Label column sm={3} className='mb-3'>
+                                    <Form.Label column sm={3} className='form-label mb-3'>
                                         Staff Contact
                                     </Form.Label>
                                     <Col sm={9}>
-                                        <Form.Control type="text" placeholder="Enter contact" />
+                                        <Form.Control type="text" placeholder="Enter contact" className='mb-3 form-control' />
                                     </Col>
                                 </Form.Group>
-                                <div className="text-center mb-4">
-                                    <Button type="submit" className="btn-primary btn-block">
-                                        {/* {isLoading ? 'Submitting...' : 'Submit'} */}
-                                        Submit
-                                    </Button>
-                                </div>
+                                <Card.Footer>
+                                    <div className="text-center mb-4">
+                                        <Button type="submit" className="btn-primary btn-block">
+                                            {/* {isLoading ? 'Submitting...' : 'Submit'} */}
+                                            Submit
+                                        </Button>
+                                    </div>
+                                </Card.Footer>
                             </Form>
                         </Card.Body>
                     </Card>
