@@ -11,28 +11,30 @@ import { processGenderData, calculateLongTermCounts, calculateJobPositions, calc
 import { setChartData } from 'features/charts/chartsSlice';
 import PieChart from 'components/common/charts/PieChart';
 import BarChart from 'components/common/charts/BarChart';
+import StackedChart from 'components/common/charts/StackedChart';
 
 const Dashboard = () => {
+    const employees = MOCK_DATA; // when u use api just replace mock data with 
     const dispatch = useDispatch();
     const chartData = useSelector(state => state.charts);
     useEffect(() => {
         //Gender count for gender chart
-        const genderChartData = processGenderData(MOCK_DATA);
+        const genderChartData = processGenderData(employees);
         dispatch(setChartData({ chartId: 'genderDistribution', data: genderChartData }));
 
         // Long term employee count
-        const longTermEmployeeData = calculateLongTermCounts(MOCK_DATA);
+        const longTermEmployeeData = calculateLongTermCounts(employees);
         dispatch(setChartData({ chartId: 'longTermEmployee', data: longTermEmployeeData }));
 
         // employee count in each dept
-        const employeeDeptData = calculateEmployeesByDepartment(MOCK_DATA);
+        const employeeDeptData = calculateEmployeesByDepartment(employees);
         dispatch(setChartData({ chartId: 'employeesByDepartment', data: employeeDeptData }));
 
         // employee count of each job position
-        const jobPositionData = calculateJobPositions(MOCK_DATA);
+        const jobPositionData = calculateJobPositions(employees);
         dispatch(setChartData({ chartId: 'jobPositions', data: jobPositionData }));
 
-    }, [dispatch]);
+    }, [dispatch, employees.length]);
 
     // For stats cards
     useEffect(() => {
@@ -93,8 +95,8 @@ const Dashboard = () => {
                 <Col xs={12} md={12} lg={6} className='chart-col'>
                     <Card style={{ border: 'none', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
                         <Card.Header>{'Employees By Department'}</Card.Header>
-                        <Card.Body className='chart-height-equalize problematic-card-body'>                        
-                            <PieChart chartId='employeesByDepartment' style={{margin: '10px'}}/>
+                        <Card.Body className='chart-height-equalize problematic-card-body'>
+                            <PieChart chartId='employeesByDepartment' style={{ margin: '10px' }} />
                         </Card.Body>
                     </Card>
                 </Col>
@@ -103,8 +105,18 @@ const Dashboard = () => {
                 <Col xs={12} md={12} lg={12} className='chart-col'>
                     <Card style={{ border: 'none', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
                         <Card.Header>{'Job Positions'}</Card.Header>
-                        <Card.Body>                        
-                            <BarChart chartId='jobPositions'/>
+                        <Card.Body>
+                            <BarChart chartId='jobPositions' />
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+            <Row>
+                <Col xs={12} md={12} lg={12} className='chart-col'>
+                    <Card style={{ border: 'none', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
+                        <Card.Header>{'Leaves'}</Card.Header>
+                        <Card.Body>
+                            <StackedChart />
                         </Card.Body>
                     </Card>
                 </Col>
@@ -127,7 +139,7 @@ const Dashboard = () => {
                                         Staff Email
                                     </Form.Label>
                                     <Col sm={9}>
-                                        <Form.Control type="email" placeholder="Enter email" className='mb-3 form-control'/>
+                                        <Form.Control type="email" placeholder="Enter email" className='mb-3 form-control' />
                                     </Col>
                                 </Form.Group>
                                 <Form.Group as={Row} >

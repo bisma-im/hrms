@@ -13,7 +13,6 @@ import { useNavigate } from 'react-router-dom';
 import './Sidebar.css';
 
 const Sidebar = () => {
-  const { user } = useSelector(state => state.auth);
   const { sidebarOpen } = useSelector(state => state.sidebar);
   const collapsed = !sidebarOpen;
   const { theme, toggleTheme } = useTheme();
@@ -21,15 +20,10 @@ const Sidebar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  function handleLogout (){
+  const handleLogout = () => {
     dispatch(logout());
+    navigate('/login');
   };
-
-  useEffect(() => {
-    if (!user) {
-      navigate('/login', { replace: true });
-    }
-  }, [user, navigate]);
 
   const handleToggleSidebar = useCallback(() => {
     dispatch(toggleSidebar());

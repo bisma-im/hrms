@@ -9,10 +9,11 @@ import EmployeeDetails from 'pages/Employees/EmployeeDetails';
 import JobPositions from 'pages/Recruitment/JobPositions';
 import ApplicationList from 'pages/Recruitment/ApplicationList';
 import LeavesList from 'pages/Leaves/LeavesList';
+import CasualLeave from 'pages/Leaves/CasualLeave';
 
 const AppRoutes = () => {
     const isLoggedIn = window.localStorage.getItem('loggedIn') === 'true';
-    console.log(isLoggedIn)
+    console.log("is logged in:",isLoggedIn)
     return (
         <Routes>
             {/* Unauthorized routes */}
@@ -24,6 +25,7 @@ const AppRoutes = () => {
             )}
 
             {/* Protected routes */}
+            <Route path="/login" element={<Login />} />
             <Route path='/' element={<PrivateRoute />}>
                 <Route index element={<Navigate replace to="/dashboard" />} />
                 <Route path='dashboard' element={<Dashboard />} />
@@ -32,6 +34,7 @@ const AppRoutes = () => {
                 <Route path="employee-details" element={<EmployeeDetails />} />
                 <Route path="job-positions" element={<JobPositions />} />
                 <Route path='leaves' element={<LeavesList />} />
+                <Route path='casual-leave' element={<CasualLeave />} />
                 <Route path="applications-list" element={<ApplicationList />} />
             </Route>
         </Routes>

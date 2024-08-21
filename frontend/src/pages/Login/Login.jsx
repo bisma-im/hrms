@@ -12,6 +12,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('');
+  const isLoggedIn = window.localStorage.getItem('loggedIn') === 'true';
 
   const onLogin = (e) => {
     e.preventDefault();
@@ -25,10 +26,11 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (user) {
-      navigate('/', { replace: true });
+    console.log(user, isLoggedIn);
+    if (isLoggedIn) {
+      navigate('/dashboard', { replace: true });
     }
-  }, [user, navigate]);
+  }, [isLoggedIn]);
 
   return (
     <Container fluid className="login-account">

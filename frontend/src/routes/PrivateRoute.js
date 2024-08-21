@@ -7,24 +7,28 @@ import TopNavbar from 'components/layout/nav/TopNavbar/TopNavbar';
 const PrivateRoute = () => {
     const isLoggedIn = window.localStorage.getItem('loggedIn') === 'true';
     const sidebarWidth = useSelector(state => state.sidebar.sidebarOpen ? 180 : 60);
+    console.log("localStorage item:", window.localStorage.getItem('loggedIn'));
 
-    console.log('private route being called');
+    if (!sidebarWidth) return null; 
+
+    console.log('is logged in in private route:', isLoggedIn);
     
     // return isLoggedIn ? <Outlet/> : <Navigate to="login"/>
-    if (!isLoggedIn) {
-        return <Navigate to="/login" replace />;
-    }
-    return (
-        <>
-            <TopNavbar />
-            <div className="layout-container">
-                <Sidebar />
-                <div className="main-content" style={{ marginLeft: `${sidebarWidth}px` }}>
-                    <Outlet />
+    if (isLoggedIn) {
+        return (
+            <>
+                <TopNavbar />
+                <div className="layout-container">
+                    <Sidebar />
+                    <div className="main-content" style={{ marginLeft: `${sidebarWidth}px` }}>
+                        <Outlet />
+                    </div>
                 </div>
-            </div>
-        </>
-    )
+            </>
+        )
+    }
+    return <Navigate to="/login" replace />;
+
 };
 
 export default PrivateRoute;

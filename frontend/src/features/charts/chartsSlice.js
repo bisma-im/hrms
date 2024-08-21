@@ -1,14 +1,9 @@
 // src/redux/chartsSlice.js
-// src/redux/chartsSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   genderDistribution: [],
-  departmentBudget: [
-    { name: "IT", data: 120000 },
-    { name: "Marketing", data: 85000 },
-    { name: "Sales", data: 50000 }
-  ],
+  departmentBudget: [],
   longTermEmployee:[],
   jobPositions: [],
   employeesByDepartment: []
