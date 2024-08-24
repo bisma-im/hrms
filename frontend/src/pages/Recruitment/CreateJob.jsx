@@ -33,7 +33,7 @@ const CreateJob = () => {
             <Form onSubmit={handleSubmit} className='my-form m-0 m-lg-3'>
                 <Card className="my-card card-bx mb-3">    
                     <Card.Header>
-                        <h6 className="title">Create Job</h6>
+                        <h3 className="title">Create Job</h3>
                     </Card.Header>
                     <Card.Body>
                 {/* <FormHeader title="Create Job" /> */}

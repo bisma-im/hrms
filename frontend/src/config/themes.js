@@ -26,7 +26,7 @@ export const lightTheme = {
     primary: "#ECEFF4",  // Light grayish-blue, good for texts
     secondary: "#FFD700",  // Gold, maintains good contrast
     background: "#121212",  // Very dark background for main areas
-    text: "#ECEFF4",  // Off-white for general text
+    text: "#AAB8C2",  // Bluish-white for general text
     success: "#00E676",  // Bright green
     error: "#FF5252",  // Bright red
     warning: "#FFD740",  // Yellow that stands out
@@ -38,7 +38,7 @@ export const lightTheme = {
     whiteorblack: "#fff",  // Use white for primary text in dark mode
     submenubg: "#2A2F36",  // Deep grey for submenu background
     submenuHover: "#1B1F23",  // Very dark grey for hover/active states
-    mainbg: '#151C2C',
+    mainbg: '#0A0A0A',
     border: '#555353'
   };
   

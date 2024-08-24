@@ -19,9 +19,9 @@ const leaves = [
 
 const LeavesTable = () => {
     return (
-        <Card style={{ textAlign: 'left', border: 'none', boxShadow: '0 4px 8px rgba(0,0,0,0.1)', overflow: 'auto', maxHeight: '520px'}}>
-            <Card.Header>
-                Leaves Today
+        <Card style={{ textAlign: 'left', border: 'none', boxShadow: '0 4px 8px rgba(0,0,0,0.1)', overflow: 'auto', maxHeight: '532px' }}>
+            <Card.Header className='h3'>
+                <h4>Leaves Today</h4>
             </Card.Header>
             <Scrollbars
                 autoHide

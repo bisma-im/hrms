@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Form, Button, Row, Col, Container, Card } from 'react-bootstrap';
 import FormRepeater from './FormRepeater';
 
-const CasualLeave = () => {
+const PrivilegeLeave = () => {
     const [formData, setFormData] = useState({
         campus: '',
         designation: '',
@@ -38,7 +38,7 @@ const CasualLeave = () => {
         <Container fluid>
             <Row className="d-flex align-items-center">
                 <Col className='m-3'>
-                    <h3 className='heading'>FACULTY - CASUAL LEAVE APPLICATION FORM</h3>
+                    <h3 className='heading'>FACULTY - PRIVILEGE LEAVE APPLICATION FORM</h3>
                 </Col>
             </Row>
             <Form onSubmit={handleSubmit} className='my-form m-0 m-lg-3'>
@@ -188,7 +188,7 @@ const CasualLeave = () => {
                     <Card.Body>
                         <Row>
                             <Col sm={12} className="mb-3">
-                                <FormRepeater fields={repeaterFields} setFields={setRepeaterFields}/>
+                                <FormRepeater fields={repeaterFields} setFields={setRepeaterFields} />
                             </Col>
                         </Row>
                         <Row className='justify-content-center mb-3'>
@@ -201,9 +201,9 @@ const CasualLeave = () => {
                                 <Form.Group>
                                     <div>
                                         <Form.Check
-                                        className='form-label'
+                                            className='form-label'
                                             type="radio"
-                                            inline  
+                                            inline
                                             label="Recommended"
                                             name="recommendation"
                                             value="recommended"
@@ -212,8 +212,8 @@ const CasualLeave = () => {
                                             id="recommended"
                                         />
                                         <Form.Check
-                                        className='form-label'
-                                        inline  
+                                            className='form-label'
+                                            inline
                                             type="radio"
                                             label="Not Recommended"
                                             name="recommendation"
@@ -254,7 +254,7 @@ const CasualLeave = () => {
                                 />
                             </Col>
                             <Col sm={6} className="mb-3">
-                                <Form.Label className="form-label">Signature of HOD ({formData.department  || ' '})</Form.Label>
+                                <Form.Label className="form-label">Signature of HOD ({formData.department || ' '})</Form.Label>
                                 <Form.Control
                                     type="text"
                                     placeholder="HOD Signature"
@@ -272,12 +272,99 @@ const CasualLeave = () => {
                                 Cancel
                             </Button>
                             <Button variant="primary" type="submit" className='m-1'>
-                            Save Changes
+                                Save Changes
                             </Button>
                         </div>
                     </Card.Footer>
                 </Card>
 
+                {/* -------------------PRINCIPAL CARD ------------------*/}
+                <Card className="my-card card-bx my-3">
+                    <Card.Header>
+                        <h4 className="title">Remarks of Principal</h4>
+                    </Card.Header>
+                    <Card.Body>
+                        <Row>
+                            <Col sm={6} className="mb-3">
+                                <Form.Group>
+                                    <div>
+                                        <Form.Check
+                                            className='form-label'
+                                            type="radio"
+                                            inline
+                                            label="Recommended"
+                                            name="recommendation"
+                                            value="recommended"
+                                            // checked={recommendation === 'recommended'}
+                                            onChange={handleChange}
+                                            id="recommended"
+                                        />
+                                        <Form.Check
+                                            className='form-label'
+                                            inline
+                                            type="radio"
+                                            label="Not Recommended"
+                                            name="recommendation"
+                                            value="not_recommended"
+                                            // checked={recommendation === 'not_recommended'}
+                                            onChange={handleChange}
+                                            id="not_recommended"
+                                        />
+                                    </div>
+                                </Form.Group>
+                            </Col>
+                            <Col sm={6} className="mb-3">
+                                <Form.Group>
+                                    <Form.Control
+                                        as="select"
+                                        name="department"
+                                        value={formData.department}
+                                        onChange={handleChange}
+                                        className="form-control form-select"
+                                    >
+                                        <option>Choose department...</option>
+                                        <option value="HR">Human Resources</option>
+                                        <option value="IT">Information Technology</option>
+                                        <option value="Finance">Finance</option>
+                                    </Form.Control>
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col sm={6} className="mb-3">
+                                <Form.Label className="form-label">Date</Form.Label>
+                                <Form.Control
+                                    type="date"
+                                    name="principal_approval_date"
+                                    value={formData.principal_approval_date}
+                                    onChange={handleChange}
+                                    className="form-control form-input p-3"
+                                />
+                            </Col>
+                            <Col sm={6} className="mb-3">
+                                <Form.Label className="form-label">Signature of Principal ({formData.department || ' '})</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Principal Signature"
+                                    name="principal_sign"
+                                    value={formData.principal_sign}
+                                    onChange={handleChange}
+                                    className="form-control form-input p-3"
+                                />
+                            </Col>
+                        </Row>
+                    </Card.Body>
+                    <Card.Footer className='card-footer'>
+                        <div className='btn-right'>
+                            <Button variant="danger" type="submit" className='m-1'>
+                                Cancel
+                            </Button>
+                            <Button variant="primary" type="submit" className='m-1'>
+                                Save Changes
+                            </Button>
+                        </div>
+                    </Card.Footer>
+                </Card>
                 {/*-------------------- HR VERIFICATION----------------------- */}
                 <Card className="my-card card-bx my-3">
                     <Card.Header>
@@ -291,7 +378,7 @@ const CasualLeave = () => {
                                     type="text"
                                     disabled
                                     name="leaveType"
-                                    value={"Casual Leave"}
+                                    value={"Privilege Leave"}
                                     className="form-control form-input p-3"
                                 />
                             </Col>
@@ -361,44 +448,44 @@ const CasualLeave = () => {
                                 Cancel
                             </Button>
                             <Button variant="primary" type="submit" className='m-1'>
-                            Save Changes
+                                Save Changes
                             </Button>
                         </div>
                     </Card.Footer>
                 </Card>
 
-                {/* -------------------PRINCIPAL CARD ------------------*/}
+                {/* -------------------DIRECTOR CARD ------------------*/}
                 <Card className="my-card card-bx my-3">
                     <Card.Header>
-                        <h4 className="title">Remarks of Principal</h4>
+                        <h4 className="title">Remarks of Director</h4>
                     </Card.Header>
                     <Card.Body>
                         <Row>
                             <Col sm={12} className="mb-3">
                                 <Form.Group>
-                                <div>
-                                    <Form.Check
-                                    className='form-label'
-                                        type="radio"
-                                        inline  
-                                        label="Approved"
-                                        name="approval"
-                                        value="approved"
-                                        // checked={recommendation === 'recommended'}
-                                        onChange={handleChange}
-                                        id="approved"
-                                    />
-                                    <Form.Check
-                                    className='form-label'
-                                    inline  
-                                        type="radio"
-                                        label="Not Approved"
-                                        name="approval"
-                                        value="not_approved"
-                                        // checked={recommendation === 'not_recommended'}
-                                        onChange={handleChange}
-                                        id="not_approved"
-                                    />
+                                    <div>
+                                        <Form.Check
+                                            className='form-label'
+                                            type="radio"
+                                            inline
+                                            label="Approved"
+                                            name="approved"
+                                            value="approved"
+                                            // checked={recommendation === 'recommended'}
+                                            onChange={handleChange}
+                                            id="recommended"
+                                        />
+                                        <Form.Check
+                                            className='form-label'
+                                            inline
+                                            type="radio"
+                                            label="Not Approved"
+                                            name="approved"
+                                            value="not_approved"
+                                            // checked={recommendation === 'not_recommended'}
+                                            onChange={handleChange}
+                                            id="not_recommended"
+                                        />
                                     </div>
                                 </Form.Group>
                             </Col>
@@ -415,7 +502,7 @@ const CasualLeave = () => {
                                 />
                             </Col>
                             <Col sm={6} className="mb-3">
-                                <Form.Label className="form-label">Signature of Principal</Form.Label>
+                                <Form.Label className="form-label">Signature of Director</Form.Label>
                                 <Form.Control
                                     type="text"
                                     placeholder="Principal Signature"
@@ -433,7 +520,7 @@ const CasualLeave = () => {
                                 Cancel
                             </Button>
                             <Button variant="primary" type="submit" className='m-1'>
-                            Save Changes
+                                Save Changes
                             </Button>
                         </div>
                     </Card.Footer>
@@ -443,4 +530,4 @@ const CasualLeave = () => {
     );
 };
 
-export default CasualLeave;
+export default PrivilegeLeave;

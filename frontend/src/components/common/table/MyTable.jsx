@@ -21,6 +21,7 @@ const MyTable = ({ columnHeaders, jsonData, onRowClick, initialFilters }) => {
         canNextPage,
         canPreviousPage,
         setFilter,
+        rowProps
     } = useTable({
         columns,
         data,
@@ -45,35 +46,39 @@ const MyTable = ({ columnHeaders, jsonData, onRowClick, initialFilters }) => {
         <div className="table-responsive">
             <table {...getTableProps()} className="table dataTable display" id='myTable' style={{ 'background': 'black'}}>
                 <thead>
-                    {headerGroups.map((headerGroup, index) => (
-                        <tr key={index} {...headerGroup.getHeaderGroupProps()}>
-                            {headerGroup.headers.map(column => {
-                                const { key, ...restColumnProps } = column.getHeaderProps(column.getSortByToggleProps());
-                                return (
-                                    <th key={key} {...restColumnProps}>
-                                        {column.render('Header')}
-                                        <span className="ml-1">
-                                            {column.isSorted ? (
-                                                column.isSortedDesc ? <FaArrowDown style={{ opacity: '0.7' }} /> : <FaArrowUp style={{ opacity: '0.7' }} />
-                                            ) : (<FaSort style={{ opacity: '0.3' }} />)
-                                            }
-                                        </span>
-                                        {column.canFilter ? column.render('Filter') : null}
-                                    </th>
-                                );
-                            })}
-                        </tr>
-                    ))}
+                    {headerGroups.map((headerGroup, index) => {
+                        const headerProps = headerGroup.getHeaderGroupProps();
+                        return (
+                            <tr {...headerProps} key={`header-${index}`}>
+                                {headerGroup.headers.map((column) => {
+                                    const { key, ...restColumnProps } = column.getHeaderProps(column.getSortByToggleProps());
+                                    return (
+                                        <th key={key} {...restColumnProps}>
+                                            {column.render('Header')}
+                                            <span className="ml-1">
+                                                {column.isSorted ? (
+                                                    column.isSortedDesc ? <FaArrowDown style={{ opacity: '0.7' }} /> : <FaArrowUp style={{ opacity: '0.7' }} />
+                                                ) : <FaSort style={{ opacity: '0.3' }} />
+                                                }
+                                            </span>
+                                            {column.canFilter ? column.render('Filter') : null}
+                                        </th>
+                                    );
+                                })}
+                            </tr>
+                        );
+                    })}
                 </thead>
+
                 <tbody {...getTableBodyProps()}>
-                    {page.map(row => {
+                    {page.map((row, rowIndex) => {
                         prepareRow(row);
                         return (
-                            <tr {...row.getRowProps()} onClick={() => onRowClick(row.original)}>
+                            <tr {...rowProps} key={row.id || rowIndex} onClick={() => onRowClick(row.original)}>
                                 {row.cells.map(cell => {
-                                    const { key, ...restCellProps } = cell.getCellProps();
+                                    const cellProps = cell.getCellProps();
                                     return (
-                                        <td key={key} {...restCellProps}>
+                                        <td {...cellProps} key={cellProps.key}>
                                             {cell.render('Cell')}
                                         </td>
                                     );

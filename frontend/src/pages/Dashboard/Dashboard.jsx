@@ -11,6 +11,7 @@ import { processGenderData, calculateLongTermCounts, calculateJobPositions, calc
 import { setChartData } from 'features/charts/chartsSlice';
 import PieChart from 'components/common/charts/PieChart';
 import BarChart from 'components/common/charts/BarChart';
+import LEAVE_DATA from 'pages/Leaves/LEAVE_DATA.json';
 import StackedChart from 'components/common/charts/StackedChart';
 
 const Dashboard = () => {
@@ -78,7 +79,7 @@ const Dashboard = () => {
 
     const [charts, setCharts] = useState([
         { id: 1, title: "Gender Distribution", chartId: 'genderDistribution' },
-        { id: 2, title: "Employees' Years of Service", chartId: 'longTermEmployee' },
+        { id: 2, title: "Years of Service", chartId: 'longTermEmployee' },
         // { id: 3, title: "Employees By Department", chartId: 'employeesByDepartment' },
     ]);
 
@@ -94,7 +95,7 @@ const Dashboard = () => {
                 ))}
                 <Col xs={12} md={12} lg={6} className='chart-col'>
                     <Card style={{ border: 'none', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
-                        <Card.Header>{'Employees By Department'}</Card.Header>
+                        <Card.Header className='h3'><h4>{'Employees By Department'}</h4></Card.Header>
                         <Card.Body className='chart-height-equalize problematic-card-body'>
                             <PieChart chartId='employeesByDepartment' style={{ margin: '10px' }} />
                         </Card.Body>
@@ -104,7 +105,7 @@ const Dashboard = () => {
             <Row>
                 <Col xs={12} md={12} lg={12} className='chart-col'>
                     <Card style={{ border: 'none', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
-                        <Card.Header>{'Job Positions'}</Card.Header>
+                        <Card.Header className='h3'><h4>{'Job Positions'}</h4></Card.Header>
                         <Card.Body>
                             <BarChart chartId='jobPositions' />
                         </Card.Body>
@@ -114,9 +115,9 @@ const Dashboard = () => {
             <Row>
                 <Col xs={12} md={12} lg={12} className='chart-col'>
                     <Card style={{ border: 'none', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
-                        <Card.Header>{'Leaves'}</Card.Header>
+                        <Card.Header className='h3'><h4>{'Leaves'}</h4></Card.Header>
                         <Card.Body>
-                            <StackedChart />
+                            <StackedChart leaveData={LEAVE_DATA} />
                         </Card.Body>
                     </Card>
                 </Col>
@@ -131,7 +132,7 @@ const Dashboard = () => {
             <Row>
                 <Col xs={12} md={6} lg={6} className='table-col'>
                     <Card style={{ textAlign: 'left', border: 'none', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }} className="card d-flex flex-column">
-                        <Card.Header>Employee Search Form</Card.Header>
+                        <Card.Header className='h3'><h4>Employee Search Form</h4></Card.Header>
                         <Card.Body className='p-3'>
                             <Form className='my-form'>
                                 <Form.Group as={Row} >

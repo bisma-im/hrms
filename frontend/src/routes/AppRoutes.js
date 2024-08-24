@@ -5,11 +5,13 @@ import Login from 'pages/Login/Login';
 import CreateJob from 'pages/Recruitment/CreateJob';
 import Dashboard from 'pages/Dashboard/Dashboard';
 import EmployeesList from 'pages/Employees/EmployeesList';
-import EmployeeDetails from 'pages/Employees/EmployeeDetails';
+import Employees from 'pages/Employees/Employees';
 import JobPositions from 'pages/Recruitment/JobPositions';
 import ApplicationList from 'pages/Recruitment/ApplicationList';
 import LeavesList from 'pages/Leaves/LeavesList';
 import CasualLeave from 'pages/Leaves/CasualLeave';
+import SickLeave from 'pages/Leaves/SickLeave';
+import PrivilegeLeave from 'pages/Leaves/PrivilegeLeave';
 
 const AppRoutes = () => {
     const isLoggedIn = window.localStorage.getItem('loggedIn') === 'true';
@@ -31,10 +33,12 @@ const AppRoutes = () => {
                 <Route path='dashboard' element={<Dashboard />} />
                 <Route path="create-job" element={<CreateJob />} />
                 <Route path="employees-list" element={<EmployeesList />} />
-                <Route path="employee-details" element={<EmployeeDetails />} />
+                <Route path="employee-details" element={<Employees />} />
                 <Route path="job-positions" element={<JobPositions />} />
                 <Route path='leaves' element={<LeavesList />} />
+                <Route path='sick-leave' element={<SickLeave />} />
                 <Route path='casual-leave' element={<CasualLeave />} />
+                <Route path='privilege-leave' element={<PrivilegeLeave />} />
                 <Route path="applications-list" element={<ApplicationList />} />
             </Route>
         </Routes>

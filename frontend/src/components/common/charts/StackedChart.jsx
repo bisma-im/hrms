@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Chart from 'react-apexcharts';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import LEAVE_DATA from 'pages/Leaves/LEAVE_DATA.json';
 import { Col, FormLabel, Row } from 'react-bootstrap';
 
-const StackedChart = () => {
+const StackedChart = ({ leaveData, filterFunction }) => {
     const [startDate, setStartDate] = useState(new Date(new Date().getFullYear(), 0, 1)); // Start of current year
     const [endDate, setEndDate] = useState(new Date(new Date().getFullYear(), 11, 31)); // End of current year
     const [series, setSeries] = useState([]);
@@ -26,8 +25,8 @@ const StackedChart = () => {
     };
 
     // Process data based on selected dates
-    const processData = (start, end) => {
-        const filteredData = LEAVE_DATA.filter(leave => {
+    const processData = (start, end, data) => {
+        const filteredData = data.filter(leave => {
             const leaveDate = new Date(leave.StartDate);
             return leaveDate >= start && leaveDate <= end;
         });
@@ -35,7 +34,7 @@ const StackedChart = () => {
         const leaveCountsByDate = initializeMonths(start, end);
         filteredData.forEach(leave => {
             const monthYear = `${new Date(leave.StartDate).toLocaleString('default', { month: 'short' })}'${new Date(leave.StartDate).getFullYear().toString().slice(2)}`;
-            const typeKey = leave.LeaveType; // Directly use LeaveType from the JSON
+            const typeKey = leave.LeaveType;
             leaveCountsByDate[monthYear][typeKey]++;
         });
 
@@ -50,8 +49,12 @@ const StackedChart = () => {
 
     // Update series data whenever start or end date changes
     useEffect(() => {
-        setSeries(processData(startDate, endDate));
-    }, [startDate, endDate]);
+        if (filterFunction) {
+            setSeries(processData(startDate, endDate, filterFunction(leaveData)));
+        } else {
+            setSeries(processData(startDate, endDate, leaveData));
+        }
+    }, [startDate, endDate, leaveData]);
 
     const options = {
         chart: {

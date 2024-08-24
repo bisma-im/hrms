@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Form, Button, Row, Col, Container, Card } from 'react-bootstrap';
 import FormRepeater from './FormRepeater';
 
-const CasualLeave = () => {
+const SickLeave = () => {
     const [formData, setFormData] = useState({
         campus: '',
         designation: '',
@@ -38,17 +38,51 @@ const CasualLeave = () => {
         <Container fluid>
             <Row className="d-flex align-items-center">
                 <Col className='m-3'>
-                    <h3 className='heading'>FACULTY - CASUAL LEAVE APPLICATION FORM</h3>
+                    <h3 className='heading'>FMS SICK LEAVE APPLICATION FORM</h3>
                 </Col>
             </Row>
             <Form onSubmit={handleSubmit} className='my-form m-0 m-lg-3'>
 
-                {/* -----------------------PART 1------------------ */}
+                {/* -----------------------Employee Details Card------------------ */}
                 <Card className="my-card card-bx mb-3">
                     <Card.Header>
-                        <h4 className="title">PART - 1</h4>
+                        <h4 className="title">Employee Details</h4>
                     </Card.Header>
                     <Card.Body>
+                        <Row>
+                            <Col sm={6} className="mb-3">
+                                <Form.Label className="form-label">Campus</Form.Label>
+                                <Form.Control
+                                    as="select"
+                                    name="campus"
+                                    value={formData.campus}
+                                    onChange={handleChange}
+                                    className="form-control form-select"
+                                >
+                                    <option>Choose campus...</option>
+                                    <option value="Full-time">Islamabad E-8 Campus</option>
+                                    <option value="Full-time">Islamabad H-11 Campus</option>
+                                    <option value="Part-time">Health Sciences Campus</option>
+                                    <option value="Contract">Karachi Campus</option>
+                                    <option value="Temporary">Lahore Campus</option>
+                                </Form.Control>
+                            </Col>
+                            <Col sm={6} className="mb-3">
+                                <Form.Label className="form-label">Department</Form.Label>
+                                <Form.Control
+                                    as="select"
+                                    name="department"
+                                    value={formData.department}
+                                    onChange={handleChange}
+                                    className="form-control form-select"
+                                >
+                                    <option>Choose department...</option>
+                                    <option value="HR">Human Resources</option>
+                                    <option value="IT">Information Technology</option>
+                                    <option value="Finance">Finance</option>
+                                </Form.Control>
+                            </Col>
+                        </Row>
                         <Row>
                             <Col sm={4} className="mb-3">
                                 <Form.Label className="form-label">Name</Form.Label>
@@ -62,7 +96,7 @@ const CasualLeave = () => {
                                 />
                             </Col>
                             <Col sm={4} className="mb-3">
-                                <Form.Label className="form-label">Designation Appointment</Form.Label>
+                                <Form.Label className="form-label">Designation</Form.Label>
                                 <Form.Control
                                     type="text"
                                     placeholder="Designation"
@@ -133,18 +167,6 @@ const CasualLeave = () => {
                             </Col>
                         </Row>
                         <Row>
-                            <Col lg={12} className="mb-3">
-                                <Form.Label>Special Reason (if any)</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name="reason"
-                                    placeholder="Reason for Leave"
-                                    value={formData.reason}
-                                    onChange={handleChange}
-                                />
-                            </Col>
-                        </Row>
-                        <Row>
                             <Col sm={6} className="mb-3">
                                 <Form.Label className="form-label">Application Date</Form.Label>
                                 <Form.Control
@@ -183,7 +205,7 @@ const CasualLeave = () => {
                 {/*-------------------- HOD CARD---------------------------- */}
                 <Card className="my-card card-bx my-3">
                     <Card.Header>
-                        <h4 className="title">ADJUSTMENT OF LECTURES DURING LEAVE PERIOD</h4>
+                        <h4 className="title">Remarks of HOD regarding adjustment of Courses & other duties of above mentioned</h4>
                     </Card.Header>
                     <Card.Body>
                         <Row>
@@ -191,54 +213,33 @@ const CasualLeave = () => {
                                 <FormRepeater fields={repeaterFields} setFields={setRepeaterFields}/>
                             </Col>
                         </Row>
-                        <Row className='justify-content-center mb-3'>
-                            <Col sm={12}>
-                                <h3>PART -2</h3>
-                            </Col>
-                        </Row>
                         <Row>
-                            <Col sm={6} className="mb-3 pt-3">
+                            <Col sm={12} className="mb-3">
                                 <Form.Group>
-                                    <div>
-                                        <Form.Check
-                                        className='form-label'
-                                            type="radio"
-                                            inline  
-                                            label="Recommended"
-                                            name="recommendation"
-                                            value="recommended"
-                                            // checked={recommendation === 'recommended'}
-                                            onChange={handleChange}
-                                            id="recommended"
-                                        />
-                                        <Form.Check
-                                        className='form-label'
+                                <div>
+                                    <Form.Check
+                                    className='form-label'
+                                        type="radio"
                                         inline  
-                                            type="radio"
-                                            label="Not Recommended"
-                                            name="recommendation"
-                                            value="not_recommended"
-                                            // checked={recommendation === 'not_recommended'}
-                                            onChange={handleChange}
-                                            id="not_recommended"
-                                        />
-                                    </div>
-                                </Form.Group>
-                            </Col>
-                            <Col sm={6} className="mb-3">
-                                <Form.Group>
-                                    <Form.Control
-                                        as="select"
-                                        name="department"
-                                        value={formData.department}
+                                        label="Recommended"
+                                        name="recommendation"
+                                        value="recommended"
+                                        // checked={recommendation === 'recommended'}
                                         onChange={handleChange}
-                                        className="form-control form-select"
-                                    >
-                                        <option>Choose department...</option>
-                                        <option value="HR">Human Resources</option>
-                                        <option value="IT">Information Technology</option>
-                                        <option value="Finance">Finance</option>
-                                    </Form.Control>
+                                        id="recommended"
+                                    />
+                                    <Form.Check
+                                    className='form-label'
+                                    inline  
+                                        type="radio"
+                                        label="Not Recommended"
+                                        name="recommendation"
+                                        value="not_recommended"
+                                        // checked={recommendation === 'not_recommended'}
+                                        onChange={handleChange}
+                                        id="not_recommended"
+                                    />
+                                    </div>
                                 </Form.Group>
                             </Col>
                         </Row>
@@ -254,7 +255,7 @@ const CasualLeave = () => {
                                 />
                             </Col>
                             <Col sm={6} className="mb-3">
-                                <Form.Label className="form-label">Signature of HOD ({formData.department  || ' '})</Form.Label>
+                                <Form.Label className="form-label">Signature of HOD</Form.Label>
                                 <Form.Control
                                     type="text"
                                     placeholder="HOD Signature"
@@ -281,7 +282,7 @@ const CasualLeave = () => {
                 {/*-------------------- HR VERIFICATION----------------------- */}
                 <Card className="my-card card-bx my-3">
                     <Card.Header>
-                        <h4 className="title">PART - 3</h4>
+                        <h4 className="title">Remarks of HR</h4>
                     </Card.Header>
                     <Card.Body>
                         <Row>
@@ -291,7 +292,7 @@ const CasualLeave = () => {
                                     type="text"
                                     disabled
                                     name="leaveType"
-                                    value={"Casual Leave"}
+                                    value={"Sick Leave"}
                                     className="form-control form-input p-3"
                                 />
                             </Col>
@@ -381,23 +382,167 @@ const CasualLeave = () => {
                                     className='form-label'
                                         type="radio"
                                         inline  
+                                        label="Recommended"
+                                        name="recommendation"
+                                        value="recommended"
+                                        // checked={recommendation === 'recommended'}
+                                        onChange={handleChange}
+                                        id="recommended"
+                                    />
+                                    <Form.Check
+                                    className='form-label'
+                                    inline  
+                                        type="radio"
+                                        label="Not Recommended"
+                                        name="recommendation"
+                                        value="not_recommended"
+                                        // checked={recommendation === 'not_recommended'}
+                                        onChange={handleChange}
+                                        id="not_recommended"
+                                    />
+                                    </div>
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col sm={6} className="mb-3">
+                                <Form.Label className="form-label">Date</Form.Label>
+                                <Form.Control
+                                    type="date"
+                                    name="principal_approval_date"
+                                    value={formData.principal_approval_date}
+                                    onChange={handleChange}
+                                    className="form-control form-input p-3"
+                                />
+                            </Col>
+                            <Col sm={6} className="mb-3">
+                                <Form.Label className="form-label">Signature of Principal</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Principal Signature"
+                                    name="principal_sign"
+                                    value={formData.principal_sign}
+                                    onChange={handleChange}
+                                    className="form-control form-input p-3"
+                                />
+                            </Col>
+                        </Row>
+                    </Card.Body>
+                    <Card.Footer className='card-footer'>
+                        <div className='btn-right'>
+                            <Button variant="danger" type="submit" className='m-1'>
+                                Cancel
+                            </Button>
+                            <Button variant="primary" type="submit" className='m-1'>
+                            Save Changes
+                            </Button>
+                        </div>
+                    </Card.Footer>
+                </Card>
+
+                {/* -------------------MEDICAL OFFICER CARD ------------------*/}
+                <Card className="my-card card-bx my-3">
+                    <Card.Header>
+                        <h4 className="title">Remarks of Medical Officer</h4>
+                    </Card.Header>
+                    <Card.Body>
+                        <Row>
+                            <Col sm={12} className="mb-3">
+                                <Form.Group>
+                                <div>
+                                    <Form.Check
+                                    className='form-label'
+                                        type="radio"
+                                        inline  
+                                        label="Recommended"
+                                        name="recommendation"
+                                        value="recommended"
+                                        // checked={recommendation === 'recommended'}
+                                        onChange={handleChange}
+                                        id="recommended"
+                                    />
+                                    <Form.Check
+                                    className='form-label'
+                                    inline  
+                                        type="radio"
+                                        label="Not Recommended"
+                                        name="recommendation"
+                                        value="not_recommended"
+                                        // checked={recommendation === 'not_recommended'}
+                                        onChange={handleChange}
+                                        id="not_recommended"
+                                    />
+                                    </div>
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col sm={6} className="mb-3">
+                                <Form.Label className="form-label">Date</Form.Label>
+                                <Form.Control
+                                    type="date"
+                                    name="med_officer_approval_date"
+                                    value={formData.med_officer_approval_date}
+                                    onChange={handleChange}
+                                    className="form-control form-input p-3"
+                                />
+                            </Col>
+                            <Col sm={6} className="mb-3">
+                                <Form.Label className="form-label">Signature of Medical Officer</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="MEDICAL OFFICER Signature"
+                                    name="med_officer_sign"
+                                    value={formData.med_officer_sign}
+                                    onChange={handleChange}
+                                    className="form-control form-input p-3"
+                                />
+                            </Col>
+                        </Row>
+                    </Card.Body>
+                    <Card.Footer className='card-footer'>
+                        <div className='btn-right'>
+                            <Button variant="danger" type="submit" className='m-1'>
+                                Cancel
+                            </Button>
+                            <Button variant="primary" type="submit" className='m-1'>
+                            Save Changes
+                            </Button>
+                        </div>
+                    </Card.Footer>
+                </Card>
+
+                {/* -------------------DIRECTOR CARD ------------------*/}
+                <Card className="my-card card-bx my-3">
+                    <Card.Header>
+                        <h4 className="title">Remarks of Director</h4>
+                    </Card.Header>
+                    <Card.Body>
+                        <Row>
+                            <Col sm={12} className="mb-3">
+                                <Form.Group>
+                                <div>
+                                    <Form.Check
+                                    className='form-label'
+                                        type="radio"
+                                        inline  
                                         label="Approved"
-                                        name="approval"
+                                        name="approved"
                                         value="approved"
                                         // checked={recommendation === 'recommended'}
                                         onChange={handleChange}
-                                        id="approved"
+                                        id="recommended"
                                     />
                                     <Form.Check
                                     className='form-label'
                                     inline  
                                         type="radio"
                                         label="Not Approved"
-                                        name="approval"
+                                        name="approved"
                                         value="not_approved"
                                         // checked={recommendation === 'not_recommended'}
                                         onChange={handleChange}
-                                        id="not_approved"
+                                        id="not_recommended"
                                     />
                                     </div>
                                 </Form.Group>
@@ -443,4 +588,4 @@ const CasualLeave = () => {
     );
 };
 
-export default CasualLeave;
+export default SickLeave;

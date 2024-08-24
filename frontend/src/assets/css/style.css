@@ -447,7 +447,7 @@
 
 .my-card .card-header {
   border-color: var(--border-color);
-  padding: 30px;
+  padding: 15px;
 }
 
 .my-card .card-header .title {
@@ -524,7 +524,7 @@
 
 /* -----------Link Button--------- */
 .link-button {
-  background-color: var(--primary-color);
+  background-color: #253875;
   color: white;
   padding: 10px 20px;
   border-radius: 5px;
@@ -535,7 +535,7 @@
 }
 
 .link-button:hover {
-  background-color: darkblue;
+  background-color: #1e2d63;
 }
 
 .heading {
@@ -592,4 +592,33 @@
 
 .heading {
   color: var(--text-color);
+}
+
+.my-table .table {
+  color: var(--text-color);
+  --bs-table-bg: ;
+  --bs-table-color: ;
+  /* --bs-table-striped-color: ; */
+  background-color: var(--cardbg-color);
+}
+
+.table {
+  --bs-table-bg: var(--cardbg-color);
+  --bs-table-color: var(--text-color);
+  /* --bs-table-striped-bg: ; 
+  --bs-table-striped-color: '#2E3A4B';  */
+  --bs-table-accent-bg: var(--cardbg-color);
+}
+
+.h3{
+    color: var(--text-color);
+}
+
+.my-nav .nav-link{
+  color: var(--text-color);
+}
+
+.my-nav .nav-link.active{
+  color: var(--text-color);
+  background-color: var(--background-color);
 }
