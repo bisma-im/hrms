@@ -12,14 +12,17 @@ import LeavesList from 'pages/Leaves/LeavesList';
 import CasualLeave from 'pages/Leaves/CasualLeave';
 import SickLeave from 'pages/Leaves/SickLeave';
 import PrivilegeLeave from 'pages/Leaves/PrivilegeLeave';
+import { selectUser } from 'features/auth/authSlice';
+import { useSelector } from 'react-redux';
 
 const AppRoutes = () => {
-    const isLoggedIn = window.localStorage.getItem('loggedIn') === 'true';
-    console.log("is logged in:",isLoggedIn)
+    // const isLoggedIn = window.localStorage.getItem('loggedIn') === 'true';
+    const {isAuthenticated} = useSelector(state => state.auth);
+
     return (
         <Routes>
             {/* Unauthorized routes */}
-            {!isLoggedIn && (
+            {!isAuthenticated && (
                 <>
                     <Route path="/login" element={<Login />} />
                     <Route path="*" element={<Navigate to="login" />} />

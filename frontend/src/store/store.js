@@ -1,4 +1,6 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, applyMiddleware } from '@reduxjs/toolkit';
+import { thunk } from 'redux-thunk';
+
 import authReducer from 'features/auth/authSlice';
 import sidebarReducer from 'features/nav/sidebarSlice';
 import themeReducer from 'features/theme/themeSlice';
@@ -13,5 +15,6 @@ export const store = configureStore({
     charts: chartsReducer,
     employee: employeeReducer,
   },
+  // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
 });
 

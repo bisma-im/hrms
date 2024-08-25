@@ -1,36 +1,35 @@
 import React, { useState, useEffect } from 'react';
+import Swal from 'sweetalert2'
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { rainbow, logo } from 'assets/images'; 
+import { rainbow, logo } from 'assets/images';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginStart, loginUser, loginFailure } from 'features/auth/authSlice';
+import { authenticateUser, loginFailure } from 'features/auth/authSlice';
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, isLoading, errors } = useSelector(state => state.auth);
+  const { isLoading, errors } = useSelector(state => state.auth);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('');
-  const isLoggedIn = window.localStorage.getItem('loggedIn') === 'true';
+  // const isLoggedIn = window.localStorage.getItem('loggedIn') === 'true';
 
-  const onLogin = (e) => {
+  const onLogin = async (e) => {
     e.preventDefault();
-    dispatch(loginStart());
-    try {
-      const userData = { email, password, role }; // Mock user object
-      dispatch(loginUser(userData));
-    } catch (error) {
-      dispatch(loginFailure({ message: 'Invalid credentials' }));
-    }
+    dispatch(authenticateUser({ email, password, role })).unwrap()
+      .then(() => {
+        navigate('/dashboard');
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: error.message
+        });
+      });;
   };
 
-  useEffect(() => {
-    console.log(user, isLoggedIn);
-    if (isLoggedIn) {
-      navigate('/dashboard', { replace: true });
-    }
-  }, [isLoggedIn]);
 
   return (
     <Container fluid className="login-account">
@@ -66,7 +65,7 @@ const Login = () => {
                   isInvalid={!!errors?.role}
                 >
                   <option value="">Select User Type</option>
-                  <option value="admin">Admin</option>
+                  <option value="Admin">Admin</option>
                   <option value="employee">Employee</option>
                   <option value="manager">Manager</option>
                 </Form.Control>

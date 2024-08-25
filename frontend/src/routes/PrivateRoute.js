@@ -5,16 +5,17 @@ import Sidebar from 'components/layout/nav/Sidebar/Sidebar';
 import TopNavbar from 'components/layout/nav/TopNavbar/TopNavbar';
 // private route for rbac
 const PrivateRoute = () => {
-    const isLoggedIn = window.localStorage.getItem('loggedIn') === 'true';
+    // const isLoggedIn = window.localStorage.getItem('loggedIn') === 'true';
     const sidebarWidth = useSelector(state => state.sidebar.sidebarOpen ? 180 : 60);
-    console.log("localStorage item:", window.localStorage.getItem('loggedIn'));
+    // console.log("localStorage item:", window.localStorage.getItem('loggedIn'));
+    const { isAuthenticated } = useSelector(state => state.auth);
 
     if (!sidebarWidth) return null; 
 
-    console.log('is logged in in private route:', isLoggedIn);
+    // console.log('is logged in in private route:', isLoggedIn);
     
     // return isLoggedIn ? <Outlet/> : <Navigate to="login"/>
-    if (isLoggedIn) {
+    if (isAuthenticated) {
         return (
             <>
                 <TopNavbar />

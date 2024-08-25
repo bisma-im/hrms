@@ -1,9 +1,20 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
-const pool = require('./config/db');
+const pool = require('./src/config/db');
+
+// Setup CORS
+app.use(cors({
+  origin: 'http://localhost:3000'  // Allow your front-end URL; adjust as needed for production
+}));
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+
+
+// Auth Routes
+app.use('/api/auth', require('./src/routes/auth'));
+
 
 // Example route
 app.get('/', async (req, res) => {
