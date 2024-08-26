@@ -1,9 +1,27 @@
 import apiClient from 'api/apiClient';
-import { authenticateUser } from 'features/auth/authSlice';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
-export const login = (email, password, role) => {
-    return apiClient.post('/api/auth/login', { email, password, role });
-};
+// Thunk to handle user login
+export const authenticateUser = createAsyncThunk( 'auth/authenticateUser', 
+    async ({ email, password, role }, thunkAPI) => {
+      try {
+        const response = await apiClient.post('/api/auth/login', { email, password, role });
+        saveTokenInLocalStorage({ token: response.data.token, expiresIn: response.data.expiresIn, user: response.data.user });
+        thunkAPI.dispatch(checkAuthTimeout(response.data.expiresIn));
+        if (response.status === 200) {
+          return {
+            user: response.data.user,
+            token: response.data.token,
+            expiresIn: response.data.expiresIn
+          };
+        } else {
+          return thunkAPI.rejectWithValue(response.data);
+        }
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data);
+      }
+    }
+  );
 
 export const saveTokenInLocalStorage = (tokenDetails) => {
     const now = new Date();

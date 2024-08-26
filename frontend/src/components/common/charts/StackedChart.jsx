@@ -1,31 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Chart from 'react-apexcharts';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Col, FormLabel, Row } from 'react-bootstrap';
 
 const StackedChart = ({ leaveData, filterFunction }) => {
-    const [startDate, setStartDate] = useState(new Date(new Date().getFullYear(), 0, 1)); // Start of current year
-    const [endDate, setEndDate] = useState(new Date(new Date().getFullYear(), 11, 31)); // End of current year
+    const [dates, setDates] = useState({
+        startDate: new Date(new Date().getFullYear(), 0, 1),
+        endDate: new Date(new Date().getFullYear(), 11, 31)
+    });
     const [series, setSeries] = useState([]);
 
-    const leaveTypes = ["Sick leave", "Casual leave", "Privilege leave", "EOL", "Study leave"];
-
-    // Initializes months with zero leaves
-    const initializeMonths = (start, end) => {
+    // Helper function to initialize months with zero leaves
+    const initializeMonths = useCallback((start, end) => {
         const months = {};
         for (let date = new Date(start); date <= end; date.setMonth(date.getMonth() + 1)) {
             const monthKey = `${date.toLocaleString('default', { month: 'short' })}'${String(date.getFullYear()).slice(2)}`;
             months[monthKey] = {};
-            leaveTypes.forEach(type => {
+            ["Sick leave", "Casual leave", "Privilege leave", "EOL", "Study leave"].forEach(type => {
                 months[monthKey][type] = 0;
             });
         }
         return months;
-    };
+    }, []);
 
     // Process data based on selected dates
-    const processData = (start, end, data) => {
+    const processData = useCallback((start, end, data) => {
         const filteredData = data.filter(leave => {
             const leaveDate = new Date(leave.StartDate);
             return leaveDate >= start && leaveDate <= end;
@@ -34,27 +34,26 @@ const StackedChart = ({ leaveData, filterFunction }) => {
         const leaveCountsByDate = initializeMonths(start, end);
         filteredData.forEach(leave => {
             const monthYear = `${new Date(leave.StartDate).toLocaleString('default', { month: 'short' })}'${new Date(leave.StartDate).getFullYear().toString().slice(2)}`;
-            const typeKey = leave.LeaveType;
-            leaveCountsByDate[monthYear][typeKey]++;
+            leaveCountsByDate[monthYear][leave.LeaveType]++;
         });
 
-        return leaveTypes.map(type => ({
+        return ["Sick leave", "Casual leave", "Privilege leave", "EOL", "Study leave"].map(type => ({
             name: type,
             data: Object.keys(leaveCountsByDate).map(month => ({
                 x: month,
                 y: leaveCountsByDate[month][type] || 0
             }))
         }));
-    };
+    }, [initializeMonths]);
 
-    // Update series data whenever start or end date changes
+    // Update series data whenever dates change
     useEffect(() => {
-        if (filterFunction) {
-            setSeries(processData(startDate, endDate, filterFunction(leaveData)));
-        } else {
-            setSeries(processData(startDate, endDate, leaveData));
-        }
-    }, [startDate, endDate, leaveData]);
+        setSeries(processData(dates.startDate, dates.endDate, filterFunction ? filterFunction(leaveData) : leaveData));
+    }, [dates, leaveData, filterFunction, processData]);
+
+    const handleDateChange = useCallback((changedDate, which) => {
+        setDates(prevDates => ({ ...prevDates, [which]: changedDate }));
+    }, []);
 
     const options = {
         chart: {
@@ -104,7 +103,7 @@ const StackedChart = ({ leaveData, filterFunction }) => {
             }
         }],
         xaxis: {
-            categories: Object.keys(initializeMonths(startDate, endDate))
+            categories: Object.keys(initializeMonths(dates.startDate, dates.endDate))
         },
         yaxis: {
             title: {
@@ -133,22 +132,22 @@ const StackedChart = ({ leaveData, filterFunction }) => {
                     <FormLabel className='custom-label mb-2 mb-sm-0'>{"Date Range: "}</FormLabel>
                     <DatePicker 
                         className='m-2 custom-input'
-                        selected={startDate}
-                        onChange={date => setStartDate(date)}
+                        selected={dates.startDate}
+                        onChange={date => handleDateChange(date, 'startDate')}
                         selectsStart
-                        startDate={startDate}
-                        endDate={endDate}
+                        startDate={dates.startDate}
+                        endDate={dates.endDate}
                         dateFormat="MMM-yyyy"
                         showMonthYearPicker
                     />
                     <DatePicker
                         className='m-2 custom-input'
-                        selected={endDate}
-                        onChange={date => setEndDate(date)}
+                        selected={dates.endDate}
+                        onChange={date => handleDateChange(date, 'endDate')}
                         selectsEnd
-                        startDate={startDate}
-                        endDate={endDate}
-                        minDate={startDate}
+                        startDate={dates.startDate}
+                        endDate={dates.endDate}
+                        minDate={dates.startDate}
                         dateFormat="MMM-yyyy"
                         showMonthYearPicker
                     />
@@ -160,4 +159,4 @@ const StackedChart = ({ leaveData, filterFunction }) => {
     );
 };
 
-export default StackedChart;
+export default React.memo(StackedChart);

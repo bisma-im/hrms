@@ -24,7 +24,7 @@ const EmployeesList = () => {
             <Row>
                 <Col lg={12}>
                     <Card className='m-1 m-lg-3'>
-                        <Card.Header><h5 className="card-title">Employees</h5></Card.Header>
+                        <Card.Header className='h3'><h4>Employees</h4></Card.Header>
                         <Card.Body>
                             <MyTable jsonData={jsonData} columnHeaders={columnHeaders} onRowClick={handleRowClick}/>
                         </Card.Body>

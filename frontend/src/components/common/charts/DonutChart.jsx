@@ -1,5 +1,5 @@
 // src/components/charts/PieChart.js
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import ReactApexChart from 'react-apexcharts';
 import { useSelector } from 'react-redux';
 

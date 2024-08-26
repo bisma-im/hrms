@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import JobContainer from 'components/common/jobs/JobContainer';
 import JOB_DATA from './JOB_DATA.json';
 import { Link } from 'react-router-dom';

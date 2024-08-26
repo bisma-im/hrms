@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Row, Col, Container, Tab, Nav } from 'react-bootstrap';
+import { Card, Row, Col } from 'react-bootstrap';
 import { avatar } from 'assets/images';
 import Avatar from 'components/common/ui/Avatar';
 import { useSelector } from 'react-redux';

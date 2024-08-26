@@ -1,6 +1,6 @@
 import { toggleSidebar } from 'features/nav/sidebarSlice';
 import { logout } from 'features/auth/authSlice';
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Nav } from 'react-bootstrap';
 import { FaAngleDoubleLeft, FaAngleDoubleRight, FaSignOutAlt } from 'react-icons/fa';
@@ -15,7 +15,7 @@ import './Sidebar.css';
 const Sidebar = () => {
   const { sidebarOpen } = useSelector(state => state.sidebar);
   const collapsed = !sidebarOpen;
-  const { theme, toggleTheme } = useTheme();
+  const { toggleTheme } = useTheme();
   const [openSubmenu, setOpenSubmenu] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();

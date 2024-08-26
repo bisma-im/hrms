@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Card } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import './LeavesTable.css'; // Ensure to import the CSS
 import { Scrollbars } from 'react-custom-scrollbars-2';
 

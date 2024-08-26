@@ -1,5 +1,5 @@
 // Filter component for the job position dropdown
-import React, {useState} from 'react';
+import React from 'react';
 export const SelectColumnFilter = ({
     column: { filterValue, setFilter, preFilteredRows, id },
 }) => {

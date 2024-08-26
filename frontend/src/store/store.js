@@ -1,5 +1,4 @@
-import { configureStore, applyMiddleware } from '@reduxjs/toolkit';
-import { thunk } from 'redux-thunk';
+import { configureStore } from '@reduxjs/toolkit';
 
 import authReducer from 'features/auth/authSlice';
 import sidebarReducer from 'features/nav/sidebarSlice';

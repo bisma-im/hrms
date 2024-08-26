@@ -1,9 +1,12 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import Chart from 'react-apexcharts';
+import { selectJobPositionsData } from 'features/charts/chartSelector';
 
-const BarChart = ({ chartId }) => {
-    const data = useSelector(state => state.charts[chartId] || []);
+const BarChart = () => {
+    const data = useSelector(selectJobPositionsData)  || [];
+
+    if (!data || data.length === 0) return <div>No data available.</div>;
 
     const categories = data.map(item => item.job_title);
     const seriesData = data.map(item => item.count);
@@ -61,4 +64,4 @@ const BarChart = ({ chartId }) => {
     );
 };
 
-export default BarChart;
+export default React.memo(BarChart);

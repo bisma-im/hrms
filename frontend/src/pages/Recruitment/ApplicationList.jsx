@@ -3,12 +3,9 @@ import { Card, Row, Col, Container } from 'react-bootstrap';
 import APPLICATIONS_DATA from './APPLICATIONS_DATA.json';
 import { COLUMNS } from './Columns';
 import MyTable from 'components/common/table/MyTable';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
 const ApplicationList = () => {
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
 
     const location = useLocation();
     const position = location.state?.position;

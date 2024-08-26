@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchEmployees, addEmployee, updateEmployee, deleteEmployee } from 'actions/employeeActions';
+import { fetchEmployees, addEmployee, updateEmployee, deleteEmployee } from './employeeService';
 
 const employeesSlice = createSlice({
   name: 'employee',

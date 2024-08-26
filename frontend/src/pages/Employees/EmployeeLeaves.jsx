@@ -1,6 +1,6 @@
 import React from 'react';
 import LEAVE_DATA from 'pages/Leaves/LEAVE_DATA.json';
-import { Card, Row, Col, Container, Tab, Nav, Table } from 'react-bootstrap';
+import { Card, Table } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import StackedChart from 'components/common/charts/StackedChart';
 const EmployeeLeaves = () => {

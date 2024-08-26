@@ -6,36 +6,48 @@ import StatsCard from 'components/common/card/StatsCard';
 import { equalizeCardHeights } from 'utils/domUtils';
 import { useDispatch, useSelector } from 'react-redux';
 import LeavesTable from './LeavesTable';
-import MOCK_DATA from '../Employees/MOCK_DATA.json';
-import { processGenderData, calculateLongTermCounts, calculateJobPositions, calculateEmployeesByDepartment } from 'utils/dashboardUtils';
+import { 
+    processGenderData, 
+    calculateLongTermCounts, 
+    calculateJobPositions, 
+    calculateEmployeesByDepartment 
+} from 'utils/dashboardUtils';
 import { setChartData } from 'features/charts/chartsSlice';
 import PieChart from 'components/common/charts/PieChart';
 import BarChart from 'components/common/charts/BarChart';
 import LEAVE_DATA from 'pages/Leaves/LEAVE_DATA.json';
 import StackedChart from 'components/common/charts/StackedChart';
+import { fetchEmployees } from 'features/employees/employeeService';
 
 const Dashboard = () => {
-    const employees = MOCK_DATA; // when u use api just replace mock data with 
     const dispatch = useDispatch();
-    const chartData = useSelector(state => state.charts);
+    const employees = useSelector(state => state.employee.employees);
+
+    // Fetch employees when component mounts
     useEffect(() => {
-        //Gender count for gender chart
-        const genderChartData = processGenderData(employees);
-        dispatch(setChartData({ chartId: 'genderDistribution', data: genderChartData }));
+        dispatch(fetchEmployees());
+    }, [dispatch]);
 
-        // Long term employee count
-        const longTermEmployeeData = calculateLongTermCounts(employees);
-        dispatch(setChartData({ chartId: 'longTermEmployee', data: longTermEmployeeData }));
+    // Update chart data when employees data changes
+    useEffect(() => {
+        if (employees.length > 0) {
+            // Process data for the gender distribution chart
+            const genderChartData = processGenderData(employees);
+            dispatch(setChartData({ chartId: 'genderDistribution', data: genderChartData }));
 
-        // employee count in each dept
-        const employeeDeptData = calculateEmployeesByDepartment(employees);
-        dispatch(setChartData({ chartId: 'employeesByDepartment', data: employeeDeptData }));
+            // Process data for the long term employees chart
+            const longTermEmployeeData = calculateLongTermCounts(employees);
+            dispatch(setChartData({ chartId: 'longTermEmployee', data: longTermEmployeeData }));
 
-        // employee count of each job position
-        const jobPositionData = calculateJobPositions(employees);
-        dispatch(setChartData({ chartId: 'jobPositions', data: jobPositionData }));
+            // Process data for employees by department chart
+            const employeeDeptData = calculateEmployeesByDepartment(employees);
+            dispatch(setChartData({ chartId: 'employeesByDepartment', data: employeeDeptData }));
 
-    }, [dispatch, employees.length]);
+            // Process data for the job positions chart
+            const jobPositionData = calculateJobPositions(employees);
+            dispatch(setChartData({ chartId: 'jobPositions', data: jobPositionData }));
+        }
+    }, [dispatch, employees]);
 
     // For stats cards
     useEffect(() => {
@@ -69,13 +81,13 @@ const Dashboard = () => {
     ]);
 
     // Example function to simulate stats update
-    const updateStats = () => {
-        setStats(stats.map(stat => ({
-            ...stat,
-            total: Math.floor(stat.total * (1 + stat.percentage / 100)),
-            percentage: (Math.random() - 0.5) * 20 // Randomly changing percentage
-        })));
-    };
+    // const updateStats = () => {
+    //     setStats(stats.map(stat => ({
+    //         ...stat,
+    //         total: Math.floor(stat.total * (1 + stat.percentage / 100)),
+    //         percentage: (Math.random() - 0.5) * 20 // Randomly changing percentage
+    //     })));
+    // };
 
     const [charts, setCharts] = useState([
         { id: 1, title: "Gender Distribution", chartId: 'genderDistribution' },

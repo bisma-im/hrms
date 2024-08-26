@@ -1,5 +1,5 @@
 // MenuList.js
-import { FaHome, FaUsers, FaFileAlt, FaBriefcase, FaRegCalendarCheck, FaPencilAlt, FaRegCalendarMinus, FaUserPlus, FaRegHandshake, FaCog, FaSignOutAlt, FaMoon } from 'react-icons/fa';
+import { FaHome, FaUsers, FaFileAlt, FaBriefcase, FaRegCalendarCheck, FaRegCalendarMinus, FaUserPlus, FaRegHandshake, FaCog, FaMoon } from 'react-icons/fa';
 
 const menuItems = [
   { id: 1, icon: FaHome, label: 'Dashboard', link: '/' },

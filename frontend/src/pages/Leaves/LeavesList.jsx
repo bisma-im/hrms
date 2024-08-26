@@ -3,12 +3,8 @@ import { Card, Row, Col, Container } from 'react-bootstrap';
 import LEAVE_DATA from './LEAVE_DATA.json';
 import { COLUMNS } from './Columns';
 import MyTable from 'components/common/table/MyTable';
-import { useNavigate, Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-
+import { Link } from 'react-router-dom';
 const LeavesList = () => {
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
 
     const columnHeaders = useMemo(() => COLUMNS, []);
 
