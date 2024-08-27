@@ -1,6 +1,6 @@
 import { Card, Col, Form, Row, Button } from "react-bootstrap";
 
-const ReferencesnResume = ({ prevStep, handleChange, handleSubmit, values }) => {
+const ReferencesnResume = ({ prevStep, handleReferenceChange, handleChange, handleSubmit, values }) => {
     return (
         <>
             <Card className="my-card card-bx">
@@ -11,76 +11,41 @@ const ReferencesnResume = ({ prevStep, handleChange, handleSubmit, values }) => 
                         <div className="col-sm-4"><Form.Label className="form-label">Designation</Form.Label></div>
                         <div className="col-sm-4"><Form.Label className="form-label">Contact</Form.Label></div>
                     </div>
-                    <Row>
-                        <Col sm={4} className="mb-3">
-                            <Form.Control
-                                className="form-control"
-                                type="text"
-                                name="reference1_name"
-                                required
-                                placeholder="Reference Name"
-                                onChange={handleChange('reference1_name')}
-                                defaultValue={values.reference1_name}
-                            />
-                        </Col>
-                        <Col sm={4} className="mb-3">
-                            <Form.Control
-                                className="form-control"
-                                type="text"
-                                name="reference1_designation"
-                                required
-                                placeholder="Reference Designation"
-                                onChange={handleChange('reference1_designation')}
-                                defaultValue={values.reference1_designation}
-                            />
-                        </Col>
-                        <Col sm={4} className="mb-3">
-                            <Form.Control
-                                className="form-control"
-                                type="text"
-                                name="reference1_contact"
-                                required
-                                placeholder="Reference Contact"
-                                onChange={handleChange('reference1_contact')}
-                                defaultValue={values.reference1_contact}
-                            />
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col sm={4} className="mb-3">
-                            <Form.Control
-                                className="form-control"
-                                type="text"
-                                name="reference2_name"
-                                required
-                                placeholder="Reference Name"
-                                onChange={handleChange('reference2_name')}
-                                defaultValue={values.reference2_name}
-                            />
-                        </Col>
-                        <Col sm={4} className="mb-3">
-                            <Form.Control
-                                className="form-control"
-                                type="text"
-                                name="reference2_designation"
-                                required
-                                placeholder="Reference Designation"
-                                onChange={handleChange('reference2_designation')}
-                                defaultValue={values.reference2_designation}
-                            />
-                        </Col>
-                        <Col sm={4} className="mb-3">
-                            <Form.Control
-                                className="form-control"
-                                type="text"
-                                name="reference2_contact"
-                                required
-                                placeholder="Reference Contact"
-                                onChange={handleChange('reference2_contact')}
-                                defaultValue={values.reference2_contact}
-                            />
-                        </Col>
-                    </Row>
+                    {
+                        values.references.map((reference, index) => (
+                            <Row key={index}>
+                                <Col sm={4} className="mb-3">
+                                    <Form.Control
+                                        type="text"
+                                        required
+                                        placeholder="Reference Name"
+                                        onChange={handleReferenceChange(index, 'name')}
+                                        value={reference.name}
+                                    />
+                                </Col>
+                                <Col sm={4} className="mb-3">
+                                    <Form.Control
+                                        type="text"
+                                        required
+                                        placeholder="Reference Designation"
+                                        onChange={handleReferenceChange(index, 'designation')}
+                                        value={reference.designation}
+                                    />
+                                </Col>
+                                <Col sm={4} className="mb-3">
+                                    <Form.Control
+                                        type="text"
+                                        required
+                                        placeholder="Reference Contact"
+                                        onChange={handleReferenceChange(index, 'contact')}
+                                        value={reference.contact}
+                                    />
+                                </Col>
+                            </Row>
+                        ))
+                    }
+                    <div className="my-4"><span><b>Note:</b> The references should NOT be a family member/relative of the applicant</span></div>
+
                 </Card.Body>
             </Card>
             <Card className="my-card card-bx my-5">
@@ -91,14 +56,14 @@ const ReferencesnResume = ({ prevStep, handleChange, handleSubmit, values }) => 
                             <Form.Label className="form-label pt-3 "><b>Upload your resume:</b></Form.Label>
                         </Col>
                         <Col sm={10}>
-                        <Form.Control
-                            className="form-control pt-3 ps-3"
-                            type="file"
-                            name="resume"
-                            required
-                            placeholder="Select File"
-                            onChange={handleChange('resume')}
-                            defaultValue={values.resume} />
+                            <Form.Control
+                                className="form-control pt-3 ps-3"
+                                type="file"
+                                name="resume"
+                                required
+                                placeholder="Select File"
+                                onChange={handleChange('resume')}
+                                defaultValue={values.resume} />
                         </Col>
                     </Row>
                 </Card.Body>

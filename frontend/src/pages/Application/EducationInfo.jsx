@@ -16,10 +16,10 @@ const EducationInfo = ({ nextStep, prevStep, handleChange, handleEducationChange
                             className="form-control"
                             type="number"
                             required
-                            name="total_qualification"
+                            name="total_qualification_years"
                             placeholder="Total Qualification"
-                            onChange={handleChange('total_qualification')}
-                            defaultValue={values.total_qualification}
+                            onChange={handleChange('total_qualification_years')}
+                            defaultValue={values.total_qualification_years}
                         />
                     </Col>
                     <Col sm={4} className="mb-3">
@@ -28,10 +28,10 @@ const EducationInfo = ({ nextStep, prevStep, handleChange, handleEducationChange
                             className="form-control"
                             type="number"
                             required
-                            name="no_of_publications"
+                            name="publications_count"
                             placeholder="Total Publications"
-                            onChange={handleChange('no_of_publications')}
-                            defaultValue={values.no_of_publications}
+                            onChange={handleChange('publications_count')}
+                            defaultValue={values.publications_count}
                         />
                     </Col>
                     <Col sm={3} className="mb-3">
@@ -40,11 +40,11 @@ const EducationInfo = ({ nextStep, prevStep, handleChange, handleEducationChange
                             as="select"
                             className="form-control form-select"
                             type="text"
-                            name="category_publications"
+                            name="category_publication"
                             required
                             placeholder="Category of Publications"
-                            onChange={handleChange('category_publications')}
-                            defaultValue={values.category_publications}
+                            onChange={handleChange('category_publication')}
+                            defaultValue={values.category_publication}
                         >
                             <option>Choose Category of Publications...</option>
                             <option value="w">W</option>
@@ -72,10 +72,10 @@ const EducationInfo = ({ nextStep, prevStep, handleChange, handleEducationChange
                             className="form-control"
                             type="number"
                             required
-                            name="no_phd_produced"
+                            name="ms_phd_produced"
                             placeholder="Number"
-                            onChange={handleChange('no_phd_produced')}
-                            defaultValue={values.no_phd_produced}
+                            onChange={handleChange('ms_phd_produced')}
+                            defaultValue={values.ms_phd_produced}
                         />
                     </Col>
                     <Col sm={6} className="mb-3">
@@ -84,10 +84,10 @@ const EducationInfo = ({ nextStep, prevStep, handleChange, handleEducationChange
                             className="form-control"
                             type="number"
                             required
-                            name="no_of_funded_projects"
+                            name="number_of_projects"
                             placeholder="Number"
-                            onChange={handleChange('no_of_funded_projects')}
-                            defaultValue={values.no_of_funded_projects}
+                            onChange={handleChange('number_of_projects')}
+                            defaultValue={values.number_of_projects}
                         />
                     </Col>
                 </Row>

@@ -1,6 +1,16 @@
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Card, Col, Form, Row, Button } from "react-bootstrap";
+import { fetchDepartments } from 'features/department/departmentService';
 
 const PersonalInfo = ({ nextStep, handleChange, values }) => {
+    const dispatch = useDispatch();
+    const { departments } = useSelector((state) => state.departments);
+
+    useEffect(() => {
+        dispatch(fetchDepartments());
+    }, [dispatch]);
+
     return (
         <Card className="my-card card-bx">
             <Card.Header className="card-header"><h4 className="h3" style={{ color: "#004B87" }}>1. Personal Information</h4></Card.Header>
@@ -16,11 +26,11 @@ const PersonalInfo = ({ nextStep, handleChange, values }) => {
                             className="form-control form-select"
                         >
                             <option>Choose campus...</option>
-                            <option value="Full-time">Islamabad E-8 Campus</option>
-                            <option value="Full-time">Islamabad H-11 Campus</option>
-                            <option value="Part-time">Health Sciences Campus</option>
-                            <option value="Contract">Karachi Campus</option>
-                            <option value="Temporary">Lahore Campus</option>
+                            <option value="isl_E8">Islamabad E-8 Campus</option>
+                            <option value="isl_H11">Islamabad H-11 Campus</option>
+                            <option value="health_sciences">Health Sciences Campus</option>
+                            <option value="karachi">Karachi Campus</option>
+                            <option value="lahore">Lahore Campus</option>
                         </Form.Control>
                     </Col>
                     <Col sm={4} className="mb-3">
@@ -33,11 +43,9 @@ const PersonalInfo = ({ nextStep, handleChange, values }) => {
                             className="form-control form-select"
                         >
                             <option>Choose department...</option>
-                            <option value="Full-time">Business studies</option>
-                            <option value="Full-time">Management studies</option>
-                            <option value="Part-time">Computer sciences</option>
-                            <option value="Contract">Computer engineering</option>
-                            <option value="Temporary">Software engineering</option>
+                            {departments.map((dept, i) => (
+                                <option key={i} value={dept.department_id}>{dept.department_name}</option>
+                            ))}
                         </Form.Control>
                     </Col>
                     <Col sm={4} className="mb-3">
@@ -71,11 +79,11 @@ const PersonalInfo = ({ nextStep, handleChange, values }) => {
                         <Form.Control
                             className="form-control"
                             type="text"
-                            name="fatherName"
+                            name="father_name"
                             required
                             placeholder="Father's Name"
-                            onChange={handleChange('fatherName')}
-                            defaultValue={values.fatherName}
+                            onChange={handleChange('father_name')}
+                            defaultValue={values.father_name}
                         />
                     </Col>
                     <Col sm={4} className="mb-3">
@@ -87,7 +95,6 @@ const PersonalInfo = ({ nextStep, handleChange, values }) => {
                             required
                             placeholder="Select Image"
                             onChange={handleChange('photo')}
-                            defaultValue={values.photo}
                             accept="image/png, image/jpeg, image/jpg" />
                     </Col>
                 </Row>
@@ -98,10 +105,10 @@ const PersonalInfo = ({ nextStep, handleChange, values }) => {
                             className="form-control"
                             type="text"
                             required
-                            name="cnic"
+                            name="cnic_no"
                             placeholder="xxxxx-xxxxxxx-x"
-                            onChange={handleChange('cnic')}
-                            defaultValue={values.cnic}
+                            onChange={handleChange('cnic_no')}
+                            defaultValue={values.cnic_no}
                         />
                     </Col>
                     <Col sm={4} className="mb-3">
@@ -223,11 +230,11 @@ const PersonalInfo = ({ nextStep, handleChange, values }) => {
                         as="textarea"
                         rows={3}
                         className="form-control form-textarea p-3"
-                        name="address"
+                        name="postal_address"
                         required
                         placeholder="Address"
-                        onChange={handleChange('address')}
-                        defaultValue={values.address}
+                        onChange={handleChange('postal_address')}
+                        defaultValue={values.postal_address}
                         style={{ height: "100px" }}
                     />
                 </Col>

@@ -15,7 +15,7 @@ const QualificationRepeater = ({ fields, setFields }) => {
   };
 
   const handleAdd = () => {
-    setFields([...fields, { degree: '', duration: '', specialization: '', passing_year: '', cgpa_percentage_grade: '', institute: '', country: '' }]);
+    setFields([...fields, { degree_type: '', duration_years: '', specialization: '', passing_year: '', cgpa_percentage: '', institute_name: '', country: '' }]);
   };
 
   const handleRemove = (index) => {
@@ -50,9 +50,9 @@ const QualificationRepeater = ({ fields, setFields }) => {
           <div className="col-sm-2 mb-2">
             <CreatableSelect
               isClearable
-              onChange={(option) => handleSelectChange(index, 'degree', option)}
+              onChange={(option) => handleSelectChange(index, 'degree_type', option)}
               options={degreeOptions}
-              value={degreeOptions.find(option => option.value === field.degree)}
+              value={degreeOptions.find(option => option.value === field.degree_type)}
               placeholder="Select degree"
               styles={{
                 control: (base) => ({
@@ -67,8 +67,8 @@ const QualificationRepeater = ({ fields, setFields }) => {
             <input
               className="form-control"
               type="text"
-              value={field.duration}
-              onChange={(e) => handleChange(index, 'duration', e.target.value)}
+              value={field.duration_years}
+              onChange={(e) => handleChange(index, 'duration_years', e.target.value)}
               placeholder="Duration in Years"
             />
           </div>
@@ -94,8 +94,8 @@ const QualificationRepeater = ({ fields, setFields }) => {
             <input
               className="form-control"
               type="text"
-              value={field.cgpa_percentage_grade}
-              onChange={(e) => handleChange(index, 'cgpa_percentage_grade', e.target.value)}
+              value={field.cgpa_percentage}
+              onChange={(e) => handleChange(index, 'cgpa_percentage', e.target.value)}
               placeholder="CGPA or % or Grade"
             />
           </div>
@@ -103,8 +103,8 @@ const QualificationRepeater = ({ fields, setFields }) => {
             <input
               className="form-control"
               type="text"
-              value={field.institute}
-              onChange={(e) => handleChange(index, 'institute', e.target.value)}
+              value={field.institute_name}
+              onChange={(e) => handleChange(index, 'institute_name', e.target.value)}
               placeholder="Institute Name"
             />
           </div>

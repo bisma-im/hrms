@@ -1,22 +1,33 @@
-const pool = require('../config/db');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/sequelize');
 
-class User {
-    static async findAll() {
-        const { rows } = await pool.query('SELECT * FROM users');
-        return rows;
-    }
-
-    static async findById(id) {
-        const { rows } = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
-        return rows[0];
-    }
-
-    static async findByEmail(email) {
-        const { rows } = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-        return rows[0]; // Returns the first user or undefined
-    }
-
-    // Add other necessary methods...
-}
+const User = sequelize.define('User', {
+  user_id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  username: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true
+  },
+  user_type: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  avatar: DataTypes.STRING
+}, {
+  tableName: 'users',
+  timestamps: false
+});
 
 module.exports = User;

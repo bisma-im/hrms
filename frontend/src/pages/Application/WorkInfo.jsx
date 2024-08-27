@@ -18,11 +18,11 @@ const WorkInfo = ({ nextStep, prevStep, handleChange, handleExperienceChange, va
                         <Form.Control
                             className="form-control"
                             type="text"
-                            name="total_experience"
+                            name="total_fm_experience"
                             required
                             placeholder="Total Experience"
-                            onChange={handleChange('total_experience')}
-                            defaultValue={values.total_experience}
+                            onChange={handleChange('total_fm_experience')}
+                            defaultValue={values.total_fm_experience}
                         />
                     </Col>
                 </Row>
@@ -34,11 +34,11 @@ const WorkInfo = ({ nextStep, prevStep, handleChange, handleExperienceChange, va
                         <Form.Control
                             className="form-control"
                             type="text"
-                            name="total_experience"
+                            name="total_field_experience"
                             required
                             placeholder="Total Experience"
-                            onChange={handleChange('total_experience')}
-                            defaultValue={values.total_experience}
+                            onChange={handleChange('total_field_experience')}
+                            defaultValue={values.total_field_experience}
                         />
                     </Col>
                 </Row>

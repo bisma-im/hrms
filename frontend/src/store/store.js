@@ -5,6 +5,7 @@ import sidebarReducer from 'features/nav/sidebarSlice';
 import themeReducer from 'features/theme/themeSlice';
 import chartsReducer from 'features/charts/chartsSlice';
 import employeeReducer from 'features/employees/employeeSlice';
+import departmentReducer from 'features/department/departmentSlice';
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
     theme: themeReducer,
     charts: chartsReducer,
     employee: employeeReducer,
+    departments: departmentReducer,
   },
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
 });

@@ -8,7 +8,7 @@ const ExperienceRepeater = ({ fields, setFields }) => {
     };
 
     const handleAdd = () => {
-        setFields([...fields, { institution: '', position: '', from: '', to: '', total_period: '' }]);
+        setFields([...fields, { institution_name: '', position_title: '', from_date: '', to_date: '', total_period: '' }]);
     };
 
     const handleRemove = (index) => {
@@ -32,8 +32,8 @@ const ExperienceRepeater = ({ fields, setFields }) => {
                         <input
                             className="form-control"
                             type="text"
-                            value={field.institution}
-                            onChange={(e) => handleChange(index, 'institution', e.target.value)}
+                            value={field.institution_name}
+                            onChange={(e) => handleChange(index, 'institution_name', e.target.value)}
                             placeholder="Institution Name"
                         />
                     </div>
@@ -41,8 +41,8 @@ const ExperienceRepeater = ({ fields, setFields }) => {
                         <input
                             className="form-control"
                             type="text"
-                            value={field.position}
-                            onChange={(e) => handleChange(index, 'position', e.target.value)}
+                            value={field.position_title}
+                            onChange={(e) => handleChange(index, 'position_title', e.target.value)}
                             placeholder="Position"
                         />
                     </div>
@@ -50,8 +50,8 @@ const ExperienceRepeater = ({ fields, setFields }) => {
                         <input
                             className="form-control"
                             type="date"
-                            value={field.from}
-                            onChange={(e) => handleChange(index, 'from', e.target.value)}
+                            value={field.from_date}
+                            onChange={(e) => handleChange(index, 'from_date', e.target.value)}
                             placeholder="Start Date"
                         />
                     </div>
@@ -59,8 +59,8 @@ const ExperienceRepeater = ({ fields, setFields }) => {
                         <input
                             className="form-control"
                             type="date"
-                            value={field.to}
-                            onChange={(e) => handleChange(index, 'to', e.target.value)}
+                            value={field.to_date}
+                            onChange={(e) => handleChange(index, 'to_date', e.target.value)}
                             placeholder="End Date"
                         />
                     </div>
