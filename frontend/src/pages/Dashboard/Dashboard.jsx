@@ -30,7 +30,7 @@ const Dashboard = () => {
 
     // Update chart data when employees data changes
     useEffect(() => {
-        if (employees.length > 0) {
+        if (employees) {
             // Process data for the gender distribution chart
             const genderChartData = processGenderData(employees);
             dispatch(setChartData({ chartId: 'genderDistribution', data: genderChartData }));

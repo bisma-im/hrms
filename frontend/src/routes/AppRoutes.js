@@ -23,7 +23,7 @@ const AppRoutes = () => {
 
             <Route path="/login" element={<Login />} />
             {/* <Route path="*" element={<Navigate to="login" />} /> */}
-            <Route path="/job-application" element={<ApplicationForm />} />
+            <Route path="/job-application" element={<ApplicationForm formType="applicant"/>} />
 
 
             {/* Redirect if not authenticated */}
@@ -37,6 +37,7 @@ const AppRoutes = () => {
                     <Route path="create-job" element={<CreateJob />} />
                     <Route path="employees-list" element={<EmployeesList />} />
                     <Route path="employee-details" element={<Employees />} />
+                    <Route path="add-employee-form" element={<ApplicationForm formType="employee" />} />
                     <Route path="job-positions" element={<JobPositions />} />
                     <Route path='leaves' element={<LeavesList />} />
                     <Route path='sick-leave' element={<SickLeave />} />

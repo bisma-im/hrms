@@ -5,7 +5,7 @@ import './filtering.css';
 
 const MyTable = ({ columnHeaders, jsonData, onRowClick, initialFilters }) => {
     const columns = useMemo(() => columnHeaders, [])
-    const data = useMemo(() => jsonData, [])
+    const data = useMemo(() => jsonData, [jsonData])
     const {
         getTableProps,
         getTableBodyProps,

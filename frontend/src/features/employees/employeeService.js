@@ -4,7 +4,11 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 export const fetchEmployees = createAsyncThunk('employees/fetchEmployees', async (_, { rejectWithValue }) => {
   try {
     const response = await apiClient.get('/api/employees');
-    return response.data;
+    if (response.data.data) {
+      return response.data.data; // Assuring that the nested data is correctly targeted
+    } else {
+      return rejectWithValue('No employees found'); // Handling cases where no data is returned
+    }
   } catch (error) {
     return rejectWithValue(error.response.data);
   }

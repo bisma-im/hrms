@@ -1,18 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Card, Row, Col, Container } from 'react-bootstrap';
-import MOCK_DATA from './MOCK_DATA.json';
+// import MOCK_DATA from './MOCK_DATA.json';
+import { fetchEmployees } from 'features/employees/employeeService';
 import { COLUMNS } from './Columns';
 import MyTable from 'components/common/table/MyTable';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectEmployee } from 'features/employees/employeeSlice';
 
 const EmployeesList = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const employees = useSelector(state => state.employee.employees);
+
+    console.log(employees);
+
+    // Fetch employees when component mounts
+    useEffect(() => {
+        dispatch(fetchEmployees());
+    }, [dispatch]);
+
     const columnHeaders = COLUMNS;
 
-    const jsonData = MOCK_DATA;
+    const jsonData = employees;
 
     const handleRowClick = (employee) => {
         dispatch(selectEmployee(employee));
@@ -21,6 +31,11 @@ const EmployeesList = () => {
 
     return (
         <Container fluid>
+            <Row className="d-flex align-items-center justify-content-md-end">
+                <Col xs="auto" className='m-4'>
+                    <Link className='link-button' to={'/add-employee-form'}>Create</Link>
+                </Col>
+            </Row>
             <Row>
                 <Col lg={12}>
                     <Card className='m-1 m-lg-3'>

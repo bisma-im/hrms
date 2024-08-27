@@ -22,6 +22,10 @@ app.use('/api/departments', require('./src/routes/departmentRoutes'));
 // Applicant Routes
 app.use('/api/applicants', require('./src/routes/applicationRoutes'));
 
+// Employee Routes
+app.use('/api/employees', require('./src/routes/employeeRoutes'));
+
+
 // Start the server
 const PORT = process.env.PORT || 5000;
 

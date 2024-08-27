@@ -27,10 +27,10 @@ const EmployeeSummary = () => {
             <Card.Body>
                 <Row className="d-flex align-items-center justify-content-md-end">
                     <Col>
-                        <Avatar src={avatar} name={`${employee.first_name} ${employee.last_name}`} size={100} />
+                        <Avatar src={avatar} name={`${employee.name}`} size={100} />
                     </Col>
                     <Col xs="auto">
-                        <div style={nameStyle}>{`${employee.first_name} ${employee.last_name}`}</div>
+                        <div style={nameStyle}>{`${employee.name}`}</div>
                         <div style={titleStyle}>{employee.job_title}</div>
                     </Col>
                 </Row>

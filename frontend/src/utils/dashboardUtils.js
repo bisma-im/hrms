@@ -48,7 +48,7 @@ export function calculateEmployeesByDepartment(employees) {
 
     // Loop through all employees to tally the counts for each department
     employees.forEach(employee => {
-        const department = employee.department;
+        const department = employee.department_name;
         if (departmentCounts[department]) {
             departmentCounts[department]++;
         } else {

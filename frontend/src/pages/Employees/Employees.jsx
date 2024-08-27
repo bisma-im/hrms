@@ -12,7 +12,7 @@ const Employees = () => {
             <Tab.Container defaultActiveKey={'EmployeeSummary'}>
                 <Row>
                     <Col sm={6}>
-                        <h3 className='h3 mx-3'>{`${employee.first_name} ${employee.last_name} - ${employee.id}`}</h3>
+                        <h3 className='h3 mx-3'>{`${employee.name} - ${employee.employee_id}`}</h3>
                     </Col>
                     <Col sm={6} className='my-nav'>
                         <Nav variant="tabs" className='d-flex align-items-center justify-content-md-end'>
