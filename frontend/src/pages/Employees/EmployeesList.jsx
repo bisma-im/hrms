@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Card, Row, Col, Container } from 'react-bootstrap';
-// import MOCK_DATA from './MOCK_DATA.json';
 import { fetchEmployees } from 'features/employees/employeeService';
 import { COLUMNS } from './Columns';
 import MyTable from 'components/common/table/MyTable';
@@ -13,16 +12,12 @@ const EmployeesList = () => {
     const dispatch = useDispatch();
     const employees = useSelector(state => state.employee.employees);
 
-    console.log(employees);
-
     // Fetch employees when component mounts
     useEffect(() => {
         dispatch(fetchEmployees());
     }, [dispatch]);
 
     const columnHeaders = COLUMNS;
-
-    const jsonData = employees;
 
     const handleRowClick = (employee) => {
         dispatch(selectEmployee(employee));
@@ -41,7 +36,7 @@ const EmployeesList = () => {
                     <Card className='m-1 m-lg-3'>
                         <Card.Header className='h3'><h4>Employees</h4></Card.Header>
                         <Card.Body>
-                            <MyTable jsonData={jsonData} columnHeaders={columnHeaders} onRowClick={handleRowClick}/>
+                            <MyTable jsonData={employees} columnHeaders={columnHeaders} onRowClick={handleRowClick}/>
                         </Card.Body>
                     </Card>
                 </Col>

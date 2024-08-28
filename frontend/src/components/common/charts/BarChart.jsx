@@ -6,7 +6,8 @@ import { selectJobPositionsData } from 'features/charts/chartSelector';
 const BarChart = () => {
     const data = useSelector(selectJobPositionsData)  || [];
 
-    if (!data || data.length === 0) return <div>No data available.</div>;
+
+    if (!data) return <div>No data available.</div>;
 
     const categories = data.map(item => item.job_title);
     const seriesData = data.map(item => item.count);

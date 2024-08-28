@@ -3,11 +3,12 @@ const sequelize = require('../config/sequelize'); // make sure to import your co
 exports.getAllEmployees = async (req, res) => {
     try {
         const query = `
-            SELECT e.employee_id, e.doj, pd.name, pd.gender, pd.cell_no, u.email, d.department_name
+            SELECT e.employee_id, e.doj, pd.name, pd.gender, pd.cell_no, u.email, d.department_name, j.title as job_title
             FROM employees e
             LEFT JOIN users u ON e.user_id = u.user_id
             LEFT JOIN personal_details pd ON e.user_id = pd.user_id
             LEFT JOIN department d ON e.department_id = d.department_id
+            LEFT JOIN job j ON e.job_id = j.job_id
         `;
         const employees = await sequelize.query(query, { type: sequelize.QueryTypes.SELECT });
 

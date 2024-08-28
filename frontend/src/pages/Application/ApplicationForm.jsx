@@ -11,9 +11,11 @@ import Swal from 'sweetalert2';
 
 const initialFormData = {
     campus: '',
-    department: '',
+    department_id: '',
     specialization: '',
     name: '',
+    job_id: '',
+    doj: '',
     father_name: '',
     gender: '',
     cnic_no: '',
@@ -87,6 +89,7 @@ const ApplicationForm = ({ formType }) => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 const data = new FormData();
+                data.append('formType', formType);
                 Object.entries(formData).forEach(([key, value]) => {
                     if (['photo', 'resume'].includes(key) && value instanceof File) {
                         data.append(key, value);
@@ -98,7 +101,7 @@ const ApplicationForm = ({ formType }) => {
                 });
 
                 try {
-                    const response = formType === 'applicant' ? await submitApplicationForm(data) : console.log(formData);
+                    const response = await submitApplicationForm(data);
                     if (response && response.success) {
                         Swal.fire({
                             icon: 'success',
@@ -140,7 +143,7 @@ const ApplicationForm = ({ formType }) => {
                 </Col>
             </Row>
             <Form onSubmit={handleSubmit} className='my-form m-3' encType='multipart/form-data'>
-                {step === 1 && <PersonalInfo nextStep={nextStep} handleChange={handleChange} values={formData} />}
+                {step === 1 && <PersonalInfo nextStep={nextStep} handleChange={handleChange} values={formData} formType={formType} />}
                 {step === 2 && <EducationInfo nextStep={nextStep} prevStep={prevStep} handleChange={handleChange} handleEducationChange={handleEducationChange} values={formData} />}
                 {step === 3 && <WorkInfo nextStep={nextStep} prevStep={prevStep} handleChange={handleChange} handleExperienceChange={handleExperienceChange} values={formData} />}
                 {step === 4 && <ReferencesnResume prevStep={prevStep} handleReferenceChange={handleReferenceChange} handleChange={handleChange} handleSubmit={handleSubmit} values={formData} />}

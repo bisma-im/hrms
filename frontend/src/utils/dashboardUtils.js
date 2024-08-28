@@ -43,6 +43,7 @@ export function calculateJobPositions(employees) {
 }
 
 
+
 export function calculateEmployeesByDepartment(employees) {
     const departmentCounts = {};
 

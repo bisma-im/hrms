@@ -16,6 +16,7 @@ const PersonalInformation = sequelize.define('PersonalInformation', {
     },
     onDelete: 'CASCADE', // optional: this defines what to do when the referenced object is deleted
   },
+  specialization: DataTypes.STRING,
   name: DataTypes.STRING,
   father_name: DataTypes.STRING,
   gender: DataTypes.STRING,
