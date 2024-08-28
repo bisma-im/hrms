@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
+const path = require('path');
 // const pool = require('./src/config/db');
 const sequelize = require('./src/config/sequelize');
 
@@ -27,6 +28,11 @@ app.use('/api/employees', require('./src/routes/employeeRoutes'));
 
 
 app.use('/api/jobs', require('./src/routes/jobRoutes'));
+
+
+// Serve static files from the 'uploads' directory
+app.use(express.static(__dirname));
+
 
 // Start the server
 const PORT = process.env.PORT || 5000;

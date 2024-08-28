@@ -1,7 +1,9 @@
 import React from 'react';
 import { Table, Button, Card } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 
 const EmployeeDocuments = () => {
+    const employee = useSelector((state) => state.employee.selectedEmployee);
     const documentsData = [
         {
             category: "Personal",
@@ -63,7 +65,14 @@ const EmployeeDocuments = () => {
                                         <td>{doc.uploadedDate}</td>
                                         <td>{doc.remarks}</td>
                                         <td>{doc.status}</td>
-                                        <td><Button variant="primary" size="sm">{doc.action}</Button></td>
+                                        <td>
+                                            <a href={`http://localhost:5000/${employee.resume}`} 
+                                                target="_blank" // Opens the link in a new tab
+                                                rel="noopener noreferrer" // Security best practice for links opening in new tabs
+                                                className="ms-2 link-button">
+                                                    {doc.action}
+                                            </a>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>

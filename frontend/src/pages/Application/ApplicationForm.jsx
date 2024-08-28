@@ -15,7 +15,6 @@ const initialFormData = {
     specialization: '',
     name: '',
     job_id: '',
-    doj: '',
     father_name: '',
     gender: '',
     cnic_no: '',
@@ -46,7 +45,7 @@ const initialFormData = {
     experiences: [{ institution_name: '', position_title: '', from_date: '', to_date: '', total_period: '' }]
 };
 
-const ApplicationForm = ({ formType }) => {
+const ApplicationForm = () => {
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState(initialFormData);
 
@@ -89,7 +88,6 @@ const ApplicationForm = ({ formType }) => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 const data = new FormData();
-                data.append('formType', formType);
                 Object.entries(formData).forEach(([key, value]) => {
                     if (['photo', 'resume'].includes(key) && value instanceof File) {
                         data.append(key, value);
@@ -130,10 +128,8 @@ const ApplicationForm = ({ formType }) => {
         });
     };
 
-    const dynamicStyle = formType === 'applicant' ? { backgroundColor: "#F3F0EC", height: "100vh" } : {};
-
     return (
-        <Container fluid className={formType === 'applicant' ? 'main-content' : ''} style={dynamicStyle}>
+        <Container fluid className="main-content" style={{ backgroundColor: "#F3F0EC", height: "100vh" }}>
             <Row className="align-items-center m-3">
                 <Col xs={2} md={1} className="p-0">
                     <img src={logo} alt="Logo" className="navbar-logo" style={{ width: "70%" }} />
@@ -143,7 +139,7 @@ const ApplicationForm = ({ formType }) => {
                 </Col>
             </Row>
             <Form onSubmit={handleSubmit} className='my-form m-3' encType='multipart/form-data'>
-                {step === 1 && <PersonalInfo nextStep={nextStep} handleChange={handleChange} values={formData} formType={formType} />}
+                {step === 1 && <PersonalInfo nextStep={nextStep} handleChange={handleChange} values={formData} />}
                 {step === 2 && <EducationInfo nextStep={nextStep} prevStep={prevStep} handleChange={handleChange} handleEducationChange={handleEducationChange} values={formData} />}
                 {step === 3 && <WorkInfo nextStep={nextStep} prevStep={prevStep} handleChange={handleChange} handleExperienceChange={handleExperienceChange} values={formData} />}
                 {step === 4 && <ReferencesnResume prevStep={prevStep} handleReferenceChange={handleReferenceChange} handleChange={handleChange} handleSubmit={handleSubmit} values={formData} />}

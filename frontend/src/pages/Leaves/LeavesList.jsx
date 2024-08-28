@@ -1,10 +1,16 @@
 import React, { useMemo } from 'react';
-import { Card, Row, Col, Container } from 'react-bootstrap';
+import { Card, Row, Col, Container, DropdownButton, ButtonGroup, Dropdown } from 'react-bootstrap';
 import LEAVE_DATA from './LEAVE_DATA.json';
 import { COLUMNS } from './Columns';
 import MyTable from 'components/common/table/MyTable';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 const LeavesList = () => {
+
+    const navigate = useNavigate();
+
+    const handleCreateClick = (link) => {
+        navigate(link);
+    };
 
     const columnHeaders = useMemo(() => COLUMNS, []);
 
@@ -20,7 +26,11 @@ const LeavesList = () => {
         <Container fluid>
             <Row className="d-flex align-items-center justify-content-md-end">
                 <Col xs="auto" className='mx-3'>
-                    <Link className='link-button btn-primary' to={'/casual-leave'}>Create</Link>
+                    <DropdownButton as={ButtonGroup} title="Create">
+                        <Dropdown.Item eventKey="1" onClick={() => handleCreateClick('/sick-leave')}>Sick Leave</Dropdown.Item>
+                        <Dropdown.Item eventKey="2" onClick={() => handleCreateClick('/casual-leave')}>Casual Leave</Dropdown.Item>
+                        <Dropdown.Item eventKey="3" onClick={() => handleCreateClick('/privilege-leave')}>Privilege Leave</Dropdown.Item>
+                    </DropdownButton>
                 </Col>
             </Row>
             <Row>

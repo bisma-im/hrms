@@ -27,7 +27,7 @@ const EmployeesList = () => {
     return (
         <Container fluid>
             <Row className="d-flex align-items-center justify-content-md-end">
-                <Col xs="auto" className='m-4'>
+                <Col xs="auto" className='mx-3'>
                     <Link className='link-button' to={'/add-employee-form'}>Create</Link>
                 </Col>
             </Row>

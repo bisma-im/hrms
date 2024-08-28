@@ -4,7 +4,7 @@ import { Card, Col, Form, Row, Button } from "react-bootstrap";
 import { fetchDepartments } from 'features/department/departmentService';
 import { fetchJobsByDepartment } from 'features/job/jobService';
 
-const PersonalInfo = ({ nextStep, handleChange, values, formType }) => {
+const PersonalInfo = ({ nextStep, handleChange, values }) => {
     const dispatch = useDispatch();
     const { departments } = useSelector((state) => state.departments);
     const [jobs, setJobs] = useState([]);
@@ -239,88 +239,57 @@ const PersonalInfo = ({ nextStep, handleChange, values, formType }) => {
                     </Col>
                 </Row>
                 <Row>
-                    {formType === 'applicant' ? (
-                        <Col sm={12} className="my-3">
-
-                            <Form.Group>
-                                <div>
-
-                                    <Form.Label className="form-label  me-3">How did you hear about us? (Select one)</Form.Label>
-                                    <Form.Check
-                                        className='form-label'
-                                        type="radio"
-                                        inline
-                                        label="Website"
-                                        name="how_hear"
-                                        value="website"
-                                        checked={values.how_hear === 'website'}
-                                        onChange={handleChange('how_hear')}
-                                        id="how_hear"
-                                    />
-                                    <Form.Check
-                                        className='form-label'
-                                        inline
-                                        type="radio"
-                                        label="Social Media"
-                                        name="how_hear"
-                                        value="social_media"
-                                        checked={values.how_hear === 'social_media'}
-                                        onChange={handleChange('how_hear')}
-                                        id="how_hear"
-                                    />
-                                    <Form.Check
-                                        className='form-label'
-                                        type="radio"
-                                        inline
-                                        label="News Paper"
-                                        name="how_hear"
-                                        value="news_paper"
-                                        checked={values.how_hear === 'news_paper'}
-                                        onChange={handleChange('how_hear')}
-                                        id="how_hear"
-                                    />
-                                    <Form.Check
-                                        className='form-label'
-                                        type="radio"
-                                        inline
-                                        label="From a Friend"
-                                        name="how_hear"
-                                        value="friend"
-                                        checked={values.how_hear === 'friend'}
-                                        onChange={handleChange('how_hear')}
-                                        id="friend"
-                                    />
-                                </div>
-                            </Form.Group>
-                        </Col>) : (
-                        <>
-                            <Col sm={4} className="mb-3">
-                                <Form.Label className="form-label  me-3">Select Job</Form.Label>
-                                <Form.Control
-                                    as="select"
-                                    name="job_id"
-                                    defaultValue={values.job_id}
-                                    onChange={handleChange('job_id')}
-                                    className="form-control form-select"
-                                // disabled={!jobs.length}
-                                >
-                                    <option>Choose job...</option>
-                                    {jobs && jobs.map((job, i) => (
-                                        <option key={i} value={job.job_id}>{job.title}</option>
-                                    ))}
-                                </Form.Control>
-                            </Col>
-                            <Col sm={4} className="mb-3">
-                                <Form.Label className="form-label  me-3">Date of Joining</Form.Label>
-                                <Form.Control
-                                    type="date"
-                                    name="doj"
-                                    defaultValue={values.doj}
-                                    onChange={handleChange('doj')}
-                                    className="form-control" />
-                            </Col>
-                        </>
-                    )}
+                    <Col sm={12} className="my-3">
+                        <Form.Group>
+                            <div>
+                                <Form.Label className="form-label  me-3">How did you hear about us? (Select one)</Form.Label>
+                                <Form.Check
+                                    className='form-label'
+                                    type="radio"
+                                    inline
+                                    label="Website"
+                                    name="how_hear"
+                                    value="website"
+                                    checked={values.how_hear === 'website'}
+                                    onChange={handleChange('how_hear')}
+                                    id="how_hear"
+                                />
+                                <Form.Check
+                                    className='form-label'
+                                    inline
+                                    type="radio"
+                                    label="Social Media"
+                                    name="how_hear"
+                                    value="social_media"
+                                    checked={values.how_hear === 'social_media'}
+                                    onChange={handleChange('how_hear')}
+                                    id="how_hear"
+                                />
+                                <Form.Check
+                                    className='form-label'
+                                    type="radio"
+                                    inline
+                                    label="News Paper"
+                                    name="how_hear"
+                                    value="news_paper"
+                                    checked={values.how_hear === 'news_paper'}
+                                    onChange={handleChange('how_hear')}
+                                    id="how_hear"
+                                />
+                                <Form.Check
+                                    className='form-label'
+                                    type="radio"
+                                    inline
+                                    label="From a Friend"
+                                    name="how_hear"
+                                    value="friend"
+                                    checked={values.how_hear === 'friend'}
+                                    onChange={handleChange('how_hear')}
+                                    id="friend"
+                                />
+                            </div>
+                        </Form.Group>
+                    </Col>
                 </Row>
                 <Col sm={12} className="mb-3">
                     <Form.Label className="form-label">Address</Form.Label>

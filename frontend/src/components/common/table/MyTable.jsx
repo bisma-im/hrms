@@ -3,7 +3,7 @@ import { useTable, useFilters, usePagination, useSortBy } from 'react-table';
 import { FaArrowUp, FaArrowDown, FaSort, FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 import './filtering.css';
 
-const MyTable = ({ columnHeaders, jsonData, onRowClick, initialFilters }) => {
+const MyTable = ({ columnHeaders, customCellRender, jsonData, onRowClick, initialFilters }) => {
     const columns = useMemo(() => columnHeaders, [])
     const data = useMemo(() => jsonData, [jsonData])
     const {
@@ -55,12 +55,14 @@ const MyTable = ({ columnHeaders, jsonData, onRowClick, initialFilters }) => {
                                     return (
                                         <th key={key} {...restColumnProps}>
                                             {column.render('Header')}
-                                            <span className="ml-1">
-                                                {column.isSorted ? (
-                                                    column.isSortedDesc ? <FaArrowDown style={{ opacity: '0.7' }} /> : <FaArrowUp style={{ opacity: '0.7' }} />
-                                                ) : <FaSort style={{ opacity: '0.3' }} />
-                                                }
-                                            </span>
+                                            {!column.disableSortBy && ( // Only show sort icons if sorting is enabled
+                                                <span className="ml-1">
+                                                    {column.isSorted ? (
+                                                        column.isSortedDesc ? <FaArrowDown style={{ opacity: '0.7' }} /> : <FaArrowUp style={{ opacity: '0.7' }} />
+                                                    ) : <FaSort style={{ opacity: '0.3' }} />
+                                                    }
+                                                </span>
+                                            )}
                                             {column.canFilter ? column.render('Filter') : null}
                                         </th>
                                     );
@@ -79,7 +81,7 @@ const MyTable = ({ columnHeaders, jsonData, onRowClick, initialFilters }) => {
                                     const cellProps = cell.getCellProps();
                                     return (
                                         <td {...cellProps} key={cellProps.key}>
-                                            {cell.render('Cell')}
+                                            {cell.column.id === 'Status' && customCellRender ? customCellRender(row) : cell.render('Cell')}
                                         </td>
                                     );
                                 })}
