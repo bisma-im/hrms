@@ -40,8 +40,8 @@ const QualificationRepeater = ({ fields, setFields }) => {
         <div className="col-sm-1"><label className="form-label">Duration in Years</label></div>
         <div className="col-sm-2"><label className="form-label">Specialization</label></div>
         <div className="col-sm-1"><label className="form-label">Passing Year</label></div>
-        <div className="col-sm-2"><label className="form-label">CGPA/Percentage/Grade</label></div>
-        <div className="col-sm-2"><label className="form-label">Institute/Board/University</label></div>
+        <div className="col-sm-2"><label className="form-label">CGPA/Percentage/ Grade</label></div>
+        <div className="col-sm-2"><label className="form-label">Institute/Board/ University</label></div>
         <div className="col-sm-1"><label className="form-label">Country</label></div>
         <div className="col-sm-1"></div> {/* Empty column for alignment with button columns */}
       </div>

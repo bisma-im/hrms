@@ -8,7 +8,6 @@ import WorkInfo from './WorkInfo';
 import ReferencesnResume from './ReferencesnResume';
 import Swal from 'sweetalert2';
 
-
 const initialFormData = {
     campus: '',
     department_id: '',

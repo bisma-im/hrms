@@ -14,6 +14,7 @@ import SickLeave from 'pages/Leaves/SickLeave';
 import PrivilegeLeave from 'pages/Leaves/PrivilegeLeave';
 import ApplicationForm from 'pages/Application/ApplicationForm';
 import { useSelector } from 'react-redux';
+import CreateEmployee from 'pages/Employees/CreateEmployee';
 
 const AppRoutes = () => {
     const { isAuthenticated } = useSelector(state => state.auth);
@@ -23,7 +24,7 @@ const AppRoutes = () => {
 
             <Route path="/login" element={<Login />} />
             {/* <Route path="*" element={<Navigate to="login" />} /> */}
-            <Route path="/job-application" element={<ApplicationForm formType="applicant"/>} />
+            <Route path="/job-application" element={<ApplicationForm/>} />
 
 
             {/* Redirect if not authenticated */}
@@ -37,7 +38,7 @@ const AppRoutes = () => {
                     <Route path="create-job" element={<CreateJob />} />
                     <Route path="employees-list" element={<EmployeesList />} />
                     <Route path="employee-details" element={<Employees />} />
-                    <Route path="add-employee-form" element={<ApplicationForm formType="employee" />} />
+                    <Route path="add-employee-form" element={<CreateEmployee />} />
                     <Route path="job-positions" element={<JobPositions />} />
                     <Route path='leaves' element={<LeavesList />} />
                     <Route path='sick-leave' element={<SickLeave />} />
