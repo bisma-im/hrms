@@ -674,3 +674,19 @@
   border: none;
   background-color: transparent; /* Ensure background is transparent */
 }
+
+
+/* modal */
+
+/* Custom CSS to center the modal */
+.modal-dialog-centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.modal-content {
+  margin: auto;
+  min-height: 450px;
+}

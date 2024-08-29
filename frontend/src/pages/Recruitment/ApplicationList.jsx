@@ -1,15 +1,18 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Card, Row, Col, Container, DropdownButton, ButtonGroup, Dropdown } from 'react-bootstrap';
 import APPLICATIONS_DATA from './APPLICATIONS_DATA.json';
 import { COLUMNS } from './Columns';
 import MyTable from 'components/common/table/MyTable';
 import { useLocation } from 'react-router-dom';
+import ScheduleInterviewModal from './ScheduleInterviewModal';
 
 const ApplicationList = () => {
 
     const location = useLocation();
     const position = location.state?.position;
+    const [showModal, setShowModal] = useState(false);
+    const [selectedApplicant, setSelectedApplicant] = useState(null);
 
     const columnHeaders = useMemo(() => COLUMNS, []);
 
@@ -48,15 +51,15 @@ const ApplicationList = () => {
     const customCellRender = (row) => {
         const currentColor = getColor(row.original.Status);
         console.log(currentColor);
-        
+
         return (
             <DropdownButton
                 as={ButtonGroup}
                 title={row.original.Status}
                 id={`dropdown-button-drop-${row.id}`}
                 key={row.id}
-                 variant="custom"
-            className="custom-dropdown"
+                variant="custom"
+                className="custom-dropdown"
                 style={{
                     backgroundColor: currentColor,
                     borderColor: currentColor,
@@ -76,23 +79,84 @@ const ApplicationList = () => {
         );
     };
 
+
     const handleAction = (actionType, row) => {
         switch (actionType) {
             case 'hire':
                 console.log(`Hiring candidate ${row.original.ApplicantName}`);
-                // Implement hiring logic here
                 break;
             case 'interview':
+                setSelectedApplicant(row.original);
+                setShowModal(true);
                 console.log(`Scheduling interview for ${row.original.ApplicantName}`);
-                // Implement interview scheduling logic here
                 break;
             case 'view':
                 console.log(`Viewing details for ${row.original.ApplicantName}`);
-                // Implement view logic here
                 break;
             default:
                 break;
         }
+    };
+    const columnsWithAction = useMemo(() => {
+        return COLUMNS.map(column => {
+            if (column.id === 'actions') {
+                return {
+                    ...column,
+                    Cell: ({ row }) => (
+                        <Dropdown>
+                            <Dropdown.Toggle as="div" className="btn-link i-false">
+                                <svg
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        d="M11 12C11 12.5523 11.4477 13 12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12Z"
+                                        stroke="#737B8B"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    ></path>
+                                    <path
+                                        d="M18 12C18 12.5523 18.4477 13 19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12Z"
+                                        stroke="#737B8B"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    ></path>
+                                    <path
+                                        d="M4 12C4 12.5523 4.44772 13 5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12Z"
+                                        stroke="#737B8B"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    ></path>
+                                </svg>
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu className="dropdown-menu-right" align="end">
+                                <Dropdown.Item onClick={() => handleAction('hire', row)}>Hire Candidate</Dropdown.Item>
+                                <Dropdown.Item onClick={() => handleAction('interview', row)}>Schedule Interview</Dropdown.Item>
+                                <Dropdown.Item onClick={() => handleAction('view', row)}>View</Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown >
+                    )
+                }
+            }
+            return column;
+        });
+    }, [handleAction]);
+
+    const handleScheduleInterview = (date, content) => {
+        console.log(`Interview scheduled for ${selectedApplicant.ApplicantName} on ${date}`);
+        console.log(`Email content: ${content}`);
+        // Implement the API call or logic to save the interview details and send the email here
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+        setSelectedApplicant(null);
     };
 
     return (
@@ -102,17 +166,25 @@ const ApplicationList = () => {
                     <Card className='m-1 m-lg-3'>
                         <Card.Header><h5 className="card-title">Applications</h5></Card.Header>
                         <Card.Body>
-                            <MyTable 
-                                jsonData={jsonData} 
-                                columnHeaders={columnHeaders} 
-                                customCellRender={customCellRender} 
-                                onRowClick={handleRowClick} 
-                                initialFilters={initialFilters} 
+                            <MyTable
+                                jsonData={jsonData}
+                                columnHeaders={columnsWithAction}
+                                customCellRender={customCellRender}
+                                onRowClick={handleRowClick}
+                                initialFilters={initialFilters}
                             />
                         </Card.Body>
                     </Card>
                 </Col>
             </Row>
+            {selectedApplicant && (
+                <ScheduleInterviewModal
+                    show={showModal}
+                    handleClose={handleCloseModal}
+                    applicant={selectedApplicant}
+                    handleSchedule={handleScheduleInterview}
+                />
+            )}
         </Container>
     );
 };
