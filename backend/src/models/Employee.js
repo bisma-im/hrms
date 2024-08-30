@@ -38,11 +38,21 @@ const Employee = sequelize.define('Employee', {
         type: DataTypes.DATE,
         defaultValue: () => new Date().toISOString().slice(0, 10),
         allowNull: false
-    }
+    },
+    date_of_promotion: {
+        type: DataTypes.DATE,
+        allowNull: true
+    },
+    reg_no: DataTypes.STRING,
+    card_no: DataTypes.STRING,
+    present_address: DataTypes.STRING,
+    office_letter_no: DataTypes.STRING
     // Add additional fields if necessary
 }, {
     tableName: 'employees',
-    timestamps: false
+    timestamps: true,
+    createdAt: 'createdat',
+    updatedAt: 'updatedat' 
 });
 
 module.exports = Employee;

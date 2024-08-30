@@ -32,10 +32,13 @@ const Application = sequelize.define('Application', {
         allowNull: false
     },
     rating: {
-        type: DataTypes.ENUM,
-        values: [1, 2, 3, 4, 5],
-        allowNull: true
-    },
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        validate: {
+            min: 1,
+            max: 5
+        }
+    },    
     interview_date: {
         type: DataTypes.DATE,
         allowNull: true

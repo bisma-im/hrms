@@ -20,7 +20,7 @@ const Qualification = sequelize.define('Qualification', {
   duration_years: DataTypes.INTEGER,
   specialization: DataTypes.STRING,
   passing_year: DataTypes.INTEGER,
-  cgpa_percentage: DataTypes.FLOAT,
+  cgpa_percentage: DataTypes.STRING,
   institute_name: DataTypes.STRING,
   country: DataTypes.STRING
 }, {

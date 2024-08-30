@@ -28,6 +28,18 @@ const employeesSlice = createSlice({
       .addCase(fetchEmployees.rejected, (state, action) => {
         state.loading = 'failed';
         console.error('Fetch failed:', action.payload);
+      })
+      .addCase(addEmployee.pending, (state) => {
+        state.loading = 'loading';
+      })
+      .addCase(addEmployee.fulfilled, (state, action) => {
+        state.employees.push(action.payload);
+        state.loading = 'idle';
+      })
+      .addCase(addEmployee.rejected, (state, action) => {
+        state.loading = 'failed';
+        state.error = action.payload;
+        console.error('Add employee failed:', action.payload);
       });
   }
 });

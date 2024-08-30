@@ -40,8 +40,8 @@ const initialFormData = {
     total_fm_experience: '',
     total_field_experience: '',
     references: [
-        { name: '', designation: '', contact: '' },
-        { name: '', designation: '', contact: '' }
+        { reference_name: '', reference_designation: '', reference_contact: '' },
+        { reference_name: '', reference_designation: '', reference_contact: '' }
     ],
     education: [{ degree_type: '', duration_years: '', specialization: '', passing_year: '', cgpa_percentage: '', institute_name: '', country: '' }],
     experiences: [{ institution_name: '', position_title: '', from_date: '', to_date: '', total_period: '' }]
@@ -84,6 +84,7 @@ const ApplicationForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log(formData);
         Swal.fire({
             icon: 'warning',
             title: 'Warning',
@@ -103,9 +104,14 @@ const ApplicationForm = () => {
                     }
                 });
                 data.append('user_type', 'applicant');
+
+                // Log FormData to inspect it
+                for (let pair of data.entries()) {
+                    console.log(pair[0], pair[1]);
+                }
                 const actionResult = await dispatch(addApplicant(data));
                 const response = actionResult.payload;  // Access the payload directly
-    
+
                 if (actionResult.meta.requestStatus === 'fulfilled') {
                     // Successful server response handling
                     Swal.fire({
@@ -128,7 +134,7 @@ const ApplicationForm = () => {
             }
         });
     };
-    
+
     useEffect(() => {
         if (applicantId) {
             setIsLoading(true);
@@ -146,7 +152,7 @@ const ApplicationForm = () => {
     }, [applicantId, dispatch]);
 
     if (isLoading) {
-        return <LoadingSpinner/>;
+        return <LoadingSpinner />;
     }
 
     const dynamicStyle = applicantId ? {} : { backgroundColor: "#F3F0EC", height: "100vh" };

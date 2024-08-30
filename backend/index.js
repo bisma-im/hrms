@@ -5,6 +5,9 @@ const path = require('path');
 // const pool = require('./src/config/db');
 const sequelize = require('./src/config/sequelize');
 
+// Import associations to ensure they are established
+require('./src/models/associations');
+
 // Setup CORS
 app.use(cors({
   origin: 'http://localhost:3000'  // Allow your front-end URL; adjust as needed for production
@@ -41,6 +44,7 @@ const PORT = process.env.PORT || 5000;
 sequelize.authenticate()
   .then(() => {
     console.log('Connection has been established successfully.');
+    return sequelize.sync();
   })
   .then(() => {
     // Start server only if database is connected and models are synced

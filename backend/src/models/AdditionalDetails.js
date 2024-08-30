@@ -21,8 +21,8 @@ const AdditionalDetails = sequelize.define('AdditionalDetails', {
     number_of_projects: DataTypes.INTEGER,
     ms_phd_produced: DataTypes.INTEGER,
     consultancy_amount: DataTypes.FLOAT,
-    total_fm_experience: DataTypes.FLOAT,
-    total_field_experience: DataTypes.FLOAT,
+    total_fm_experience: DataTypes.STRING,
+    total_field_experience: DataTypes.STRING,
     resume: DataTypes.STRING
 }, {
     tableName: 'additional_details',

@@ -6,9 +6,11 @@ import { fetchJobs } from 'features/job/jobService';
 import Divider from 'components/common/ui/Divider';
 import QualificationRepeater from 'pages/Application/QualificationRepeater';
 import ChildRepeater from './ChildrenRepeater';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { fetchApplicantDetails } from 'features/applicants/applicantService';
 import LoadingSpinner from 'components/common/ui/LoadingSpinner';
+import { addEmployee } from 'features/employees/employeeService';
+import Swal from 'sweetalert2';
 
 const initialFormData = {
     department_id: '',
@@ -50,6 +52,7 @@ const CreateEmployee = () => {
     const [jobs, setJobs] = useState([]);
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(fetchDepartments());
@@ -70,7 +73,56 @@ const CreateEmployee = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('Form Data:', formData);
+    
+        const data = new FormData();
+        data.append('applicantId', applicantId);
+        Object.entries(formData).forEach(([key, value]) => {
+            if (key === 'photo' && value instanceof File) {
+                data.append(key, value);
+            } else if (['education', 'children'].includes(key)) {
+                data.append(key, JSON.stringify(value));
+            } else {
+                data.append(key, value);
+            }
+        });
+    
+        // Log FormData to inspect it
+        for (let pair of data.entries()) {
+            console.log(pair[0], pair[1]);
+        }
+    
+        Swal.fire({
+            icon: 'warning',
+            title: 'Warning',
+            text: 'Are you sure you want to submit the form?',
+            showConfirmButton: true,
+            confirmButtonText: 'OK'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const actionResult = await dispatch(addEmployee(data));
+                const response = actionResult.payload;  // Access the payload directly
+                console.log(response)
+                if (actionResult.meta.requestStatus === 'fulfilled') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Your application has been submitted successfully!',
+                        confirmButtonText: 'OK'
+                    }).then(resetResult => {
+                        if (resetResult.isConfirmed) navigate('/employees-list');
+                    });
+                } else {
+                    const message = actionResult.error?.message || "An error occurred while submitting the application.";
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: message
+                    });
+                }
+            }
+        });
     };
+    
 
     const handleEducationChange = useCallback((newEducationFields) => {
         setFormData((prevFormData) => ({ ...prevFormData, education: newEducationFields }));

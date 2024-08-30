@@ -18,27 +18,30 @@ const ReferencesnResume = ({ prevStep, handleReferenceChange, handleChange, hand
                                     <Form.Control
                                         type="text"
                                         required
+                                        name="reference_name"
                                         placeholder="Reference Name"
-                                        onChange={handleReferenceChange(index, 'name')}
-                                        value={reference.name}
+                                        onChange={handleReferenceChange(index, 'reference_name')}
+                                        value={reference.reference_}
                                     />
                                 </Col>
                                 <Col sm={4} className="mb-3">
                                     <Form.Control
                                         type="text"
+                                        name="reference_designation"
                                         required
                                         placeholder="Reference Designation"
-                                        onChange={handleReferenceChange(index, 'designation')}
-                                        value={reference.designation}
+                                        onChange={handleReferenceChange(index, 'reference_designation')}
+                                        value={reference.reference_designation}
                                     />
                                 </Col>
                                 <Col sm={4} className="mb-3">
                                     <Form.Control
+                                        name="reference_contact"
                                         type="text"
                                         required
                                         placeholder="Reference Contact"
-                                        onChange={handleReferenceChange(index, 'contact')}
-                                        value={reference.contact}
+                                        onChange={handleReferenceChange(index, 'reference_contact')}
+                                        value={reference.reference_contact}
                                     />
                                 </Col>
                             </Row>
