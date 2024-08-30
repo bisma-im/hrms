@@ -81,7 +81,7 @@ const MyTable = ({ columnHeaders, customCellRender, jsonData, onRowClick, initia
                                     const cellProps = cell.getCellProps();
                                     return (
                                         <td {...cellProps} key={cellProps.key}>
-                                            {cell.column.id === 'Status' && customCellRender ? customCellRender(row) : cell.render('Cell')}
+                                            {cell.column.id === 'status' && customCellRender ? customCellRender(row) : cell.render('Cell')}
                                         </td>
                                     );
                                 })}

@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from 'react';
-import { submitApplicationForm } from 'features/applicants/applicantService';
+import React, { useCallback, useEffect, useState } from 'react';
+import { addApplicant, fetchApplicantDetails } from 'features/applicants/applicantService';
 import PersonalInfo from './PersonalInfo';
 import { logo } from 'assets/images';
 import { Col, Container, Row, Form } from 'react-bootstrap';
@@ -7,6 +7,9 @@ import EducationInfo from './EducationInfo';
 import WorkInfo from './WorkInfo';
 import ReferencesnResume from './ReferencesnResume';
 import Swal from 'sweetalert2';
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import LoadingSpinner from 'components/common/ui/LoadingSpinner';
 
 const initialFormData = {
     campus: '',
@@ -26,7 +29,7 @@ const initialFormData = {
     dob: '',
     sect: '',
     nationality: '',
-    address: '',
+    postal_address: '',
     how_hear: '',
     total_qualification_years: '',
     publications_count: '',
@@ -45,6 +48,9 @@ const initialFormData = {
 };
 
 const ApplicationForm = () => {
+    const { applicantId } = useParams();
+    const [isLoading, setIsLoading] = useState(false);
+    const dispatch = useDispatch();
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState(initialFormData);
 
@@ -66,7 +72,7 @@ const ApplicationForm = () => {
             newReferences[index][field] = e.target.value;
             return { ...prevFormData, references: newReferences };
         });
-    }, []);    
+    }, []);
 
     const handleEducationChange = useCallback((newEducationFields) => {
         setFormData((prevFormData) => ({ ...prevFormData, education: newEducationFields }));
@@ -96,39 +102,56 @@ const ApplicationForm = () => {
                         data.append(key, value);
                     }
                 });
-
-                try {
-                    const response = await submitApplicationForm(data);
-                    if (response && response.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success',
-                            text: response.message,
-                            showConfirmButton: true,
-                            confirmButtonText: 'OK'
-                        }).then((result) => {
-                            if (result.isConfirmed) resetFormData();
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: 'Something went wrong!'
-                        });
-                    }
-                } catch (error) {
+                data.append('user_type', 'applicant');
+                const actionResult = await dispatch(addApplicant(data));
+                const response = actionResult.payload;  // Access the payload directly
+    
+                if (actionResult.meta.requestStatus === 'fulfilled') {
+                    // Successful server response handling
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Your application has been submitted successfully!',
+                        confirmButtonText: 'OK'
+                    }).then(resetResult => {
+                        if (resetResult.isConfirmed) resetFormData();
+                    });
+                } else {
+                    // Error handling
+                    const message = actionResult.error?.message || "An error occurred while submitting the application.";
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
-                        text: error.message || error.toString()
+                        text: message
                     });
                 }
             }
         });
     };
+    
+    useEffect(() => {
+        if (applicantId) {
+            setIsLoading(true);
+            dispatch(fetchApplicantDetails(applicantId))
+                .unwrap()
+                .then(data => {
+                    setFormData(data);
+                    setIsLoading(false);
+                })
+                .catch(error => {
+                    console.error('Failed to fetch applicant details:', error);
+                    setIsLoading(false);
+                });
+        }
+    }, [applicantId, dispatch]);
 
+    if (isLoading) {
+        return <LoadingSpinner/>;
+    }
+
+    const dynamicStyle = applicantId ? {} : { backgroundColor: "#F3F0EC", height: "100vh" };
     return (
-        <Container fluid className="main-content" style={{ backgroundColor: "#F3F0EC", height: "100vh" }}>
+        <Container fluid className={applicantId ? '' : 'main-content'} style={dynamicStyle}>
             <Row className="align-items-center m-3">
                 <Col xs={2} md={1} className="p-0">
                     <img src={logo} alt="Logo" className="navbar-logo" style={{ width: "70%" }} />

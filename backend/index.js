@@ -31,7 +31,7 @@ app.use('/api/jobs', require('./src/routes/jobRoutes'));
 
 
 // Serve static files from the 'uploads' directory
-app.use(express.static(__dirname));
+app.use('/uploads', express.static('src/uploads'));
 
 
 // Start the server

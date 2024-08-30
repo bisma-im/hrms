@@ -1,6 +1,6 @@
 const sequelize = require('../config/sequelize'); // make sure to import your configured Sequelize instance
 
-exports.getAllEmployees = async (req, res) => {
+const getAllEmployees = async (req, res) => {
     try {
         const query = `
             SELECT e.employee_id, e.doj, pd.name, pd.gender, pd.cell_no, u.email, d.department_name, j.title as job_title, ad.resume
@@ -25,4 +25,8 @@ exports.getAllEmployees = async (req, res) => {
         console.error('Error fetching employees:', error);
         res.status(500).json({ message: 'Error fetching employees', error: error.message });
     }
+};
+
+module.exports = {
+    getAllEmployees
 };

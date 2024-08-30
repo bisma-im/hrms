@@ -6,6 +6,9 @@ import { fetchJobs } from 'features/job/jobService';
 import Divider from 'components/common/ui/Divider';
 import QualificationRepeater from 'pages/Application/QualificationRepeater';
 import ChildRepeater from './ChildrenRepeater';
+import { useParams } from 'react-router-dom';
+import { fetchApplicantDetails } from 'features/applicants/applicantService';
+import LoadingSpinner from 'components/common/ui/LoadingSpinner';
 
 const initialFormData = {
     department_id: '',
@@ -40,12 +43,13 @@ const initialFormData = {
 };
 
 const CreateEmployee = () => {
-    const [step, setStep] = useState(1);
+    const { applicantId } = useParams();
+    const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState(initialFormData);
-
-    const dispatch = useDispatch();
     const { departments } = useSelector((state) => state.departments);
     const [jobs, setJobs] = useState([]);
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(fetchDepartments());
@@ -76,6 +80,25 @@ const CreateEmployee = () => {
         setFormData((prevFormData) => ({ ...prevFormData, children: newChildrenFields }));
     }, []);
 
+    useEffect(() => {
+        if (applicantId) {
+            setIsLoading(true);
+            dispatch(fetchApplicantDetails(applicantId))
+                .unwrap()
+                .then(data => {
+                    setFormData(data);
+                    setIsLoading(false);
+                })
+                .catch(error => {
+                    console.error('Failed to fetch applicant details:', error);
+                    setIsLoading(false);
+                });
+        }
+    }, [applicantId, dispatch]);
+
+    if (isLoading) {
+        return <LoadingSpinner/>;
+    }
     return (
         <Container fluid>
             <Row className="align-items-center m-3">

@@ -39,12 +39,14 @@ const AppRoutes = () => {
                     <Route path="employees-list" element={<EmployeesList />} />
                     <Route path="employee-details" element={<Employees />} />
                     <Route path="add-employee-form" element={<CreateEmployee />} />
+                    <Route path="add-employee-form/:applicantId" element={<CreateEmployee />} />
                     <Route path="job-positions" element={<JobPositions />} />
                     <Route path='leaves' element={<LeavesList />} />
                     <Route path='sick-leave' element={<SickLeave />} />
                     <Route path='casual-leave' element={<CasualLeave />} />
                     <Route path='privilege-leave' element={<PrivilegeLeave />} />
-                    <Route path="applications-list" element={<ApplicationList />} />
+                    <Route path="applicants" element={<ApplicationList />} />
+                    <Route path="applicants/:applicantId" element={<ApplicationForm />} />
                 </Route>
             )}
 

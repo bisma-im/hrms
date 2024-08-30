@@ -18,7 +18,7 @@ export const SelectColumnFilter = ({
             onChange={e => setFilter(e.target.value || undefined)}
             value={filterValue}
             style={{ width: '100%' }}
-            className="form-control input-search"
+            className="form-control input-search form-select"
         >
             <option value="">All</option>
             {options.map(option => (

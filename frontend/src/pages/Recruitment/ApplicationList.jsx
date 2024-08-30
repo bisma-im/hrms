@@ -1,25 +1,32 @@
-import React, { useMemo, useState } from 'react';
-import styled from 'styled-components';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Card, Row, Col, Container, DropdownButton, ButtonGroup, Dropdown } from 'react-bootstrap';
-import APPLICATIONS_DATA from './APPLICATIONS_DATA.json';
 import { COLUMNS } from './Columns';
 import MyTable from 'components/common/table/MyTable';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import ScheduleInterviewModal from './ScheduleInterviewModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchApplicants, updateApplicant } from 'features/applicants/applicantService';
+import { FaRegFilePdf } from 'react-icons/fa';
 
 const ApplicationList = () => {
-
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const applicants = useSelector(state => state.applicant.applicants);
     const location = useLocation();
     const position = location.state?.position;
     const [showModal, setShowModal] = useState(false);
     const [selectedApplicant, setSelectedApplicant] = useState(null);
 
-    const columnHeaders = useMemo(() => COLUMNS, []);
+    console.log(applicants);
+    // Fetch applicants when component mounts
+    useEffect(() => {
+        dispatch(fetchApplicants());
+    }, [dispatch]);
 
-    const jsonData = APPLICATIONS_DATA;
+    const jsonData = applicants;
 
     const initialFilters = useMemo(() => [
-        { id: 'PositionAppliedFor', value: position }
+        { id: 'job_title', value: position }
     ], [position]);
 
     const handleRowClick = (application) => {
@@ -30,32 +37,41 @@ const ApplicationList = () => {
 
     const getColor = (status) => {
         switch (status) {
-            case 'New': return 'rgba(0, 123, 255, 0.5)'; // Blue
-            case 'Under Review': return 'rgba(255, 193, 7, 0.5)'; // Yellow
-            case 'Interview Scheduled': return 'rgba(23, 162, 184, 0.5)'; // Teal
-            case 'Interviewed': return 'rgba(40, 167, 69, 0.5)'; // Green
-            case 'Offer Made': return 'rgba(255, 87, 34, 0.5)'; // Orange
-            case 'Offer Accepted': return 'rgba(111, 66, 193, 0.5)'; // Purple
-            case 'Onboarding': return 'rgba(108, 117, 125, 0.5)'; // Gray
-            case 'Hired': return 'rgba(52, 58, 64, 0.5)'; // Darker Gray
-            case 'Rejected': return 'rgba(220, 53, 69, 0.5)'; // Red
-            default: return 'transparent'; // Default case
+            case 'New': 
+                return 'rgba(255, 159, 10, 0.6)'; // Orange, less opaque, for attention
+            case 'Under Review': 
+                return 'rgba(255, 209, 102, 0.6)'; // Light Orange, slightly translucent
+            case 'Interview Scheduled': 
+                return 'rgba(0, 123, 255, 0.6)'; // Bright Blue, more translucent
+            case 'Hired': 
+                return 'rgba(40, 167, 69, 0.6)'; // Green, more translucent
+            case 'Offer Made': 
+                return 'rgba(23, 162, 184, 0.6)'; // Cyan, more translucent
+            case 'Shortlisted': 
+                return 'rgba(255, 193, 7, 0.6)'; // Gold, more translucent
+            case 'Rejected': 
+                return 'rgba(220, 53, 69, 0.6)'; // Red, more translucent
+            default: 
+                return 'transparent'; // Default, fully transparent
         }
     };
 
     const handleStatusChange = (row, newStatus) => {
-        console.log(`Status for ${row.original.ApplicantName} changed to ${newStatus}`);
-        // Implement the API call or state update here
+        console.log(`Status for ${row.original.name} changed to ${newStatus}`);
+        dispatch(updateApplicant({
+            id: row.original.application_id,  // Assuming each row has an 'id' field
+            data: { status: newStatus }
+        }));
     };
 
     const customCellRender = (row) => {
-        const currentColor = getColor(row.original.Status);
+        const currentColor = getColor(row.original.status);
         console.log(currentColor);
 
         return (
             <DropdownButton
                 as={ButtonGroup}
-                title={row.original.Status}
+                title={row.original.status}
                 id={`dropdown-button-drop-${row.id}`}
                 key={row.id}
                 variant="custom"
@@ -69,12 +85,10 @@ const ApplicationList = () => {
                 <Dropdown.Item eventKey="1" onClick={() => handleStatusChange(row, 'New')}>New</Dropdown.Item>
                 <Dropdown.Item eventKey="2" onClick={() => handleStatusChange(row, 'Under Review')}>Under Review</Dropdown.Item>
                 <Dropdown.Item eventKey="3" onClick={() => handleStatusChange(row, 'Interview Scheduled')}>Interview Scheduled</Dropdown.Item>
-                <Dropdown.Item eventKey="4" onClick={() => handleStatusChange(row, 'Interviewed')}>Interviewed</Dropdown.Item>
+                <Dropdown.Item eventKey="4" onClick={() => handleStatusChange(row, 'Shortlisted')}>Shortlisted</Dropdown.Item>
                 <Dropdown.Item eventKey="5" onClick={() => handleStatusChange(row, 'Offer Made')}>Offer Made</Dropdown.Item>
-                <Dropdown.Item eventKey="6" onClick={() => handleStatusChange(row, 'Offer Accepted')}>Offer Accepted</Dropdown.Item>
-                <Dropdown.Item eventKey="7" onClick={() => handleStatusChange(row, 'Onboarding')}>Onboarding</Dropdown.Item>
-                <Dropdown.Item eventKey="8" onClick={() => handleStatusChange(row, 'Hired')}>Hired</Dropdown.Item>
-                <Dropdown.Item eventKey="9" onClick={() => handleStatusChange(row, 'Rejected')}>Rejected</Dropdown.Item>
+                <Dropdown.Item eventKey="6" onClick={() => handleStatusChange(row, 'Hired')}>Hired</Dropdown.Item>
+                <Dropdown.Item eventKey="7" onClick={() => handleStatusChange(row, 'Rejected')}>Rejected</Dropdown.Item>
             </DropdownButton>
         );
     };
@@ -83,15 +97,18 @@ const ApplicationList = () => {
     const handleAction = (actionType, row) => {
         switch (actionType) {
             case 'hire':
-                console.log(`Hiring candidate ${row.original.ApplicantName}`);
+                console.log(`Hiring candidate ${row.original.name}`);
+                navigate(`/add-employee-form/${row.original.application_id}`);
                 break;
             case 'interview':
                 setSelectedApplicant(row.original);
                 setShowModal(true);
-                console.log(`Scheduling interview for ${row.original.ApplicantName}`);
+                console.log(`Scheduling interview for ${row.original.name}`);
                 break;
             case 'view':
-                console.log(`Viewing details for ${row.original.ApplicantName}`);
+                console.log(`Viewing details for ${row.original.application_id}`);
+                navigate(`/applicants/${row.original.application_id}`);
+
                 break;
             default:
                 break;
@@ -143,14 +160,27 @@ const ApplicationList = () => {
                         </Dropdown >
                     )
                 }
+            } else if (column.id === 'resume') {
+                return {
+                    ...column,
+                    Cell: ({row}) => (
+                        <a href={`${process.env.REACT_APP_API_URL}/uploads/${row.original.resume}`} target="_blank" rel="noopener noreferrer">
+                            <FaRegFilePdf color="red" size={24} />
+                        </a>
+                    )
+                }
             }
             return column;
         });
     }, [handleAction]);
 
     const handleScheduleInterview = (date, content) => {
-        console.log(`Interview scheduled for ${selectedApplicant.ApplicantName} on ${date}`);
+        console.log(`Interview scheduled for ${selectedApplicant.name} on ${date}`);
         console.log(`Email content: ${content}`);
+        dispatch(updateApplicant({
+            id: selectedApplicant.application_id,  // Assuming each row has an 'id' field
+            data: { status: 'Interview Scheduled', interview_date: date }
+        }));
         // Implement the API call or logic to save the interview details and send the email here
     };
 
@@ -164,7 +194,7 @@ const ApplicationList = () => {
             <Row>
                 <Col lg={12}>
                     <Card className='m-1 m-lg-3'>
-                        <Card.Header><h5 className="card-title">Applications</h5></Card.Header>
+                        <Card.Header><h4 className="title">Applications</h4></Card.Header>
                         <Card.Body>
                             <MyTable
                                 jsonData={jsonData}
@@ -182,7 +212,7 @@ const ApplicationList = () => {
                     show={showModal}
                     handleClose={handleCloseModal}
                     applicant={selectedApplicant}
-                    handleSchedule={handleScheduleInterview}
+                    onSchedule={handleScheduleInterview}
                 />
             )}
         </Container>

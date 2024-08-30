@@ -6,6 +6,7 @@ import themeReducer from 'features/theme/themeSlice';
 import chartsReducer from 'features/charts/chartsSlice';
 import employeeReducer from 'features/employees/employeeSlice';
 import departmentReducer from 'features/department/departmentSlice';
+import applicantReducer from 'features/applicants/applicantSlice';
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
     charts: chartsReducer,
     employee: employeeReducer,
     departments: departmentReducer,
+    applicant: applicantReducer,
   },
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
 });

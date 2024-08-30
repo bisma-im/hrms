@@ -27,9 +27,18 @@ const Application = sequelize.define('Application', {
     },
     status: {
         type: DataTypes.ENUM,
-        values: ['pending', 'approved', 'rejected', 'under_review'], 
-        defaultValue: 'pending', 
+        values: ['New', 'Shortlisted', 'Rejected', 'Under Review', 'Interview Scheduled', 'Offer Made', 'Hired'], 
+        defaultValue: 'New', 
         allowNull: false
+    },
+    rating: {
+        type: DataTypes.ENUM,
+        values: [1, 2, 3, 4, 5],
+        allowNull: true
+    },
+    interview_date: {
+        type: DataTypes.DATE,
+        allowNull: true
     }
     // Add additional fields if necessary
 }, {

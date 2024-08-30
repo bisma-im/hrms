@@ -14,7 +14,7 @@ const PersonalInfo = ({ nextStep, handleChange, values }) => {
     }, [dispatch]);
 
     useEffect(() => {
-        if (values.department_id) {
+        if (values.department_id && values.job_id === '') {
             fetchJobsForDepartment(values.department_id);
         }
     }, [values.department_id]);
@@ -63,16 +63,19 @@ const PersonalInfo = ({ nextStep, handleChange, values }) => {
                         </Form.Control>
                     </Col>
                     <Col sm={4} className="mb-3">
-                        <Form.Label className="form-label">Specialization</Form.Label>
+                        <Form.Label className="form-label">Designation</Form.Label>
                         <Form.Control
-                            className="form-control"
-                            type="text"
-                            name="specialization"
-                            required
-                            placeholder="Specialization"
-                            onChange={handleChange('specialization')}
-                            defaultValue={values.specialization}
-                        />
+                            as="select"
+                            name="job_id"
+                            defaultValue={values.job_id}
+                            onChange={handleChange('job_id')}
+                            className="form-control form-select"
+                        >
+                            <option>Choose designation...</option>
+                            {jobs.map((job, i) => (
+                                <option key={i} value={job.job_id}>{job.title}</option>
+                            ))}
+                        </Form.Control>
                     </Col>
                 </Row>
                 <Row>
@@ -239,6 +242,32 @@ const PersonalInfo = ({ nextStep, handleChange, values }) => {
                     </Col>
                 </Row>
                 <Row>
+                    <Col sm={4} className="mb-3">
+                        <Form.Label className="form-label">Specialization</Form.Label>
+                        <Form.Control
+                            className="form-control"
+                            type="text"
+                            name="specialization"
+                            required
+                            placeholder="Specialization"
+                            onChange={handleChange('specialization')}
+                            defaultValue={values.specialization}
+                        />
+                    </Col>
+                <Col sm={8} className="mb-3">
+                    <Form.Label className="form-label">Address</Form.Label>
+                    <Form.Control
+                        type="text"
+                        className="form-control"
+                        name="postal_address"
+                        required
+                        placeholder="Address"
+                        onChange={handleChange('postal_address')}
+                        defaultValue={values.postal_address}
+                    />
+                </Col>
+                </Row>
+                <Row>
                     <Col sm={12} className="my-3">
                         <Form.Group>
                             <div>
@@ -280,7 +309,7 @@ const PersonalInfo = ({ nextStep, handleChange, values }) => {
                                     className='form-label'
                                     type="radio"
                                     inline
-                                    label="From a Friend"
+                                    label="Friend"
                                     name="how_hear"
                                     value="friend"
                                     checked={values.how_hear === 'friend'}
@@ -291,20 +320,6 @@ const PersonalInfo = ({ nextStep, handleChange, values }) => {
                         </Form.Group>
                     </Col>
                 </Row>
-                <Col sm={12} className="mb-3">
-                    <Form.Label className="form-label">Address</Form.Label>
-                    <Form.Control
-                        as="textarea"
-                        rows={3}
-                        className="form-control form-textarea p-3"
-                        name="postal_address"
-                        required
-                        placeholder="Address"
-                        onChange={handleChange('postal_address')}
-                        defaultValue={values.postal_address}
-                        style={{ height: "100px" }}
-                    />
-                </Col>
             </Card.Body>
             <Card.Footer className="d-flex align-items-center justify-content-md-end">
                 <Button className="link-button" onClick={nextStep}>Next</Button>
