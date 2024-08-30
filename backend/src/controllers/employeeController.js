@@ -1,4 +1,5 @@
 const sequelize = require('../config/sequelize'); // make sure to import your configured Sequelize instance
+const sendEmail = require('../utils/mailService');
 
 const getAllEmployees = async (req, res) => {
     try {
@@ -27,6 +28,17 @@ const getAllEmployees = async (req, res) => {
     }
 };
 
+async function createEmployee(req, res) {
+    // const employeeData = req.body;
+    // Logic to save employee to database
+
+    // Send welcome email to new employee
+    await sendEmail('bismaimran36@gmail.com', 'Welcome to the Company', 'Your credentials will be sent in a separate email.');
+
+    res.status(201).send('Employee created successfully');
+}
+
 module.exports = {
-    getAllEmployees
+    getAllEmployees,
+    createEmployee
 };
