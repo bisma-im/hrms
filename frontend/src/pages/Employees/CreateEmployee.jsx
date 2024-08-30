@@ -24,25 +24,38 @@ const initialFormData = {
     num_of_children: '',
     residential_no: '',
     email: '',
-    photo: null,
+    photo: null,  // Keep as null if you expect a file input
     cell_no: '',
-    date_of_promotion: '',
+    date_of_promotion: null,
     reg_no: '',
     card_no: '',
     office_letter_no: '',
-    dob: '',
+    dob: null,
     permanent_address: '',
     present_address: '',
     nok_name: '',
     nok_rs: '',
     nok_contact: '',
-    total_qualification_years: '',
+    salary: '',
+    start_working_hr: null,
+    end_working_hr: null,
     publications_count: '',
     total_fm_experience: '',
     total_field_experience: '',
     children: [{ name: '', age: '' }],
-    education: [{ degree_type: '', duration_years: '', specialization: '', passing_year: '', cgpa_percentage: '', institute_name: '', country: '' }],
+    education: [
+        {
+            degree_type: '',
+            duration_years: '',
+            specialization: '',
+            passing_year: '',
+            cgpa_percentage: '',
+            institute_name: '',
+            country: ''
+        }
+    ],
 };
+
 
 const CreateEmployee = () => {
     const { applicantId } = useParams();
@@ -50,6 +63,7 @@ const CreateEmployee = () => {
     const [formData, setFormData] = useState(initialFormData);
     const { departments } = useSelector((state) => state.departments);
     const [jobs, setJobs] = useState([]);
+    const [errors, setErrors] = useState({});
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -64,18 +78,115 @@ const CreateEmployee = () => {
         setJobs(fetchedJobs);
     }
 
+    const validateForm = (formData) => {
+        const validationErrors = {};
+        // Check required fields are not null or empty
+        const requiredFields = [
+            'name', 'job_id', 'cnic_no', 'dob', 'marital_status', 'num_of_children',
+            'cell_no', 'residential_no', 'email', 'gender', 'reg_no', 'card_no',
+            'salary', 'start_working_hr', 'end_working_hr', 'nok_name', 'nok_rs',
+            'nok_contact', 'present_address', 'permanent_address', 'father_name',
+            'mother_name'
+        ];
+
+        requiredFields.forEach(field => {
+            if (!formData[field] || formData[field] === '') {
+                validationErrors[field] = `${field} is required`;
+            }
+        });
+
+        // Validate CNIC pattern
+        const cnicPattern = /^[0-9]{5}-[0-9]{7}-[0-9]{1}$/;
+        if (formData.cnic_no && !cnicPattern.test(formData.cnic_no)) {
+            validationErrors.cnic_no = 'CNIC number must be in the format XXXXX-XXXXXXX-X';
+        }
+
+        // Validate email pattern
+        const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        if (formData.email && !emailPattern.test(formData.email)) {
+            validationErrors.email = 'Invalid email format';
+        }
+
+        // Validate mobile number pattern
+        const phonePattern = /^[0-9]{4}-[0-9]{7}$/;
+        if (formData.cell_no && !phonePattern.test(formData.cell_no)) {
+            validationErrors.cell_no = 'Cell number must be in the format XXXX-XXXXXXX';
+        }
+        if (formData.residential_no && !phonePattern.test(formData.residential_no)) {
+            validationErrors.residential_no = 'Residential number must be in the format XXXX-XXXXXXX';
+        }
+
+        // Validate start and end working hours
+        if (formData.start_working_hr && !/^[0-9]{2}:[0-9]{2}$/.test(formData.start_working_hr)) {
+            validationErrors.start_working_hr = 'Invalid time format for start working hour';
+        }
+        if (formData.end_working_hr && !/^[0-9]{2}:[0-9]{2}$/.test(formData.end_working_hr)) {
+            validationErrors.end_working_hr = 'Invalid time format for end working hour';
+        }
+
+        // Validate number of children
+        if (formData.num_of_children < 0) {
+            validationErrors.num_of_children = 'Number of children cannot be negative';
+        }
+
+        // Validate salary
+        if (formData.salary < 0) {
+            validationErrors.salary = 'Salary cannot be negative';
+        }
+
+        // Validate children fields
+        // formData.children.forEach((child, index) => {
+        //     if (!child.name || child.name === '') {
+        //         validationErrors[`children_${index}_name`] = `Child ${index + 1} name is required`;
+        //     }
+        //     if (!child.age || child.age === '') {
+        //         validationErrors[`children_${index}_age`] = `Child ${index + 1} age is required`;
+        //     }
+        // });
+
+        // // Validate education fields
+        // formData.education.forEach((edu, index) => {
+        //     if (!edu.degree_type || edu.degree_type === '') {
+        //         validationErrors[`education_${index}_degree_type`] = `Education ${index + 1} degree type is required`;
+        //     }
+        //     if (!edu.institute_name || edu.institute_name === '') {
+        //         validationErrors[`education_${index}_institute_name`] = `Education ${index + 1} institute name is required`;
+        //     }
+        //     if (!edu.passing_year || edu.passing_year === '') {
+        //         validationErrors[`education_${index}_passing_year`] = `Education ${index + 1} passing year is required`;
+        //     }
+        // });
+        return validationErrors;
+    };
+
 
     const handleChange = useCallback((input) => (e) => {
         const value = input === 'photo' || input === 'resume' ? e.target.files[0] : e.target.value;
         setFormData((prevFormData) => ({ ...prevFormData, [input]: value }));
+        // Clear the error for this field when the user starts typing
+        setErrors((prevErrors) => ({ ...prevErrors, [input]: '' }));
     }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('Form Data:', formData);
-    
+        setErrors({}); // Clear previous errors
+
+        const validationErrors = validateForm(formData); // Validate the form data
+
+        // Set errors only if there are any validation errors
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors); // Update the errors state
+            Swal.fire({
+                icon: 'error',
+                title: 'Validation Error',
+                text: 'Please correct the errors before submitting the form.'
+            });
+            return;
+        }
+
         const data = new FormData();
-        data.append('applicantId', applicantId);
+        if (applicantId) data.append('applicantId', applicantId);
         Object.entries(formData).forEach(([key, value]) => {
             if (key === 'photo' && value instanceof File) {
                 data.append(key, value);
@@ -85,12 +196,12 @@ const CreateEmployee = () => {
                 data.append(key, value);
             }
         });
-    
+
         // Log FormData to inspect it
         for (let pair of data.entries()) {
             console.log(pair[0], pair[1]);
         }
-    
+
         Swal.fire({
             icon: 'warning',
             title: 'Warning',
@@ -122,7 +233,7 @@ const CreateEmployee = () => {
             }
         });
     };
-    
+
 
     const handleEducationChange = useCallback((newEducationFields) => {
         setFormData((prevFormData) => ({ ...prevFormData, education: newEducationFields }));
@@ -149,7 +260,7 @@ const CreateEmployee = () => {
     }, [applicantId, dispatch]);
 
     if (isLoading) {
-        return <LoadingSpinner/>;
+        return <LoadingSpinner />;
     }
     return (
         <Container fluid>
@@ -174,7 +285,11 @@ const CreateEmployee = () => {
                                         placeholder="Full Name"
                                         onChange={handleChange('name')}
                                         defaultValue={formData.name}
+                                        isInvalid={!!errors.name}
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.name}
+                                    </Form.Control.Feedback>
                                 </Col>
                                 <Col sm={3} className="mb-3">
                                     <Form.Label className="form-label  me-3">Designation</Form.Label>
@@ -183,14 +298,17 @@ const CreateEmployee = () => {
                                         name="job_id"
                                         defaultValue={formData.job_id}
                                         onChange={handleChange('job_id')}
+                                        isInvalid={!!errors.job_id}
                                         className="form-control form-select"
-                                    // disabled={!jobs.length}
                                     >
                                         <option>Choose job...</option>
                                         {jobs && jobs.map((job, i) => (
                                             <option key={i} value={job.job_id}>{job.title}</option>
                                         ))}
                                     </Form.Control>
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.job_id}
+                                    </Form.Control.Feedback>
                                 </Col>
                                 <Col sm={3} className="mb-3">
                                     <Form.Label className="form-label">CNIC No.</Form.Label>
@@ -202,7 +320,11 @@ const CreateEmployee = () => {
                                         placeholder="XXXXX-XXXXXXX-X"
                                         onChange={handleChange('cnic_no')}
                                         defaultValue={formData.cnic_no}
+                                        isInvalid={!!errors.cnic_no}
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.cnic_no}
+                                    </Form.Control.Feedback>
                                 </Col>
                                 <Col sm={3} className="mb-3">
                                     <Form.Label className="form-label">Date of Birth</Form.Label>
@@ -214,7 +336,11 @@ const CreateEmployee = () => {
                                         placeholder="Date of Birth"
                                         onChange={handleChange('dob')}
                                         defaultValue={formData.dob}
+                                        isInvalid={!!errors.dob}
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.dob}
+                                    </Form.Control.Feedback>
                                 </Col>
                             </Row>
                             <Row>
@@ -229,6 +355,7 @@ const CreateEmployee = () => {
                                         placeholder="Marital Status"
                                         onChange={handleChange('marital_status')}
                                         defaultValue={formData.marital_status}
+                                        isInvalid={!!errors.marital_status}
                                     >
                                         <option>Choose...</option>
                                         <option value="single">Single</option>
@@ -237,6 +364,9 @@ const CreateEmployee = () => {
                                         <option value="divorced">Divorced</option>
                                         <option value="dk">Prefer not to say</option>
                                     </Form.Control>
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.marital_status}
+                                    </Form.Control.Feedback>
                                 </Col>
                                 <Col sm={3} className="mb-3">
                                     <Form.Label className="form-label">No. of Children</Form.Label>
@@ -248,7 +378,11 @@ const CreateEmployee = () => {
                                         placeholder="Number of Children"
                                         onChange={handleChange('num_of_children')}
                                         defaultValue={formData.num_of_children}
+                                        isInvalid={!!errors.num_of_children}
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.num_of_children}
+                                    </Form.Control.Feedback>
                                 </Col>
                                 <Col sm={3} className="mb-3">
                                     <Form.Label className="form-label">Mobile No.</Form.Label>
@@ -260,7 +394,11 @@ const CreateEmployee = () => {
                                         placeholder="Cell No."
                                         onChange={handleChange('cell_no')}
                                         defaultValue={formData.cell_no}
+                                        isInvalid={!!errors.cell_no}
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.cell_no}
+                                    </Form.Control.Feedback>
                                 </Col>
                                 <Col sm={3} className="mb-3">
                                     <Form.Label className="form-label">Phone No. (Res)</Form.Label>
@@ -272,7 +410,11 @@ const CreateEmployee = () => {
                                         placeholder="Residential Phone No."
                                         onChange={handleChange('residential_no')}
                                         defaultValue={formData.residential_no}
+                                        isInvalid={!!errors.residential_no}
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.residential_no}
+                                    </Form.Control.Feedback>
                                 </Col>
                             </Row>
                             <Row>
@@ -285,7 +427,12 @@ const CreateEmployee = () => {
                                         required
                                         placeholder="Select Image"
                                         onChange={handleChange('photo')}
-                                        accept="image/png, image/jpeg, image/jpg" />
+                                        accept="image/png, image/jpeg, image/jpg"
+                                        isInvalid={!!errors.photo}
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.photo}
+                                    </Form.Control.Feedback>
                                 </Col>
                                 <Col sm={3} className="mb-3">
                                     <Form.Label className="form-label">Email</Form.Label>
@@ -296,7 +443,12 @@ const CreateEmployee = () => {
                                         required
                                         placeholder="Email"
                                         onChange={handleChange('email')}
-                                        defaultValue={formData.email} />
+                                        defaultValue={formData.email}
+                                        isInvalid={!!errors.email}
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.email}
+                                    </Form.Control.Feedback>
                                 </Col>
                                 <Col sm={3} className="mb-3">
                                     <Form.Label className="form-label">Gender</Form.Label>
@@ -309,12 +461,16 @@ const CreateEmployee = () => {
                                         placeholder="Select Gender"
                                         onChange={handleChange('gender')}
                                         defaultValue={formData.gender}
+                                        isInvalid={!!errors.gender}
                                     >
                                         <option>Choose...</option>
                                         <option value="female">Female</option>
                                         <option value="male">Male</option>
                                         <option value="dk">Prefer not to say</option>
                                     </Form.Control>
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.gender}
+                                    </Form.Control.Feedback>
                                 </Col>
                                 <Col sm={3} className="mb-3">
                                     <Form.Label className="form-label  me-3">Date of Promotion</Form.Label>
@@ -323,7 +479,12 @@ const CreateEmployee = () => {
                                         name="date_of_promotion"
                                         defaultValue={formData.date_of_promotion}
                                         onChange={handleChange('date_of_promotion')}
-                                        className="form-control" />
+                                        className="form-control"
+                                        isInvalid={!!errors.date_of_promotion}
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.date_of_promotion}
+                                    </Form.Control.Feedback>
                                 </Col>
                             </Row>
                             <Row>
@@ -337,7 +498,11 @@ const CreateEmployee = () => {
                                         placeholder="Registration Number"
                                         onChange={handleChange('reg_no')}
                                         defaultValue={formData.reg_no}
+                                        isInvalid={!!errors.reg_no}
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.reg_no}
+                                    </Form.Control.Feedback>
                                 </Col>
                                 <Col sm={3} className="mb-3">
                                     <Form.Label className="form-label">Card No.</Form.Label>
@@ -349,14 +514,24 @@ const CreateEmployee = () => {
                                         placeholder="Card No."
                                         onChange={handleChange('card_no')}
                                         defaultValue={formData.card_no}
+                                        isInvalid={!!errors.card_no}
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.card_no}
+                                    </Form.Control.Feedback>
                                 </Col>
                             </Row>
                             <Divider />
-                            <QualificationRepeater className="mb-3" fields={formData.education} setFields={handleEducationChange} />
+                            <QualificationRepeater
+                                className="mb-3"
+                                fields={formData.education}
+                                setFields={handleEducationChange}
+                            />
                             <Row className="mb-3">
                                 <Col sm={9} className=" pt-3">
-                                    <Form.Label><b>i.</b> No. of Publications (HEC Recognized only): </Form.Label>
+                                    <Form.Label>
+                                        <b>i.</b> No. of Publications (HEC Recognized only):
+                                    </Form.Label>
                                 </Col>
                                 <Col sm={2} className="mb-3">
                                     <Form.Control
@@ -367,12 +542,18 @@ const CreateEmployee = () => {
                                         placeholder="Total Publications"
                                         onChange={handleChange('publications_count')}
                                         defaultValue={formData.publications_count}
+                                        isInvalid={!!errors.publications_count}
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.publications_count}
+                                    </Form.Control.Feedback>
                                 </Col>
                             </Row>
                             <Row className="mb-3">
                                 <Col sm={9} className=" pt-3">
-                                    <Form.Label><b>ii.</b> Total Experience (as Permanent FM from HEC Recognized Institutions) after 18 years of education in Years/Months:</Form.Label>
+                                    <Form.Label>
+                                        <b>ii.</b> Total Experience (as Permanent FM from HEC Recognized Institutions) after 18 years of education in Years/Months:
+                                    </Form.Label>
                                 </Col>
                                 <Col sm={2}>
                                     <Form.Control
@@ -383,12 +564,18 @@ const CreateEmployee = () => {
                                         placeholder="Total Experience"
                                         onChange={handleChange('total_fm_experience')}
                                         defaultValue={formData.total_fm_experience}
+                                        isInvalid={!!errors.total_fm_experience}
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.total_fm_experience}
+                                    </Form.Control.Feedback>
                                 </Col>
                             </Row>
                             <Row className="mb-3">
                                 <Col sm={9} className=" pt-3">
-                                    <Form.Label><b>iii.</b> Total Field Experience after 16 years of education (as Full Time/Permanent Job) in Years/Month:</Form.Label>
+                                    <Form.Label>
+                                        <b>iii.</b> Total Field Experience after 16 years of education (as Full Time/Permanent Job) in Years/Month:
+                                    </Form.Label>
                                 </Col>
                                 <Col sm={2}>
                                     <Form.Control
@@ -399,7 +586,11 @@ const CreateEmployee = () => {
                                         placeholder="Total Experience"
                                         onChange={handleChange('total_field_experience')}
                                         defaultValue={formData.total_field_experience}
+                                        isInvalid={!!errors.total_field_experience}
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.total_field_experience}
+                                    </Form.Control.Feedback>
                                 </Col>
                             </Row>
                             <Divider />
@@ -414,7 +605,11 @@ const CreateEmployee = () => {
                                         placeholder="Office Letter No."
                                         onChange={handleChange('office_letter_no')}
                                         defaultValue={formData.office_letter_no}
+                                        isInvalid={!!errors.office_letter_no}
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.office_letter_no}
+                                    </Form.Control.Feedback>
                                 </Col>
                                 <Col sm={3} className="mb-3">
                                     <Form.Label className="form-label">Department</Form.Label>
@@ -424,12 +619,18 @@ const CreateEmployee = () => {
                                         defaultValue={formData.department_id}
                                         onChange={handleChange('department_id')}
                                         className="form-control form-select"
+                                        isInvalid={!!errors.department_id}
                                     >
                                         <option>Choose department...</option>
                                         {departments.map((dept, i) => (
-                                            <option key={i} value={dept.department_id}>{dept.department_name}</option>
+                                            <option key={i} value={dept.department_id}>
+                                                {dept.department_name}
+                                            </option>
                                         ))}
                                     </Form.Control>
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.department_id}
+                                    </Form.Control.Feedback>
                                 </Col>
                                 <Col sm={3} className="mb-3">
                                     <Form.Label className="form-label  me-3">Date of Joining</Form.Label>
@@ -438,7 +639,12 @@ const CreateEmployee = () => {
                                         name="doj"
                                         defaultValue={formData.doj}
                                         onChange={handleChange('doj')}
-                                        className="form-control" />
+                                        className="form-control"
+                                        isInvalid={!!errors.doj}
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.doj}
+                                    </Form.Control.Feedback>
                                 </Col>
                                 <Col sm={3} className="mb-3">
                                     <Form.Label className="form-label">Salary</Form.Label>
@@ -450,7 +656,11 @@ const CreateEmployee = () => {
                                         placeholder="Salary"
                                         onChange={handleChange('salary')}
                                         defaultValue={formData.salary}
+                                        isInvalid={!!errors.salary}
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.salary}
+                                    </Form.Control.Feedback>
                                 </Col>
                             </Row>
                             <Row>
@@ -464,7 +674,11 @@ const CreateEmployee = () => {
                                         placeholder="Pay Group"
                                         onChange={handleChange('pay_group')}
                                         defaultValue={formData.pay_group}
+                                        isInvalid={!!errors.pay_group}
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.pay_group}
+                                    </Form.Control.Feedback>
                                 </Col>
                                 <Col sm={3} className="mb-3">
                                     <Form.Label className="form-label">Working Hours (From)</Form.Label>
@@ -473,10 +687,14 @@ const CreateEmployee = () => {
                                         type="time"
                                         required
                                         name="start_working_hr"
-                                        placeholder="Pay Group"
+                                        placeholder="Working Hours (From)"
                                         onChange={handleChange('start_working_hr')}
                                         defaultValue={formData.start_working_hr}
+                                        isInvalid={!!errors.start_working_hr}
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.start_working_hr}
+                                    </Form.Control.Feedback>
                                 </Col>
                                 <Col sm={3} className="mb-3">
                                     <Form.Label className="form-label">Working Hours (To)</Form.Label>
@@ -485,10 +703,14 @@ const CreateEmployee = () => {
                                         type="time"
                                         required
                                         name="end_working_hr"
-                                        placeholder="Pay Group"
+                                        placeholder="Working Hours (To)"
                                         onChange={handleChange('end_working_hr')}
                                         defaultValue={formData.end_working_hr}
+                                        isInvalid={!!errors.end_working_hr}
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.end_working_hr}
+                                    </Form.Control.Feedback>
                                 </Col>
                             </Row>
                             <Divider />
@@ -503,7 +725,11 @@ const CreateEmployee = () => {
                                         placeholder="Full Name"
                                         onChange={handleChange('nok_name')}
                                         defaultValue={formData.nok_name}
+                                        isInvalid={!!errors.nok_name}
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.nok_name}
+                                    </Form.Control.Feedback>
                                 </Col>
                                 <Col sm={3} className="mb-3">
                                     <Form.Label className="form-label">Relationship with NOK</Form.Label>
@@ -515,7 +741,11 @@ const CreateEmployee = () => {
                                         placeholder="Relationship with NOK"
                                         onChange={handleChange('nok_rs')}
                                         defaultValue={formData.nok_rs}
+                                        isInvalid={!!errors.nok_rs}
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.nok_rs}
+                                    </Form.Control.Feedback>
                                 </Col>
                                 <Col sm={3} className="mb-3">
                                     <Form.Label className="form-label">Contact NOK</Form.Label>
@@ -527,7 +757,11 @@ const CreateEmployee = () => {
                                         placeholder="NOK Contact Number"
                                         onChange={handleChange('nok_contact')}
                                         defaultValue={formData.nok_contact}
+                                        isInvalid={!!errors.nok_contact}
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.nok_contact}
+                                    </Form.Control.Feedback>
                                 </Col>
                             </Row>
                             <Col sm={12} className="mb-3">
@@ -539,7 +773,11 @@ const CreateEmployee = () => {
                                     placeholder="Present Address"
                                     onChange={handleChange('present_address')}
                                     defaultValue={formData.present_address}
+                                    isInvalid={!!errors.present_address}
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.present_address}
+                                </Form.Control.Feedback>
                             </Col>
                             <Col sm={12} className="mb-3">
                                 <Form.Label className="form-label">Permanent Address</Form.Label>
@@ -550,7 +788,11 @@ const CreateEmployee = () => {
                                     placeholder="Permanent Address"
                                     onChange={handleChange('permanent_address')}
                                     defaultValue={formData.permanent_address}
+                                    isInvalid={!!errors.permanent_address}
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.permanent_address}
+                                </Form.Control.Feedback>
                             </Col>
                             <Row>
                                 <Col sm={3} className="mb-3">
@@ -563,7 +805,11 @@ const CreateEmployee = () => {
                                         placeholder="Father's Name"
                                         onChange={handleChange('father_name')}
                                         defaultValue={formData.father_name}
+                                        isInvalid={!!errors.father_name}
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.father_name}
+                                    </Form.Control.Feedback>
                                 </Col>
                                 <Col sm={3} className="mb-3">
                                     <Form.Label className="form-label">Mother's Name</Form.Label>
@@ -575,20 +821,23 @@ const CreateEmployee = () => {
                                         placeholder="Mother's Name"
                                         onChange={handleChange('mother_name')}
                                         defaultValue={formData.mother_name}
+                                    // isInvalid={!!errors.mother_name}
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.mother_name}
+                                    </Form.Control.Feedback>
                                 </Col>
                                 <Col sm={6} className="mb-3">
                                     <ChildRepeater fields={formData.children} setFields={handleChildrenChange} />
                                 </Col>
                             </Row>
-
-
                         </Card.Body>
                         <Card.Footer className="d-flex align-items-center justify-content-md-end">
                             <Button className="link-button" onClick={handleSubmit}>Submit</Button>
                         </Card.Footer>
                     </Card>
                 </Form>
+
             </Col>
         </Container>
     );

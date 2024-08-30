@@ -46,7 +46,10 @@ const Employee = sequelize.define('Employee', {
     reg_no: DataTypes.STRING,
     card_no: DataTypes.STRING,
     present_address: DataTypes.STRING,
-    office_letter_no: DataTypes.STRING
+    office_letter_no: DataTypes.STRING,
+    salary: DataTypes.FLOAT,
+    start_working_hr: DataTypes.TIME,
+    end_working_hr: DataTypes.TIME
     // Add additional fields if necessary
 }, {
     tableName: 'employees',

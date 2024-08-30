@@ -80,26 +80,29 @@ const getAllEmployees = async (req, res) => {
 
 
 const createEmployee = async (req, res) => {
-    console.log('inside controller');
     const { children, applicantId, ...data } = req.body;
     const parsedChildren = JSON.parse(children);
 
-    console.log('Received applicantId:', applicantId);
-    console.log('Received data:', data);
+    
+    let photoName = '';
+    // Consolidate file path extraction
+    if (req.files) {
+      photoName = req.files.photo?.[0]?.filename || '';
+    }
 
     const transaction = await sequelize.transaction();
-
+    let user, employee, personalDetailsData, additionalDetailsData;
     try {
         if (applicantId) {
             // Find the applicant and associated user
             const applicant = await Application.findOne({
                 where: { application_id: applicantId },
-                include: [{ 
-                    model: User, 
+                include: [{
+                    model: User,
                     include: [
-                        { model: PersonalInformation, as: 'PersonalInformation' }, 
+                        { model: PersonalInformation, as: 'PersonalInformation' },
                         { model: AdditionalDetails, as: 'AdditionalDetails' }
-                    ] 
+                    ]
                 }],
                 transaction
             });
@@ -109,7 +112,7 @@ const createEmployee = async (req, res) => {
                 return res.status(404).json({ message: 'Applicant not found' });
             }
 
-            const user = applicant.User;
+            user = applicant.User;
 
             // Update the user type to 'employee' and set a generated password
             user.user_type = 'employee';
@@ -121,117 +124,147 @@ const createEmployee = async (req, res) => {
             await applicant.save({ transaction });
 
             // Merge the existing personal details with the incoming data
-            const personalDetailsData = {
+            personalDetailsData = {
                 ...user.PersonalInformation.get({ plain: true }),
                 ...Object.fromEntries(Object.entries(data).filter(([_, v]) => v !== ''))
             };
 
             // Merge the existing additional details with the incoming data
-            const additionalDetailsData = {
+            additionalDetailsData = {
                 ...user.AdditionalDetails.get({ plain: true }),
                 ...Object.fromEntries(Object.entries(data).filter(([_, v]) => v !== ''))
             };
 
             // Update the existing personal details
             if (user.PersonalInformation) {
-                console.log('Updating personal details with:', personalDetailsData);
                 await user.PersonalInformation.update(personalDetailsData, { transaction });
             }
 
             // Update the existing additional details
             if (user.AdditionalDetails) {
-                console.log('Updating additional details with:', additionalDetailsData);
                 await user.AdditionalDetails.update(additionalDetailsData, { transaction });
             }
 
-            // Create the employee record (since it does not exist before hiring)
-            const employee = await Employee.create({
-                user_id: user.user_id,
-                department_id: data.department_id,
-                job_id: data.job_id,
-                doj: data.doj || new Date(),
-                reg_no: data.reg_no,
-                card_no: data.card_no,
-                office_letter_no: data.office_letter_no,
-                date_of_promotion: data.date_of_promotion,
-                present_address: data.present_address
-            }, {
-                transaction
-            });
+        } else {
+            // Create a new user
+            user = await User.create({
+                email: data.email,
+                password: generatePassword(),
+                user_type: 'employee',
+                avatar: photoName
+            }, { transaction });
 
+            if (!user) {
+                await transaction.rollback();
+                return res.status(404).json({ message: 'user not created' });
+            }
+
+            // Create personal details
+            personalDetailsData = {
+                ...data,  // assuming all personal details are provided in the data
+                user_id: user.user_id,
+            };
+            const personalDetails = await PersonalInformation.create(personalDetailsData, { transaction });
+
+            // Create additional details
+            additionalDetailsData = {
+                ...data,  // assuming all additional details are provided in the data
+                user_id: user.user_id,
+            };
+
+            const additionalDetails = await AdditionalDetails.create(additionalDetailsData, { transaction });
+        }
+          
+        // Create the employee record (since it does not exist before hiring)
+        employee = await Employee.create({
+            user_id: user.user_id,
+            department_id: data.department_id,
+            job_id: data.job_id,
+            doj: data.doj || new Date(),
+            reg_no: data.reg_no,
+            card_no: data.card_no,
+            office_letter_no: data.office_letter_no,
+            present_address: data.present_address,
+            start_working_hr: data.start_working_hr,
+            end_working_hr: data.end_working_hr
+        }, {
+            transaction
+        });
+
+        // Filter out any children objects that don't have valid name or age
+        const validChildren = parsedChildren.filter(child => child.name && child.age);
+
+        if (validChildren.length > 0) {
             // Delete existing children records to avoid duplication
             await Children.destroy({ where: { employee_id: employee.employee_id }, transaction });
 
             // Create new children records
-            await Promise.all(parsedChildren.map(async (child) => {
+            await Promise.all(validChildren.map(async (child) => {
                 await Children.create({
                     employee_id: employee.employee_id,
                     name: child.name,
                     age: child.age
                 }, { transaction });
             }));
-
-            // Fetch the complete employee details after creation
-            const employeeDetails = await Employee.findOne({
-                where: { employee_id: employee.employee_id },
-                attributes: [
-                    'employee_id',
-                    'doj',
-                    [sequelize.col('User.PersonalInformation.name'), 'name'],
-                    [sequelize.col('User.PersonalInformation.gender'), 'gender'],
-                    [sequelize.col('User.PersonalInformation.cell_no'), 'cell_no'],
-                    [sequelize.col('User.email'), 'email'],
-                    [sequelize.col('Job.title'), 'job_title'],
-                    [sequelize.col('User.AdditionalDetails.resume'), 'resume'],
-                ],
-                include: [
-                    {
-                        model: User,
-                        attributes: [],
-                        include: [
-                            {
-                                model: PersonalInformation,
-                                as: 'PersonalInformation',
-                                attributes: []
-                            },
-                            {
-                                model: AdditionalDetails,
-                                as: 'AdditionalDetails',
-                                attributes: []
-                            }
-                        ]
-                    },
-                    {
-                        model: Department,
-                        attributes: []
-                    },
-                    {
-                        model: Job,
-                        attributes: [],
-                        include: [
-                            { model: Department, attributes: ['department_name'] }
-                        ]
-                    }
-                ],
-                transaction,
-                raw: true
-            });
-
-            // Send welcome email to new employee
-            await sendEmail('bismaimran36@gmail.com', 'Welcome to Bahria University Karachi Campus', `Your email is: ${user.email} and your password is: ${user.password}`);
-
-            // Commit the transaction
-            await transaction.commit();
-
-            // Send the response with the newly created employee details
-            return res.status(201).json({
-                message: 'Employee created successfully',
-                data: employeeDetails
-            });
         }
 
-        await transaction.rollback();
-        res.status(400).json({ message: 'Invalid request' });
+        // Fetch the complete employee details after creation
+        const employeeDetails = await Employee.findOne({
+            where: { employee_id: employee.employee_id },
+            attributes: [
+                'employee_id',
+                'doj',
+                [sequelize.col('User.PersonalInformation.name'), 'name'],
+                [sequelize.col('User.PersonalInformation.gender'), 'gender'],
+                [sequelize.col('User.PersonalInformation.cell_no'), 'cell_no'],
+                [sequelize.col('User.email'), 'email'],
+                [sequelize.col('Job.title'), 'job_title'],
+                [sequelize.col('User.AdditionalDetails.resume'), 'resume'],
+            ],
+            include: [
+                {
+                    model: User,
+                    attributes: [],
+                    include: [
+                        {
+                            model: PersonalInformation,
+                            as: 'PersonalInformation',
+                            attributes: []
+                        },
+                        {
+                            model: AdditionalDetails,
+                            as: 'AdditionalDetails',
+                            attributes: []
+                        }
+                    ]
+                },
+                {
+                    model: Department,
+                    attributes: []
+                },
+                {
+                    model: Job,
+                    attributes: [],
+                    include: [
+                        { model: Department, attributes: ['department_name'] }
+                    ]
+                }
+            ],
+            transaction,
+            raw: true
+        });
+
+        // Send welcome email to new employee
+        await sendEmail(data.email, 'Welcome to Bahria University Karachi Campus', `Your email is: ${user.email} and your password is: ${user.password}`);
+
+        // Commit the transaction
+        await transaction.commit();
+
+        // Send the response with the newly created employee details
+        return res.status(201).json({
+            message: 'Employee created successfully',
+            data: employeeDetails
+        });
     } catch (error) {
         // Rollback the transaction in case of any errors
         await transaction.rollback();
