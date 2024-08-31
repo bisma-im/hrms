@@ -15,16 +15,19 @@ import PrivilegeLeave from 'pages/Leaves/PrivilegeLeave';
 import ApplicationForm from 'pages/Application/ApplicationForm';
 import { useSelector } from 'react-redux';
 import CreateEmployee from 'pages/Employees/CreateEmployee';
+import EmployeeDashboard from 'pages/Dashboard/Employee/EmployeeDashboard';
 
 const AppRoutes = () => {
     const { isAuthenticated } = useSelector(state => state.auth);
+    const { user } = useSelector(state => state.auth);
+    console.log(user)
 
     return (
         <Routes>
 
             <Route path="/login" element={<Login />} />
             {/* <Route path="*" element={<Navigate to="login" />} /> */}
-            <Route path="/job-application" element={<ApplicationForm/>} />
+            <Route path="/job-application" element={<ApplicationForm />} />
 
 
             {/* Redirect if not authenticated */}
@@ -33,20 +36,30 @@ const AppRoutes = () => {
             {/* Protected routes */}
             {isAuthenticated && (
                 <Route path='/' element={<PrivateRoute />}>
-                    <Route index element={<Navigate replace to="/dashboard" />} />
-                    <Route path='dashboard' element={<Dashboard />} />
-                    <Route path="create-job" element={<CreateJob />} />
-                    <Route path="employees-list" element={<EmployeesList />} />
-                    <Route path="employee-details" element={<Employees />} />
-                    <Route path="add-employee-form" element={<CreateEmployee />} />
-                    <Route path="add-employee-form/:applicantId" element={<CreateEmployee />} />
-                    <Route path="job-positions" element={<JobPositions />} />
-                    <Route path='leaves' element={<LeavesList />} />
+
                     <Route path='sick-leave' element={<SickLeave />} />
                     <Route path='casual-leave' element={<CasualLeave />} />
                     <Route path='privilege-leave' element={<PrivilegeLeave />} />
-                    <Route path="applicants" element={<ApplicationList />} />
-                    <Route path="applicants/:applicantId" element={<ApplicationForm />} />
+                    {user.role === 'Admin' ? (
+                        <>
+                            <Route index element={<Navigate replace to="/dashboard" />} />
+                            <Route path='dashboard' element={<Dashboard />} />
+                            <Route path="create-job" element={<CreateJob />} />
+                            <Route path="employees-list" element={<EmployeesList />} />
+                            <Route path="employee-details" element={<Employees />} />
+                            <Route path="add-employee-form" element={<CreateEmployee />} />
+                            <Route path="add-employee-form/:applicantId" element={<CreateEmployee />} />
+                            <Route path="job-positions" element={<JobPositions />} />
+                            <Route path='leaves' element={<LeavesList />} />
+                            <Route path="applicants" element={<ApplicationList />} />
+                            <Route path="applicants/:applicantId" element={<ApplicationForm />} />
+                        </>
+                    ) : (
+                        <>
+                            <Route path='dashboard' element={<EmployeeDashboard />} />
+                        </>
+                    )
+                    }
                 </Route>
             )}
 

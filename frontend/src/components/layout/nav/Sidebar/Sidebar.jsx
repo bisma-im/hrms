@@ -7,12 +7,13 @@ import { FaAngleDoubleLeft, FaAngleDoubleRight, FaSignOutAlt } from 'react-icons
 import { Scrollbars } from 'react-custom-scrollbars-2';
 import { IconContext } from 'react-icons';
 import SidebarItem from './SidebarItem';
-import menuItems from 'components/layout/nav/Sidebar/MenuList';
+import useMenuItems from 'components/layout/nav/Sidebar/MenuList';
 import { useTheme } from 'context/ThemeContext';
 import { useNavigate } from 'react-router-dom';
 import './Sidebar.css';
 
 const Sidebar = () => {
+  const menuItems = useMenuItems();
   const { sidebarOpen } = useSelector(state => state.sidebar);
   const collapsed = !sidebarOpen;
   const { toggleTheme } = useTheme();

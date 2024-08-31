@@ -14,6 +14,16 @@ export const fetchEmployees = createAsyncThunk('employees/fetchEmployees', async
   }
 });
 
+export const fetchEmployeeDetails = createAsyncThunk('employees/fetchEmployeeDetails', async (userId, { rejectWithValue }) => {
+  try {
+    const response = await apiClient.get(`/api/employees/${userId}`);
+    console.log(response)
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response.data);
+  }
+});
+
 export const addEmployee = createAsyncThunk('employees/addEmployee', async (employeeData, { rejectWithValue }) => {
   try {
     console.log(employeeData);

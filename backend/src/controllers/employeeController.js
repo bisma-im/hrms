@@ -78,16 +78,15 @@ const getAllEmployees = async (req, res) => {
 };
 
 
-
 const createEmployee = async (req, res) => {
     const { children, applicantId, ...data } = req.body;
     const parsedChildren = JSON.parse(children);
 
-    
+
     let photoName = '';
     // Consolidate file path extraction
     if (req.files) {
-      photoName = req.files.photo?.[0]?.filename || '';
+        photoName = req.files.photo?.[0]?.filename || '';
     }
 
     const transaction = await sequelize.transaction();
@@ -174,7 +173,7 @@ const createEmployee = async (req, res) => {
 
             const additionalDetails = await AdditionalDetails.create(additionalDetailsData, { transaction });
         }
-          
+
         // Create the employee record (since it does not exist before hiring)
         employee = await Employee.create({
             user_id: user.user_id,
@@ -273,9 +272,62 @@ const createEmployee = async (req, res) => {
     }
 };
 
+const fetchEmployeeDetails = async (req, res) => {
+    const { userId } = req.params;
+    try {
+        const employee = await Employee.findOne({
+            attributes: ['employee_id', 'doj', 'reg_no'],
+            where: { user_id: userId },
+            include: [
+                {
+                    model: User,
+                    attributes: ['avatar'],
+                    include: [
+                        {
+                            model: PersonalInformation,
+                            as: 'PersonalInformation',
+                            attributes: ['name', 'dob', 'gender'] // You can add more attributes if needed
+                        }
+                    ]
+                },
+                {
+                    model: Job,
+                    attributes: ['title'],
+                },
+                {
+                    model: Department,
+                    attributes: ['department_name']
+                }
+            ]
+        });
 
+        if (!employee) {
+            return res.status(404).json({ message: 'Employee not found' });
+        }
+
+        // Format the response to match the required output
+        const response = {
+            avatar: employee.User.avatar,
+            name: employee.User.PersonalInformation.name,
+            job_title: employee.Job.title,
+            employee_id: employee.employee_id,  // Employee Code
+            dob: employee.User.PersonalInformation.dob, // From PersonalInformation
+            gender: employee.User.PersonalInformation.gender, // From PersonalInformation
+            reg_no: employee.reg_no, // User status
+            department_name: employee.Department.department_name,
+            doj: employee.doj // Date of Joining
+        };
+
+        return res.status(200).json(response);
+    }
+    catch (error) {
+        console.error('Error fetching employee details:', error);
+        return res.status(500).json({ message: 'Error fetching employee details', error: error.message });
+    }
+}
 
 module.exports = {
     getAllEmployees,
-    createEmployee
+    createEmployee,
+    fetchEmployeeDetails
 };
