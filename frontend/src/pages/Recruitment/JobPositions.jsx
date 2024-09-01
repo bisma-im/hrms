@@ -1,10 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import JobContainer from 'components/common/jobs/JobContainer';
 import JOB_DATA from './JOB_DATA.json';
 import { Link } from 'react-router-dom';
+import { fetchJobs } from 'features/job/jobService';
+import { useDispatch } from 'react-redux';
 const JobPositions = () => {
-    const jobs = JOB_DATA;
+    const [jobs, setJobs] = useState([]);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+    (async () => {
+        try {
+            const fetchedJobs = await fetchJobs();
+            setJobs(fetchedJobs);
+
+            // Process jobs here
+        } catch (error) {
+            console.error('Error fetching jobs:', error);
+        }
+    })();}, [dispatch]);
     return (
         <Container fluid>
             <Row className="d-flex align-items-center justify-content-md-end">
@@ -16,11 +31,11 @@ const JobPositions = () => {
                 </Col>
             </Row>
             <Row>
-            {jobs.map(job => (
-                <Col lg={4} key={job.id}>
-                    <JobContainer job={job}/>
-                </Col>
-            ))}
+                {jobs.map(job => (
+                    <Col lg={4} key={job.job_id}>
+                        <JobContainer job={job} />
+                    </Col>
+                ))}
             </Row>
         </Container>
     );

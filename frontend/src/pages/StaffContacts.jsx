@@ -6,7 +6,6 @@ import MyTable from 'components/common/table/MyTable';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectEmployee } from 'features/employees/employeeSlice';
-import apiClient from 'api/apiClient';
 
 const EmployeesList = () => {
     const navigate = useNavigate();

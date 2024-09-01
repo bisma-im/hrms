@@ -12,6 +12,10 @@ const Job = sequelize.define('Job', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    description: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     department_id: {
         type: DataTypes.INTEGER,
         allowNull: false
@@ -24,7 +28,7 @@ const Job = sequelize.define('Job', {
         type: DataTypes.STRING,
         allowNull: true
     },
-    experience_skill: {
+    experience_years: {
         type: DataTypes.STRING,
         allowNull: true
     },
@@ -32,25 +36,39 @@ const Job = sequelize.define('Job', {
         type: DataTypes.STRING,
         allowNull: true
     },
-    location: {
+    campus: {
         type: DataTypes.STRING,
         allowNull: true
     },
-    published_at: {
-        type: DataTypes.DATE,
+    vacancies: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    is_published: {
+        type: DataTypes.CHAR,
         allowNull: true
     },
     published_by: {
         type: DataTypes.INTEGER,
-        allowNull: true
+        allowNull: false,
+        references: {
+            model: 'users', // This is a reference to another model
+            key: 'user_id', // This is the column name of the referenced model
+        },
+        onDelete: 'CASCADE',
     },
     created_at: {
         type: DataTypes.DATE,
-        allowNull: true
+        allowNull: false
     },
     created_by: {
         type: DataTypes.INTEGER,
-        allowNull: true
+        allowNull: false,
+        references: {
+            model: 'users', // This is a reference to another model
+            key: 'user_id', // This is the column name of the referenced model
+        },
+        onDelete: 'CASCADE',
     }
 }, {
     tableName: 'job',

@@ -1,4 +1,4 @@
-import { Card, Button, Row, Col } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import React from 'react';
 
 const LeaveWidget = ({ icon, leaveType, iconColor, availableDays, usedDays }) => {

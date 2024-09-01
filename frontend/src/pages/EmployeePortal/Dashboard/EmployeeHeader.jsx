@@ -1,27 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Container, Row, Col, Image } from 'react-bootstrap';
-import { fetchEmployeeDetails } from 'features/employees/employeeService';
-import { useDispatch, useSelector } from 'react-redux';
 import { format } from 'date-fns';
 
-const EmployeeHeader = () => {
-    const [employee, setEmployee] = useState(null);
-    const { user } = useSelector(state => state.auth);
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(fetchEmployeeDetails(user.id))
-            .unwrap()
-            .then(data => {
-                setEmployee(data);
-            })
-            .catch(error => {
-                console.error('Failed to fetch employee details:', error);
-            });
-    }, [dispatch, user.id]);
-
-    if (!employee) return null; // or return a loader/spinner
-
+const EmployeeHeader = ({ employee }) => {
+ // or return a loader/spinner
     return (
         <Container fluid className="my-3">
             <Row className="align-items-center">

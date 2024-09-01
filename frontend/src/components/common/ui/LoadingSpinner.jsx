@@ -1,20 +1,19 @@
 import React from 'react';
+import { RotatingLines } from 'react-loader-spinner';
 
 const LoadingSpinner = () => {
     return (
-        <>
-            <style>
-                {`
-                    @keyframes spin {
-                        0% { transform: rotate(0deg); }
-                        100% { transform: rotate(360deg); }
-                    }
-                `}
-            </style>
-            <div style={styles.spinnerContainer}>
-                <div style={styles.spinner}></div>
-            </div>
-        </>
+        <div style={styles.spinnerContainer}>
+        <RotatingLines
+            strokeColor="#003366"
+            strokeWidth="5"
+            animationDuration="0.75"
+            height="96"
+            width="96"
+            visible={true}
+            style={styles.spinner}
+        />
+        </div>
     );
 };
 
@@ -24,7 +23,7 @@ const styles = {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '100vh',
+        height: '100%',
     },
     spinner: {
         width: '50px',

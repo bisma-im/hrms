@@ -3,12 +3,16 @@ import LEAVE_DATA from 'pages/Leaves/LEAVE_DATA.json';
 import { Card, Table } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import StackedChart from 'components/common/charts/StackedChart';
-const EmployeeLeaves = () => {
-    const employee = useSelector((state) => state.employee.selectedEmployee);
+const EmployeeLeaves = ({ employee }) => {
+    // const employee = useSelector((state) => state.employee.selectedEmployee);
     const data = LEAVE_DATA;
     const currentEmployeeLeaves = (data) => {
-        return data.filter(leave => leave.EmployeeId === employee.id);
-    };
+        return data.filter(leave => leave.employee_id === employee.employee_id);
+    };    
+
+    const approvedEmpLeaves = (data) => {
+        return data.filter(leave => leave.employee_id === employee.employee_id && leave.Status === 'Approved');
+    }
 
     function calculateDuration(startDateStr, endDateStr) {
         const startDate = new Date(startDateStr);
@@ -70,7 +74,7 @@ const EmployeeLeaves = () => {
                 <Card.Body className="table-responsive my-table">
                     <StackedChart
                         leaveData={LEAVE_DATA}
-                        filterFunction={currentEmployeeLeaves} />
+                        filterFunction={approvedEmpLeaves} />
                 </Card.Body>
             </Card>
         </>

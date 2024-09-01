@@ -7,8 +7,12 @@ const Employee = require('../models/Employee');
 const Job = require('../models/Job');
 const PersonalInformation = require('../models/PersonalInformation');
 const User = require('../models/User');
+const Experience = require('../models/Experience');
+const Qualification = require('../models/Qualification');
 const sendEmail = require('../utils/mailService');
 const crypto = require('crypto');
+const { Op, Sequelize } = require('sequelize');
+const { log } = require('console');
 
 function generatePassword(length = 12) {
     const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+[]{}|;:",.<>?';
@@ -26,6 +30,7 @@ const getAllEmployees = async (req, res) => {
             attributes: [
                 'employee_id',
                 'doj',
+                'user_id',
                 [sequelize.col('User.PersonalInformation.name'), 'name'],
                 [sequelize.col('User.PersonalInformation.gender'), 'gender'],
                 [sequelize.col('User.PersonalInformation.cell_no'), 'cell_no'],
@@ -276,18 +281,41 @@ const fetchEmployeeDetails = async (req, res) => {
     const { userId } = req.params;
     try {
         const employee = await Employee.findOne({
-            attributes: ['employee_id', 'doj', 'reg_no'],
+            attributes: ['employee_id', 'doj', 'reg_no', 'salary'],
             where: { user_id: userId },
             include: [
                 {
                     model: User,
-                    attributes: ['avatar'],
+                    attributes: ['avatar', 'email'],
                     include: [
                         {
                             model: PersonalInformation,
                             as: 'PersonalInformation',
-                            attributes: ['name', 'dob', 'gender'] // You can add more attributes if needed
-                        }
+                            attributes: ['name', 'dob', 'gender', 'cell_no', 'postal_address', 'marital_status', 'cnic_no', 'nationality']
+                        },
+                        {
+                            model: Experience,
+                            attributes: ['position_title', 'to_date'],
+                            required: false,  // Left join to handle users without experience
+                            where: {
+                                to_date: {
+                                    [Op.in]: Sequelize.literal(`(
+                                        SELECT MAX("to_date")
+                                        FROM "experience" AS "Experience"
+                                        WHERE "Experience"."user_id" = "User"."user_id"
+                                    )`)
+                                }
+                            }
+                        },
+                        {
+                            model: Qualification,
+                            attributes: ['degree_type', 'specialization', 'passing_year', 'cgpa_percentage', 'institute_name']
+                        },
+                        {
+                            model: AdditionalDetails,
+                            as: 'AdditionalDetails',
+                            attributes: ['resume']
+                        },
                     ]
                 },
                 {
@@ -304,10 +332,10 @@ const fetchEmployeeDetails = async (req, res) => {
         if (!employee) {
             return res.status(404).json({ message: 'Employee not found' });
         }
-
-        // Format the response to match the required output
+        
         const response = {
             avatar: employee.User.avatar,
+            email: employee.User.email,
             name: employee.User.PersonalInformation.name,
             job_title: employee.Job.title,
             employee_id: employee.employee_id,  // Employee Code
@@ -315,16 +343,24 @@ const fetchEmployeeDetails = async (req, res) => {
             gender: employee.User.PersonalInformation.gender, // From PersonalInformation
             reg_no: employee.reg_no, // User status
             department_name: employee.Department.department_name,
-            doj: employee.doj // Date of Joining
+            doj: employee.doj, // Date of Joining
+            cell_no: employee.User.PersonalInformation.cell_no,
+            address: employee.User.PersonalInformation.postal_address,
+            marital_status: employee.User.PersonalInformation.marital_status,
+            cnic_no: employee.User.PersonalInformation.cnic_no,
+            nationality: employee.User.PersonalInformation.nationality,
+            salary: employee.salary,
+            previous_position: employee.User.Experiences.length > 0 ? employee.User.Experiences[0].position_title : 'No experience found',
+            qualifications: employee.User.Qualifications.map(q => q.dataValues),
+            resume: employee.User.AdditionalDetails.resume
         };
 
         return res.status(200).json(response);
-    }
-    catch (error) {
+    } catch (error) {
         console.error('Error fetching employee details:', error);
         return res.status(500).json({ message: 'Error fetching employee details', error: error.message });
     }
-}
+};
 
 module.exports = {
     getAllEmployees,

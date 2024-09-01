@@ -1,12 +1,46 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Col, Container, Tab, Nav } from 'react-bootstrap';
 import EmployeeSummary from './EmployeeSummary';
 import EmployeeDocuments from './EmployeeDocuments';
 import EmployeeLeaves from './EmployeeLeaves';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { fetchEmployeeDetails } from 'features/employees/employeeService';
+import LoadingSpinner from 'components/common/ui/LoadingSpinner';
 
 const Employees = () => {
-    const employee = useSelector((state) => state.employee.selectedEmployee);
+    const { userId } = useParams();
+    console.log("User ID:", userId);
+
+    const [employee, setEmployee] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        console.log(userId)
+
+        if (userId) {
+            console.log('fetchng user')
+            setIsLoading(true);
+            dispatch(fetchEmployeeDetails(userId))
+                .unwrap()
+                .then(data => {
+                    console.log(data);
+                    
+                    setEmployee(data);
+                    setIsLoading(false);
+                })
+                .catch(error => {
+                    console.error('Failed to fetch applicant details:', error);
+                    setIsLoading(false);
+                });
+        }
+    }, [userId, dispatch]);
+
+    if (isLoading) {
+        return <LoadingSpinner />;
+    }
+
     return (
         <Container fluid>
             <Tab.Container defaultActiveKey={'EmployeeSummary'}>
@@ -33,13 +67,13 @@ const Employees = () => {
                     <Col xs={12}>
                         <Tab.Content>
                             <Tab.Pane eventKey={'EmployeeSummary'}>
-                                <EmployeeSummary />
+                                <EmployeeSummary  employee={employee}/>
                             </Tab.Pane>
                             <Tab.Pane eventKey={'EmployeeDocuments'}>
-                                <EmployeeDocuments />
+                                <EmployeeDocuments  employee={employee} />
                             </Tab.Pane>
                             <Tab.Pane eventKey={'EmployeeLeaves'}>
-                                <EmployeeLeaves />
+                                <EmployeeLeaves  employee={employee}/>
                             </Tab.Pane>
                         </Tab.Content>
                     </Col>

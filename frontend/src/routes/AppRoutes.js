@@ -15,7 +15,7 @@ import PrivilegeLeave from 'pages/Leaves/PrivilegeLeave';
 import ApplicationForm from 'pages/Application/ApplicationForm';
 import { useSelector } from 'react-redux';
 import CreateEmployee from 'pages/Employees/CreateEmployee';
-import EmployeeDashboard from 'pages/Dashboard/Employee/EmployeeDashboard';
+import EmployeeDashboard from 'pages/EmployeePortal/Dashboard/EmployeeDashboard';
 
 const AppRoutes = () => {
     const { isAuthenticated } = useSelector(state => state.auth);
@@ -46,10 +46,11 @@ const AppRoutes = () => {
                             <Route path='dashboard' element={<Dashboard />} />
                             <Route path="create-job" element={<CreateJob />} />
                             <Route path="employees-list" element={<EmployeesList />} />
-                            <Route path="employee-details" element={<Employees />} />
+                            <Route path="employees/:userId" element={<Employees />} />
                             <Route path="add-employee-form" element={<CreateEmployee />} />
                             <Route path="add-employee-form/:applicantId" element={<CreateEmployee />} />
-                            <Route path="job-positions" element={<JobPositions />} />
+                            <Route path="jobs" element={<JobPositions />} />
+                            <Route path="jobs/:jobId" element={<CreateJob />} />
                             <Route path='leaves' element={<LeavesList />} />
                             <Route path="applicants" element={<ApplicationList />} />
                             <Route path="applicants/:applicantId" element={<ApplicationForm />} />

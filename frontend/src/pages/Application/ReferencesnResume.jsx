@@ -1,6 +1,45 @@
+import React, { useState } from "react";
 import { Card, Col, Form, Row, Button } from "react-bootstrap";
 
 const ReferencesnResume = ({ prevStep, handleReferenceChange, handleChange, handleSubmit, values }) => {
+    const [formErrors, setFormErrors] = useState({});
+
+    const validateReferencesAndResume = () => {
+        const errors = {};
+        const phoneRegex = /^03\d{2}-\d{7}$/; // Regex to match the format 03XX-XXXXXXX
+    
+        // Validate references
+        const referencesValid = values.references.every(reference => {
+            const isNameValid = reference.reference_name.trim() !== '';
+            const isDesignationValid = reference.reference_designation.trim() !== '';
+            const isContactValid = phoneRegex.test(reference.reference_contact.trim());
+    
+            return isNameValid && isDesignationValid && isContactValid;
+        });
+    
+        if (!referencesValid) {
+            errors.references = "All reference fields (Name, Designation, Contact) must be filled out and contact number must be in the format 03XX-XXXXXXX.";
+        }
+    
+        // Validate resume upload
+        if (!values.resume) {
+            errors.resume = "Resume upload is required.";
+        }
+    
+        return errors;
+    };
+    
+
+    const handleNext = (e) => {
+        e.preventDefault();
+        const errors = validateReferencesAndResume();
+        setFormErrors(errors);
+    
+        if (Object.keys(errors).length === 0) {
+            handleSubmit();
+        }
+    };
+    
     return (
         <>
             <Card className="my-card card-bx">
@@ -39,7 +78,7 @@ const ReferencesnResume = ({ prevStep, handleReferenceChange, handleChange, hand
                                         name="reference_contact"
                                         type="text"
                                         required
-                                        placeholder="Reference Contact"
+                                        placeholder="03XX-XXXXXXX"
                                         onChange={handleReferenceChange(index, 'reference_contact')}
                                         value={reference.reference_contact}
                                     />
@@ -47,6 +86,7 @@ const ReferencesnResume = ({ prevStep, handleReferenceChange, handleChange, hand
                             </Row>
                         ))
                     }
+                    {formErrors.references && <div className="invalid-feedback d-block">{formErrors.references}</div>}
                     <div className="my-4"><span><b>Note:</b> The references should NOT be a family member/relative of the applicant</span></div>
 
                 </Card.Body>
@@ -68,11 +108,12 @@ const ReferencesnResume = ({ prevStep, handleReferenceChange, handleChange, hand
                                 onChange={handleChange('resume')}
                                 defaultValue={values.resume} />
                         </Col>
+                        {formErrors.resume && <div className="invalid-feedback">{formErrors.resume}</div>}
                     </Row>
                 </Card.Body>
                 <Card.Footer className="">
                     <Button className="link-button" onClick={prevStep}>Prev</Button>
-                    <Button className="link-button" onClick={handleSubmit}>Submit</Button>
+                    <Button className="link-button" onClick={handleNext}>Submit</Button>
                 </Card.Footer>
             </Card>
         </>
