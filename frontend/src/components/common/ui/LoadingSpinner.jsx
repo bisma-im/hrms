@@ -1,15 +1,15 @@
 import React from 'react';
 import { RotatingLines } from 'react-loader-spinner';
 
-const LoadingSpinner = () => {
+const LoadingSpinner = ({ size = 96, color = "#003366" }) => {
     return (
         <div style={styles.spinnerContainer}>
         <RotatingLines
-            strokeColor="#003366"
+            strokeColor={color}
             strokeWidth="5"
             animationDuration="0.75"
-            height="96"
-            width="96"
+            height={size}
+            width={size}
             visible={true}
             style={styles.spinner}
         />

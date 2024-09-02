@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import JobContainer from 'components/common/jobs/JobContainer';
-import JOB_DATA from './JOB_DATA.json';
 import { Link } from 'react-router-dom';
 import { fetchJobs } from 'features/job/jobService';
 import { useDispatch } from 'react-redux';

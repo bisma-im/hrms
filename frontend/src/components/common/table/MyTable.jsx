@@ -1,9 +1,10 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import { useTable, useFilters, usePagination, useSortBy } from 'react-table';
+import { useTable, useFilters, usePagination, useSortBy, useGlobalFilter } from 'react-table';
 import { FaArrowUp, FaArrowDown, FaSort, FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 import './filtering.css';
+import { GlobalFilter } from './GlobalFilter';
 
-const MyTable = ({ columnHeaders, customCellRender, jsonData, onRowClick, initialFilters }) => {
+const MyTable = ({ columnHeaders, customCellRender, jsonData, onRowClick, initialFilters, includeGlobalFilter = false }) => {
     const columns = useMemo(() => columnHeaders, [])
     const data = useMemo(() => jsonData, [jsonData])
     const {
@@ -21,12 +22,17 @@ const MyTable = ({ columnHeaders, customCellRender, jsonData, onRowClick, initia
         canNextPage,
         canPreviousPage,
         setFilter,
+        setGlobalFilter,
         rowProps
     } = useTable({
         columns,
         data,
         initialState: { pageIndex: 0 }
-    }, useFilters, useSortBy, usePagination);
+    }, useFilters, 
+    includeGlobalFilter ? useGlobalFilter : '',
+    useSortBy, usePagination);
+
+    // const { globalFilter } = state;
 
     // Apply initial filters
     useEffect(() => {
@@ -44,7 +50,8 @@ const MyTable = ({ columnHeaders, customCellRender, jsonData, onRowClick, initia
 
     return (
         <div className="table-responsive">
-            <table {...getTableProps()} className="table dataTable display" id='myTable' style={{ 'background': 'black'}}>
+            {includeGlobalFilter && <GlobalFilter filter={state.globalFilter} setFilter={setGlobalFilter} />}
+            <table {...getTableProps()} className="table dataTable display" id='myTable' style={{ 'background': 'black' }}>
                 <thead>
                     {headerGroups.map((headerGroup, index) => {
                         const headerProps = headerGroup.getHeaderGroupProps();
@@ -63,7 +70,8 @@ const MyTable = ({ columnHeaders, customCellRender, jsonData, onRowClick, initia
                                                     }
                                                 </span>
                                             )}
-                                            {column.canFilter ? column.render('Filter') : null}
+                                            {/* {!includeGlobalFilter ? column.render('Filter') : null} */}
+                                            {column.canFilter && !includeGlobalFilter ? column.render('Filter') : null}
                                         </th>
                                     );
                                 })}
@@ -73,7 +81,7 @@ const MyTable = ({ columnHeaders, customCellRender, jsonData, onRowClick, initia
                 </thead>
 
                 <tbody {...getTableBodyProps()}>
-                    {page.map((row, rowIndex) => {
+                    {page.length ? (page.map((row, rowIndex) => {
                         prepareRow(row);
                         return (
                             <tr {...rowProps} key={row.id || rowIndex} onClick={() => onRowClick(row.original)}>
@@ -87,7 +95,13 @@ const MyTable = ({ columnHeaders, customCellRender, jsonData, onRowClick, initia
                                 })}
                             </tr>
                         );
-                    })}
+                    })) : (
+                        <tr>
+                            <td colSpan={columns.length} style={{ textAlign: 'center' }}>
+                                No data found
+                            </td>
+                        </tr>
+                    )}
                 </tbody>
             </table>
             <div className="d-flex justify-content-between">

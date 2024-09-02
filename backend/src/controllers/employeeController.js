@@ -35,6 +35,7 @@ const getAllEmployees = async (req, res) => {
                 [sequelize.col('User.PersonalInformation.gender'), 'gender'],
                 [sequelize.col('User.PersonalInformation.cell_no'), 'cell_no'],
                 [sequelize.col('User.email'), 'email'],
+                [sequelize.col('User.avatar'), 'avatar'],
                 [sequelize.col('Department.department_name'), 'department_name'],
                 [sequelize.col('Job.title'), 'job_title'],
                 [sequelize.col('User.AdditionalDetails.resume'), 'resume'],

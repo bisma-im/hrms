@@ -38,11 +38,6 @@ export const COLUMNS = [
         Filter: ColumnFilter,
     },
     {
-        Header: 'Resume',
-        id: 'resume', // Using camelCase or snake_case depends on your data structure
-        disableSortBy: true,
-    },
-    {
         Header: 'Rating',
         id: 'rating',
         // disableSortBy: true,
@@ -68,6 +63,11 @@ export const COLUMNS = [
 
             return <RatingCell />;
         },
+    },
+    {
+        Header: 'Resume',
+        id: 'resume', // Using camelCase or snake_case depends on your data structure
+        disableSortBy: true,
     },
     {
         Header: 'Actions',

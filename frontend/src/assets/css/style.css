@@ -576,6 +576,7 @@
 .custom-select .dropdown-toggle:focus,
 .custom-select .dropdown-toggle:hover {
   border-color: var(--primary);
+  background-color: var(--background-color);
 }
 
 .custom-input::placeholder,

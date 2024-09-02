@@ -7,6 +7,7 @@ import ScheduleInterviewModal from './ScheduleInterviewModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchApplicants, updateApplicant } from 'features/applicants/applicantService';
 import { FaRegFilePdf } from 'react-icons/fa';
+import Swal from 'sweetalert2';
 
 const ApplicationList = () => {
     const dispatch = useDispatch();
@@ -17,8 +18,6 @@ const ApplicationList = () => {
     const [showModal, setShowModal] = useState(false);
     const [selectedApplicant, setSelectedApplicant] = useState(null);
 
-    console.log(applicants);
-    // Fetch applicants when component mounts
     useEffect(() => {
         dispatch(fetchApplicants());
     }, [dispatch]);
@@ -37,21 +36,21 @@ const ApplicationList = () => {
 
     const getColor = (status) => {
         switch (status) {
-            case 'New': 
+            case 'New':
                 return 'rgba(255, 159, 10, 0.6)'; // Orange, less opaque, for attention
-            case 'Under Review': 
+            case 'Under Review':
                 return 'rgba(255, 209, 102, 0.6)'; // Light Orange, slightly translucent
-            case 'Interview Scheduled': 
+            case 'Interview Scheduled':
                 return 'rgba(0, 123, 255, 0.6)'; // Bright Blue, more translucent
-            case 'Hired': 
+            case 'Hired':
                 return 'rgba(40, 167, 69, 0.6)'; // Green, more translucent
-            case 'Offer Made': 
+            case 'Offer Made':
                 return 'rgba(23, 162, 184, 0.6)'; // Cyan, more translucent
-            case 'Shortlisted': 
+            case 'Shortlisted':
                 return 'rgba(255, 193, 7, 0.6)'; // Gold, more translucent
-            case 'Rejected': 
+            case 'Rejected':
                 return 'rgba(220, 53, 69, 0.6)'; // Red, more translucent
-            default: 
+            default:
                 return 'transparent'; // Default, fully transparent
         }
     };
@@ -163,7 +162,7 @@ const ApplicationList = () => {
             } else if (column.id === 'resume') {
                 return {
                     ...column,
-                    Cell: ({row}) => (
+                    Cell: ({ row }) => (
                         <a href={`${process.env.REACT_APP_API_URL}/uploads/${row.original.resume}`} target="_blank" rel="noopener noreferrer">
                             <FaRegFilePdf color="red" size={24} />
                         </a>
@@ -179,9 +178,34 @@ const ApplicationList = () => {
         console.log(`Email content: ${content}`);
         dispatch(updateApplicant({
             id: selectedApplicant.application_id,  // Assuming each row has an 'id' field
-            data: { status: 'Interview Scheduled', interview_date: date }
-        }));
-        // Implement the API call or logic to save the interview details and send the email here
+            data: { status: 'Interview Scheduled', interview_date: date, content: content }
+        }))
+        .unwrap()
+        .then(response=> {
+            Swal.fire({
+                title: 'Success!',
+                text: 'Interview has been successfully scheduled.',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+        })
+        .catch(error => {
+            let errorMessage = 'Failed to schedule the interview.';
+            if (error.status === 404) {
+                errorMessage = 'Applicant not found.';
+            } else if (error.status === 400) {
+                errorMessage = error.data.message; // Assuming the server sends back a clear message
+            }
+            Swal.fire({
+                title: 'Error!',
+                text: errorMessage,
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        })
+        .finally(() =>{
+            handleCloseModal();
+        })    
     };
 
     const handleCloseModal = () => {

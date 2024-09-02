@@ -36,7 +36,7 @@ const ReferencesnResume = ({ prevStep, handleReferenceChange, handleChange, hand
         setFormErrors(errors);
     
         if (Object.keys(errors).length === 0) {
-            handleSubmit();
+            handleSubmit(e);
         }
     };
     

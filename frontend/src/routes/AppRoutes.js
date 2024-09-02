@@ -16,6 +16,7 @@ import ApplicationForm from 'pages/Application/ApplicationForm';
 import { useSelector } from 'react-redux';
 import CreateEmployee from 'pages/Employees/CreateEmployee';
 import EmployeeDashboard from 'pages/EmployeePortal/Dashboard/EmployeeDashboard';
+import StaffContacts from 'pages/Directory/StaffContacts';
 
 const AppRoutes = () => {
     const { isAuthenticated } = useSelector(state => state.auth);
@@ -40,6 +41,7 @@ const AppRoutes = () => {
                     <Route path='sick-leave' element={<SickLeave />} />
                     <Route path='casual-leave' element={<CasualLeave />} />
                     <Route path='privilege-leave' element={<PrivilegeLeave />} />
+                    <Route path='directory' element={<StaffContacts />} />
                     {user.role === 'Admin' ? (
                         <>
                             <Route index element={<Navigate replace to="/dashboard" />} />

@@ -10,6 +10,7 @@ const AdditionalDetails = require('../models/AdditionalDetails');
 const Application = require('../models/Application');
 const Department = require('../models/Department');
 const Job = require('../models/Job');
+const sendEmail = require('../utils/mailService');
 
 const submitApplication = async (req, res) => {
   const { education, experiences, references, ...data } = req.body;
@@ -284,12 +285,25 @@ const fetchApplicantDetails = async (req, res) => {
 
 const updateApplicantDetails = async (req, res) => {
   const { applicantId } = req.params;
-  const { interview_date, status, rating } = req.body;
+  const { interview_date, status, rating, content } = req.body;
 
   try {
     // Build an update object only with the fields that are not undefined
     const updateFields = {};
-    if (interview_date !== undefined) updateFields.interview_date = interview_date;
+    const applicant = await Application.findOne({
+      where: {application_id: applicantId},
+      include: [
+        {
+          model: User,
+          attributes: ['email']
+        }
+      ]
+    });
+
+    if (applicant && interview_date !== undefined && status !== undefined && content !== undefined){ 
+      updateFields.interview_date = interview_date;
+      await sendEmail(applicant.User.email, content);
+    };
     if (status !== undefined) updateFields.status = status;
     if (rating !== undefined) updateFields.rating = rating;
 

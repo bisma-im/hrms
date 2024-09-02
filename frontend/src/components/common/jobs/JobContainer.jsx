@@ -17,7 +17,7 @@ const JobContainer = ({ job }) => {
         setIsPublished(!isPublished);
     };
 
-    const viewJob = (job) => {
+    const viewJob = () => {
         navigate(`/jobs/${job.job_id}`);
     }
 
@@ -32,7 +32,7 @@ const JobContainer = ({ job }) => {
                         </Dropdown.Toggle>
 
                         <Dropdown.Menu>
-                            <Dropdown.Item onClick={() => viewJob(job)}>View Job</Dropdown.Item>
+                            <Dropdown.Item onClick={viewJob}>View Job</Dropdown.Item>
                             <Dropdown.Item onClick={() => alert('Edit Job')}>Edit Job</Dropdown.Item>
                             <Dropdown.Item onClick={() => alert('Delete Job')}>Delete Job</Dropdown.Item>
                         </Dropdown.Menu>

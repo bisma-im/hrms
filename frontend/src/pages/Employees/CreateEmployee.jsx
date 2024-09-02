@@ -58,6 +58,7 @@ const initialFormData = {
 
 
 const CreateEmployee = () => {
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const { applicantId } = useParams();
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState(initialFormData);
@@ -210,9 +211,9 @@ const CreateEmployee = () => {
             confirmButtonText: 'OK'
         }).then(async (result) => {
             if (result.isConfirmed) {
+                setIsSubmitting(true);
                 const actionResult = await dispatch(addEmployee(data));
                 const response = actionResult.payload;  // Access the payload directly
-                console.log(response)
                 if (actionResult.meta.requestStatus === 'fulfilled') {
                     Swal.fire({
                         icon: 'success',
@@ -249,6 +250,7 @@ const CreateEmployee = () => {
             dispatch(fetchApplicantDetails(applicantId))
                 .unwrap()
                 .then(data => {
+                    console.log(data);
                     setFormData(data);
                     setIsLoading(false);
                 })
@@ -284,7 +286,7 @@ const CreateEmployee = () => {
                                         name="name"
                                         placeholder="Full Name"
                                         onChange={handleChange('name')}
-                                        defaultValue={formData.name}
+                                        value={formData.name || ''}
                                         isInvalid={!!errors.name}
                                     />
                                     <Form.Control.Feedback type="invalid">
@@ -296,7 +298,7 @@ const CreateEmployee = () => {
                                     <Form.Control
                                         as="select"
                                         name="job_id"
-                                        defaultValue={formData.job_id}
+                                        value={formData.job_id || ''}
                                         onChange={handleChange('job_id')}
                                         isInvalid={!!errors.job_id}
                                         className="form-control form-select"
@@ -319,7 +321,7 @@ const CreateEmployee = () => {
                                         name="cnic_no"
                                         placeholder="XXXXX-XXXXXXX-X"
                                         onChange={handleChange('cnic_no')}
-                                        defaultValue={formData.cnic_no}
+                                        value={formData.cnic_no || ''}
                                         isInvalid={!!errors.cnic_no}
                                     />
                                     <Form.Control.Feedback type="invalid">
@@ -335,7 +337,7 @@ const CreateEmployee = () => {
                                         required
                                         placeholder="Date of Birth"
                                         onChange={handleChange('dob')}
-                                        defaultValue={formData.dob}
+                                        value={formData.dob || ''}
                                         isInvalid={!!errors.dob}
                                     />
                                     <Form.Control.Feedback type="invalid">
@@ -354,7 +356,7 @@ const CreateEmployee = () => {
                                         required
                                         placeholder="Marital Status"
                                         onChange={handleChange('marital_status')}
-                                        defaultValue={formData.marital_status}
+                                        value={formData.marital_status || ''}
                                         isInvalid={!!errors.marital_status}
                                     >
                                         <option>Choose...</option>
@@ -377,7 +379,7 @@ const CreateEmployee = () => {
                                         required
                                         placeholder="Number of Children"
                                         onChange={handleChange('num_of_children')}
-                                        defaultValue={formData.num_of_children}
+                                        value={formData.num_of_children || ''}
                                         isInvalid={!!errors.num_of_children}
                                     />
                                     <Form.Control.Feedback type="invalid">
@@ -393,7 +395,7 @@ const CreateEmployee = () => {
                                         required
                                         placeholder="Cell No."
                                         onChange={handleChange('cell_no')}
-                                        defaultValue={formData.cell_no}
+                                        value={formData.cell_no || ''}
                                         isInvalid={!!errors.cell_no}
                                     />
                                     <Form.Control.Feedback type="invalid">
@@ -409,7 +411,7 @@ const CreateEmployee = () => {
                                         required
                                         placeholder="Residential Phone No."
                                         onChange={handleChange('residential_no')}
-                                        defaultValue={formData.residential_no}
+                                        value={formData.residential_no || ''}
                                         isInvalid={!!errors.residential_no}
                                     />
                                     <Form.Control.Feedback type="invalid">
@@ -420,19 +422,38 @@ const CreateEmployee = () => {
                             <Row>
                                 <Col sm={3} className="mb-3">
                                     <Form.Label className="form-label">Passport Size Photograph</Form.Label>
-                                    <Form.Control
-                                        className="form-control pt-3 ps-3"
-                                        type="file"
-                                        name="photo"
-                                        required
-                                        placeholder="Select Image"
-                                        onChange={handleChange('photo')}
-                                        accept="image/png, image/jpeg, image/jpg"
-                                        isInvalid={!!errors.photo}
-                                    />
-                                    <Form.Control.Feedback type="invalid">
-                                        {errors.photo}
-                                    </Form.Control.Feedback>
+                                    {applicantId ?
+                                        <a
+                                            href={`${process.env.REACT_APP_API_URL}/uploads/${formData.photo}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className='form-control  form-label'
+                                            style={{
+                                                width: '100%',
+                                                textDecoration: 'none',  // Removes underline
+                                                textAlign: 'center',  // Centers the text
+                                                paddingTop: '11px'
+                                            }}
+                                        >
+                                            View Photo
+                                        </a> :
+                                        (
+                                            <>
+                                                <Form.Control
+                                                    className="form-control pt-3 ps-3"
+                                                    type="file"
+                                                    name="photo"
+                                                    required
+                                                    placeholder="Select Image"
+                                                    onChange={handleChange('photo')}
+                                                    accept="image/png, image/jpeg, image/jpg"
+                                                    isInvalid={!!errors.photo}
+                                                />
+                                                <Form.Control.Feedback type="invalid">
+                                                    {errors.photo}
+                                                </Form.Control.Feedback>
+                                            </>
+                                        )}
                                 </Col>
                                 <Col sm={3} className="mb-3">
                                     <Form.Label className="form-label">Email</Form.Label>
@@ -443,7 +464,7 @@ const CreateEmployee = () => {
                                         required
                                         placeholder="Email"
                                         onChange={handleChange('email')}
-                                        defaultValue={formData.email}
+                                        value={formData.email || ''}
                                         isInvalid={!!errors.email}
                                     />
                                     <Form.Control.Feedback type="invalid">
@@ -460,7 +481,7 @@ const CreateEmployee = () => {
                                         required
                                         placeholder="Select Gender"
                                         onChange={handleChange('gender')}
-                                        defaultValue={formData.gender}
+                                        value={formData.gender || ''}
                                         isInvalid={!!errors.gender}
                                     >
                                         <option>Choose...</option>
@@ -477,7 +498,7 @@ const CreateEmployee = () => {
                                     <Form.Control
                                         type="date"
                                         name="date_of_promotion"
-                                        defaultValue={formData.date_of_promotion}
+                                        value={formData.date_of_promotion || ''}
                                         onChange={handleChange('date_of_promotion')}
                                         className="form-control"
                                         isInvalid={!!errors.date_of_promotion}
@@ -497,7 +518,7 @@ const CreateEmployee = () => {
                                         name="reg_no"
                                         placeholder="Registration Number"
                                         onChange={handleChange('reg_no')}
-                                        defaultValue={formData.reg_no}
+                                        value={formData.reg_no || ''}
                                         isInvalid={!!errors.reg_no}
                                     />
                                     <Form.Control.Feedback type="invalid">
@@ -513,7 +534,7 @@ const CreateEmployee = () => {
                                         name="card_no"
                                         placeholder="Card No."
                                         onChange={handleChange('card_no')}
-                                        defaultValue={formData.card_no}
+                                        value={formData.card_no || ''}
                                         isInvalid={!!errors.card_no}
                                     />
                                     <Form.Control.Feedback type="invalid">
@@ -541,7 +562,7 @@ const CreateEmployee = () => {
                                         name="publications_count"
                                         placeholder="Total Publications"
                                         onChange={handleChange('publications_count')}
-                                        defaultValue={formData.publications_count}
+                                        value={formData.publications_count || ''}
                                         isInvalid={!!errors.publications_count}
                                     />
                                     <Form.Control.Feedback type="invalid">
@@ -563,7 +584,7 @@ const CreateEmployee = () => {
                                         required
                                         placeholder="Total Experience"
                                         onChange={handleChange('total_fm_experience')}
-                                        defaultValue={formData.total_fm_experience}
+                                        value={formData.total_fm_experience || ''}
                                         isInvalid={!!errors.total_fm_experience}
                                     />
                                     <Form.Control.Feedback type="invalid">
@@ -585,7 +606,7 @@ const CreateEmployee = () => {
                                         required
                                         placeholder="Total Experience"
                                         onChange={handleChange('total_field_experience')}
-                                        defaultValue={formData.total_field_experience}
+                                        value={formData.total_field_experience || ''}
                                         isInvalid={!!errors.total_field_experience}
                                     />
                                     <Form.Control.Feedback type="invalid">
@@ -604,7 +625,7 @@ const CreateEmployee = () => {
                                         name="office_letter_no"
                                         placeholder="Office Letter No."
                                         onChange={handleChange('office_letter_no')}
-                                        defaultValue={formData.office_letter_no}
+                                        value={formData.office_letter_no || ''}
                                         isInvalid={!!errors.office_letter_no}
                                     />
                                     <Form.Control.Feedback type="invalid">
@@ -616,7 +637,7 @@ const CreateEmployee = () => {
                                     <Form.Control
                                         as="select"
                                         name="department_id"
-                                        defaultValue={formData.department_id}
+                                        value={formData.department_id || ''}
                                         onChange={handleChange('department_id')}
                                         className="form-control form-select"
                                         isInvalid={!!errors.department_id}
@@ -637,7 +658,7 @@ const CreateEmployee = () => {
                                     <Form.Control
                                         type="date"
                                         name="doj"
-                                        defaultValue={formData.doj}
+                                        value={formData.doj || ''}
                                         onChange={handleChange('doj')}
                                         className="form-control"
                                         isInvalid={!!errors.doj}
@@ -655,7 +676,7 @@ const CreateEmployee = () => {
                                         name="salary"
                                         placeholder="Salary"
                                         onChange={handleChange('salary')}
-                                        defaultValue={formData.salary}
+                                        value={formData.salary || ''}
                                         isInvalid={!!errors.salary}
                                     />
                                     <Form.Control.Feedback type="invalid">
@@ -673,7 +694,7 @@ const CreateEmployee = () => {
                                         name="pay_group"
                                         placeholder="Pay Group"
                                         onChange={handleChange('pay_group')}
-                                        defaultValue={formData.pay_group}
+                                        value={formData.pay_group || ''}
                                         isInvalid={!!errors.pay_group}
                                     />
                                     <Form.Control.Feedback type="invalid">
@@ -689,7 +710,7 @@ const CreateEmployee = () => {
                                         name="start_working_hr"
                                         placeholder="Working Hours (From)"
                                         onChange={handleChange('start_working_hr')}
-                                        defaultValue={formData.start_working_hr}
+                                        value={formData.start_working_hr || ''}
                                         isInvalid={!!errors.start_working_hr}
                                     />
                                     <Form.Control.Feedback type="invalid">
@@ -705,7 +726,7 @@ const CreateEmployee = () => {
                                         name="end_working_hr"
                                         placeholder="Working Hours (To)"
                                         onChange={handleChange('end_working_hr')}
-                                        defaultValue={formData.end_working_hr}
+                                        value={formData.end_working_hr || ''}
                                         isInvalid={!!errors.end_working_hr}
                                     />
                                     <Form.Control.Feedback type="invalid">
@@ -724,7 +745,7 @@ const CreateEmployee = () => {
                                         name="nok_name"
                                         placeholder="Full Name"
                                         onChange={handleChange('nok_name')}
-                                        defaultValue={formData.nok_name}
+                                        value={formData.nok_name || ''}
                                         isInvalid={!!errors.nok_name}
                                     />
                                     <Form.Control.Feedback type="invalid">
@@ -740,7 +761,7 @@ const CreateEmployee = () => {
                                         name="nok_rs"
                                         placeholder="Relationship with NOK"
                                         onChange={handleChange('nok_rs')}
-                                        defaultValue={formData.nok_rs}
+                                        value={formData.nok_rs || ''}
                                         isInvalid={!!errors.nok_rs}
                                     />
                                     <Form.Control.Feedback type="invalid">
@@ -756,7 +777,7 @@ const CreateEmployee = () => {
                                         name="nok_contact"
                                         placeholder="NOK Contact Number"
                                         onChange={handleChange('nok_contact')}
-                                        defaultValue={formData.nok_contact}
+                                        value={formData.nok_contact || ''}
                                         isInvalid={!!errors.nok_contact}
                                     />
                                     <Form.Control.Feedback type="invalid">
@@ -772,7 +793,7 @@ const CreateEmployee = () => {
                                     required
                                     placeholder="Present Address"
                                     onChange={handleChange('present_address')}
-                                    defaultValue={formData.present_address}
+                                    value={formData.present_address || ''}
                                     isInvalid={!!errors.present_address}
                                 />
                                 <Form.Control.Feedback type="invalid">
@@ -787,7 +808,7 @@ const CreateEmployee = () => {
                                     required
                                     placeholder="Permanent Address"
                                     onChange={handleChange('permanent_address')}
-                                    defaultValue={formData.permanent_address}
+                                    value={formData.permanent_address || ''}
                                     isInvalid={!!errors.permanent_address}
                                 />
                                 <Form.Control.Feedback type="invalid">
@@ -804,7 +825,7 @@ const CreateEmployee = () => {
                                         required
                                         placeholder="Father's Name"
                                         onChange={handleChange('father_name')}
-                                        defaultValue={formData.father_name}
+                                        value={formData.father_name || ''}
                                         isInvalid={!!errors.father_name}
                                     />
                                     <Form.Control.Feedback type="invalid">
@@ -820,7 +841,7 @@ const CreateEmployee = () => {
                                         required
                                         placeholder="Mother's Name"
                                         onChange={handleChange('mother_name')}
-                                        defaultValue={formData.mother_name}
+                                        value={formData.mother_name || ''}
                                     // isInvalid={!!errors.mother_name}
                                     />
                                     <Form.Control.Feedback type="invalid">
@@ -833,7 +854,13 @@ const CreateEmployee = () => {
                             </Row>
                         </Card.Body>
                         <Card.Footer className="d-flex align-items-center justify-content-md-end">
-                            <Button className="link-button" onClick={handleSubmit}>Submit</Button>
+                            <Button className="link-button" onClick={handleSubmit} disabled={isSubmitting}>
+                                {isSubmitting ? (
+                                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                                        <LoadingSpinner size={20} color={"white"} />
+                                        <span style={{ marginLeft: '10px' }}>Submitting form...</span>
+                                    </div>
+                                ) : 'Submit'}</Button>
                         </Card.Footer>
                     </Card>
                 </Form>
