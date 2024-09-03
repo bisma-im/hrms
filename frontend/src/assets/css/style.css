@@ -692,7 +692,7 @@
   min-height: 450px;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+.my-modal .modal-content {
+  margin: auto;
+  min-height: 180px;
 }

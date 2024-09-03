@@ -1,18 +1,74 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Card, Modal, Form } from 'react-bootstrap';
 import axios from 'axios';
-import { FaEdit, FaEye, FaTrash } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
+import { addDocument } from 'features/documents/documentService';
+import Swal from 'sweetalert2';
 
-const EmployeeDocuments = ({ userId }) => {
+const Documents = () => {
+    const { user } = useSelector(state => state.auth);
+    const [showModal, setShowModal] = useState(false);
+    const [selectedDoc, setSelectedDoc] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+
     const [documentsData, setDocumentsData] = useState({
         Personal: [],
         Academic: [],
         Experience: [],
     });
-    const [showModal, setShowModal] = useState(false);
-    const [editDoc, setEditDoc] = useState(null);
-    const [remarks, setRemarks] = useState("");
-    const [status, setStatus] = useState("");
+
+    const handleFileSelect = (event, doc) => {
+        const file = event.target.files[0];
+        setDocumentsData(prevData => ({
+            ...prevData,
+            [doc.category]: prevData[doc.category].map(d =>
+                d.document_title === doc.document_title ? { ...d, file: file } : d
+            )
+        }));
+    };
+
+    const handleUpload = async (event, doc) => {
+        event.preventDefault();
+        setIsSubmitting(true);
+        const fileData = new FormData();
+        const docToUpdate = documentsData[doc.category].find(d => d.document_title === doc.document_title);
+        if (docToUpdate && docToUpdate.file) {
+            fileData.append("file", docToUpdate.file);
+            fileData.append('document_title', doc.document_title);
+            fileData.append('category', doc.category);
+
+            try {
+                const response = await addDocument(fileData, user.id);
+                if (response.status === 201) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Your document has been submitted successfully!',
+                        confirmButtonText: 'OK'
+                    })
+                        .then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        });
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error.message || 'An error occurred'
+                })
+            }
+            finally {
+                setIsSubmitting(false);
+                setShowModal(false);
+            }
+        } else {
+            alert('No file selected');
+        }
+    };
+
 
     // Static titles and document types
     const documentTypes = {
@@ -39,7 +95,7 @@ const EmployeeDocuments = ({ userId }) => {
     useEffect(() => {
         const fetchDocuments = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/documents/${userId}`);
+                const response = await axios.get(`http://localhost:5000/api/documents/${user.id}`);
                 const uploadedDocs = response.data;
 
                 // Merge uploaded documents with the static structure
@@ -60,20 +116,7 @@ const EmployeeDocuments = ({ userId }) => {
         };
 
         fetchDocuments();
-    }, [userId]);
-
-    const handleEdit = (doc) => {
-        setEditDoc(doc);
-        setRemarks(doc.remarks || "");
-        setStatus(doc.status || "Pending");
-        setShowModal(true);
-    };
-
-    const handleSave = () => {
-        // Logic to save changes to the database
-        // You may want to make an API call here to save the status and remarks
-        setShowModal(false);
-    };
+    }, []);
 
     return (
         <>
@@ -92,8 +135,7 @@ const EmployeeDocuments = ({ userId }) => {
                                     <th>Uploaded Date</th>
                                     <th>Remarks</th>
                                     <th>Status</th>
-                                    <th>File</th>
-                                    <th>Action</th>
+                                    <th className='text-center'>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -110,22 +152,12 @@ const EmployeeDocuments = ({ userId }) => {
                                                 <a href={`${process.env.REACT_APP_API_URL}/uploads/${doc.file_name}`}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="ms-2 link-button">
+                                                    className='link-button'>
                                                     View
                                                 </a>
                                             ) : (
-                                                <span className="text-danger">Not Uploaded</span>
+                                                <Button onClick={() => { setShowModal(true); setSelectedDoc(doc) }}>Upload</Button>
                                             )}
-                                        </td>
-                                        <td>
-                                            {/* {doc.file_path && ( */}
-                                                <Button variant="warning" className="ms-2" onClick={() => handleEdit(doc)} size="sm">
-                                                    <FaEdit />
-                                                </Button>
-                                                {/* <Button onClick={() => handleEdit(doc)} className="ms-2" size="sm">
-                                                    <FaEye />
-                                                </Button> */}
-                                            {/* )} */}
                                         </td>
                                     </tr>
                                 ))}
@@ -135,41 +167,26 @@ const EmployeeDocuments = ({ userId }) => {
                 </Card>
             ))}
 
-            <Modal show={showModal} onHide={() => setShowModal(false)}>
+            <Modal show={showModal} onHide={() => setShowModal(false)} className='my-modal'>
                 <Modal.Header closeButton>
-                    <Modal.Title>Edit Document</Modal.Title>
+                    <Modal.Title>Select Document</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form>
-                        <Form.Group className='p-2'>
-                            <Form.Label className='custom-label'>Remarks</Form.Label>
-                            <Form.Control
-                                type="text"
-                                value={remarks}
-                                onChange={(e) => setRemarks(e.target.value)}
-                                className='custom-control'
-                            />
-                        </Form.Group>
-                        <Form.Group className='p-2'>
-                            <Form.Label className='custom-label'>Status</Form.Label>
-                            <Form.Control
-                                as="select"
-                                value={status}
-                                onChange={(e) => setStatus(e.target.value)}
-                                className='custom-control form-select'
-                            >
-                                <option value="Pending">Pending</option>
-                                <option value="Approved">Approved</option>
-                                <option value="Rejected">Rejected</option>
-                            </Form.Control>
-                        </Form.Group>
+                    <Form className='d-flex inline  px-2' encType='multipart/form-data'>
+                        <Form.Control
+                            type="file"
+                            name='file'
+                            className="form-control me-4"
+                            onChange={e => handleFileSelect(e, selectedDoc)}
+                            required
+                        />
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowModal(false)}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleSave}>
+                    <Button variant="primary" onClick={e => handleUpload(e, selectedDoc)} disabled={isSubmitting}>
                         Save Changes
                     </Button>
                 </Modal.Footer>
@@ -178,4 +195,4 @@ const EmployeeDocuments = ({ userId }) => {
     );
 };
 
-export default EmployeeDocuments;
+export default Documents;

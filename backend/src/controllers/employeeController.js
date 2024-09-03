@@ -279,6 +279,7 @@ const createEmployee = async (req, res) => {
 };
 
 const fetchEmployeeDetails = async (req, res) => {
+    console.log('inside controller')
     const { userId } = req.params;
     try {
         const employee = await Employee.findOne({

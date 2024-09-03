@@ -17,6 +17,7 @@ import { useSelector } from 'react-redux';
 import CreateEmployee from 'pages/Employees/CreateEmployee';
 import EmployeeDashboard from 'pages/EmployeePortal/Dashboard/EmployeeDashboard';
 import StaffContacts from 'pages/Directory/StaffContacts';
+import Documents from 'pages/EmployeePortal/Documents/Documents';
 
 const AppRoutes = () => {
     const { isAuthenticated } = useSelector(state => state.auth);
@@ -60,6 +61,7 @@ const AppRoutes = () => {
                     ) : (
                         <>
                             <Route path='dashboard' element={<EmployeeDashboard />} />
+                            <Route path='documents' element={<Documents />} />
                         </>
                     )
                     }

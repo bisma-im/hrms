@@ -10,6 +10,7 @@ const Employee = require('./Employee');
 const Job = require('./Job');
 const Department = require('./Department');
 const Children = require('./Children');
+const Documents = require('./Documents');
 
 // Associations
 Employee.hasMany(Children, { foreignKey: 'employee_id', as: 'Children', onDelete: 'CASCADE' });
@@ -47,6 +48,9 @@ Department.hasMany(Job, { foreignKey: 'department_id', onDelete: 'CASCADE' });
 
 Application.belongsTo(Job, { foreignKey: 'job_id' });
 Job.hasMany(Application, { foreignKey: 'job_id' });
+
+User.hasMany(Documents, {foreignKey: 'user_id',  onDelete: 'CASCADE'});
+Documents.belongsTo(User, {foreignKey: 'user_id'});
 
 module.exports = {
   User,

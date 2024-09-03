@@ -106,7 +106,7 @@ const PersonalInfo = ({ nextStep, handleChange, values }) => {
 
         return errors;
     };
-    
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const errors = validateForm();
@@ -217,16 +217,36 @@ const PersonalInfo = ({ nextStep, handleChange, values }) => {
                     </Col>
                     <Col sm={4} className="mb-3">
                         <Form.Label className="form-label">Passport Size Photograph</Form.Label>
-                        <Form.Control
-                            className={`form-control pt-3 ps-3 ${formErrors.photo ? 'is-invalid' : ''}`}
-                            type="file"
-                            name="photo"
-                            required
-                            placeholder="Select Image"
-                            onChange={handleChangeWithErrorCheck('photo')}
-                            accept="image/png, image/jpeg, image/jpg"
-                        />
-                        {formErrors.photo && <div className="invalid-feedback">{formErrors.photo}</div>}
+                        {values.photo !== "" ?
+                            (
+                                <a
+                                    href={`${process.env.REACT_APP_API_URL}/uploads/${values.photo}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className='form-control  form-label'
+                                    style={{
+                                        width: '100%',
+                                        textDecoration: 'none',  // Removes underline
+                                        textAlign: 'center',  // Centers the text
+                                        paddingTop: '11px'
+                                    }}
+                                >
+                                    View Photo
+                                </a>
+                            ) : (
+                                <>
+                                    <Form.Control
+                                        className={`form-control pt-3 ps-3 ${formErrors.photo ? 'is-invalid' : ''}`}
+                                        type="file"
+                                        name="photo"
+                                        required
+                                        placeholder="Select Image"
+                                        onChange={handleChangeWithErrorCheck('photo')}
+                                        accept="image/png, image/jpeg, image/jpg"
+                                    />
+                                    {formErrors.photo && <div className="invalid-feedback">{formErrors.photo}</div>}
+                                </>
+                            )}
                     </Col>
                 </Row>
                 <Row>

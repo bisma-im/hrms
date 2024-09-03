@@ -32,6 +32,8 @@ app.use('/api/employees', require('./src/routes/employeeRoutes'));
 
 app.use('/api/jobs', require('./src/routes/jobRoutes'));
 
+app.use('/api/documents', require('./src/routes/documentRoutes'));
+
 
 // Serve static files from the 'uploads' directory
 app.use('/uploads', express.static('src/uploads'));

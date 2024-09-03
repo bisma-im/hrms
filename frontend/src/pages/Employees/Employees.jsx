@@ -70,7 +70,7 @@ const Employees = () => {
                                 <EmployeeSummary  employee={employee}/>
                             </Tab.Pane>
                             <Tab.Pane eventKey={'EmployeeDocuments'}>
-                                <EmployeeDocuments  employee={employee} />
+                                <EmployeeDocuments  userId={userId} />
                             </Tab.Pane>
                             <Tab.Pane eventKey={'EmployeeLeaves'}>
                                 <EmployeeLeaves  employee={employee}/>
