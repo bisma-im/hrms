@@ -167,7 +167,7 @@ const ApplicationForm = () => {
                 </Col>
             </Row>
             <Form onSubmit={handleSubmit} className='my-form m-3' encType='multipart/form-data'>
-                {step === 1 && <PersonalInfo nextStep={nextStep} handleChange={handleChange} values={formData} />}
+                {step === 1 && <PersonalInfo nextStep={nextStep} handleChange={handleChange} values={formData} applicantId={applicantId}/>}
                 {step === 2 && <EducationInfo nextStep={nextStep} prevStep={prevStep} handleChange={handleChange} handleEducationChange={handleEducationChange} values={formData} />}
                 {step === 3 && <WorkInfo nextStep={nextStep} prevStep={prevStep} handleChange={handleChange} handleExperienceChange={handleExperienceChange} values={formData} />}
                 {step === 4 && <ReferencesnResume prevStep={prevStep} handleReferenceChange={handleReferenceChange} handleChange={handleChange} handleSubmit={handleSubmit} values={formData} />}

@@ -4,7 +4,7 @@ import { Card, Col, Form, Row, Button } from "react-bootstrap";
 import { fetchDepartments } from 'features/department/departmentService';
 import { fetchJobsByDepartment } from 'features/job/jobService';
 
-const PersonalInfo = ({ nextStep, handleChange, values }) => {
+const PersonalInfo = ({ nextStep, handleChange, values, applicantId }) => {
     const dispatch = useDispatch();
     const { departments } = useSelector((state) => state.departments);
     const [jobs, setJobs] = useState([]);
@@ -217,7 +217,7 @@ const PersonalInfo = ({ nextStep, handleChange, values }) => {
                     </Col>
                     <Col sm={4} className="mb-3">
                         <Form.Label className="form-label">Passport Size Photograph</Form.Label>
-                        {values.photo !== "" ?
+                        {applicantId ?
                             (
                                 <a
                                     href={`${process.env.REACT_APP_API_URL}/uploads/${values.photo}`}

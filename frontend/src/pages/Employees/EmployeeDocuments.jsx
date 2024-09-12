@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Table, Button, Card, Modal, Form } from 'react-bootstrap';
 import axios from 'axios';
 import { FaEdit, FaEye, FaTrash } from 'react-icons/fa';
+import { updateDocument } from 'features/documents/documentService';
+import Swal from 'sweetalert2';
 
 const EmployeeDocuments = ({ userId }) => {
     const [documentsData, setDocumentsData] = useState({
@@ -13,6 +15,7 @@ const EmployeeDocuments = ({ userId }) => {
     const [editDoc, setEditDoc] = useState(null);
     const [remarks, setRemarks] = useState("");
     const [status, setStatus] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     // Static titles and document types
     const documentTypes = {
@@ -69,10 +72,38 @@ const EmployeeDocuments = ({ userId }) => {
         setShowModal(true);
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         // Logic to save changes to the database
-        // You may want to make an API call here to save the status and remarks
-        setShowModal(false);
+        // You may want to make an API call here to save the status and remarksconsole.log(doc.document_id);
+        setIsLoading(true);
+        const reponse = await updateDocument({
+            data: { status: status, remarks: remarks},
+            id: editDoc.document_id
+        })
+        .then(() => {
+            Swal.fire({
+                title: 'Success',
+                icon: 'success',
+                text: 'Document successfully updated.',
+                confirmButtonText: 'OK'
+            })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    window.location.reload();
+                }
+            });
+        })
+        .catch((error) => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.message || 'An error occurred'
+            })
+        })
+        .finally(() => {
+            setIsLoading(false);
+            setShowModal(false);
+        })
     };
 
     return (
@@ -169,7 +200,7 @@ const EmployeeDocuments = ({ userId }) => {
                     <Button variant="secondary" onClick={() => setShowModal(false)}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleSave}>
+                    <Button variant="primary" onClick={handleSave} disabled={isLoading}>
                         Save Changes
                     </Button>
                 </Modal.Footer>

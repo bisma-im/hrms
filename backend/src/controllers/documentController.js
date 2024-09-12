@@ -8,7 +8,7 @@ const submitDocument = async (req, res) => {
     const { userId } = req.params;
     const { document_title, category } = req.body;
     let fileName = '';
-    let metadata ='';
+    let metadata = '';
 
     if (req.file == undefined) {
         res.status(400).send({ message: 'Error: No File Selected!' });
@@ -16,9 +16,10 @@ const submitDocument = async (req, res) => {
 
         fileName = req.file.filename;
         try {
-            if(document_title !== 'Resume' || document_title !== 'Cover Letter'){
-            const image = sharp(req.file.path);
-            metadata = await image.metadata();}
+            if (document_title !== 'Resume' || document_title !== 'Cover Letter') {
+                const image = sharp(req.file.path);
+                metadata = await image.metadata();
+            }
 
             Documents.create({
                 document_title: document_title, // Assuming you pass title in body
@@ -41,8 +42,32 @@ const submitDocument = async (req, res) => {
     }
 }
 
+const updateDocument = async (req, res) => {
+    const { status, remarks } = req.body;
+    const { docId } = req.params;
+
+    try {
+        const doc = await Documents.findByPk(docId);
+
+        if (!doc) {
+            return res.status(404).send({ message: 'Document not found' });
+        }
+
+        // Update fields if they are provided
+        if (remarks) doc.remarks = remarks;
+        if (status) doc.status = status;
+
+        // Save the updated document
+        const updatedDoc= await doc.save();
+        res.status(200).send(updatedDoc);
+    }
+    catch (error) {
+        res.status(500).send({ message: 'Error updating document', error: error.message });
+    }
+}
+
 const getDocuments = async (req, res) => {
-    const {userId} = req.params;
+    const { userId } = req.params;
 
     try {
         const documents = await Documents.findAll({
@@ -68,5 +93,6 @@ const getDocuments = async (req, res) => {
 
 module.exports = {
     submitDocument,
-    getDocuments
+    getDocuments,
+    updateDocument
 }
